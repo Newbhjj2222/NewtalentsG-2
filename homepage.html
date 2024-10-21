@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Candal&family=Lora:ital,wght@0,400;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
+    <title>NewtalentsG</title>
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <div class="logo">
+                <h1 class="logo text">
+                    <span>New</span><span>talents</span><span>G</span>
+                </h1>
+            </div>
+            <i class="fa fa-bars menu-toggle"></i>
+            <ul class="nav">
+                <li><a href="#" id="homeLink">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Service</a></li>
+              <li><a href="#" id="loginLink">Login</a></li>
+                <li>
+                   <a href="#">
+                <i class="fa fa-user"></i>
+                <span id="usernameDisplay">User Name</span>
+                <i class="fa fa-chevron-down" style="font-size: 0.8em"></i>
+            </a>
+                    <ul>
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#" class="logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+          <div class="theme">
+       <i class="fas fa-moon">theme</i>
+       <div class="customize-theme">
+            <div class="card">
+              <h1>Customer your view</h1>
+              <h3>Manage your font size, color and background </h3>
+<div class="font-size">
+    <h4>Font Size</h4>
+    <div class="size">
+   <h6>Aa</h6>
+    <div class="choose-size">
+      <span class="font-size-1 active"></span>
+      <span class="font-size-2"></span>
+      <span class="font-size-3"></span>
+      <span class="font-size-4"></span>
+      <span class="font-size-5"></span>
+    </div>
+     <h2>Aa</h2>
+ </div>
+  </div>
+  <div class="color">
+    <h4>Color</h4>
+    <div class="choose-color">
+      <span class="color-1"></span>
+      <span class="color-2"></span>
+      <span class="color-3"></span>
+      <span class="color-4"></span>
+      <span class="color-5"></span>
+    </div>
+  </div>
+       <div class="background">
+         <h4>Background</h4>
+         <div class="choose-bg">
+           <div class="bg-1">
+             <span></span>
+             <h1>draft</h1>
+           </div>
+           <div class="bg-2">
+             <span></span>
+             <h1>Dark</h1>
+           </div>
+           <div class="bg-3">
+             <span></span>
+             <h1>night</h1>
+           </div>
+         </div>
+       </div>
+            </div>
+       </div>
+     </div>
+
+    <div class="page-wrapper">
+        <div class="post-slider">
+            <h1 class="slider-title">Trending Stories</h1>
+            <i class="fas fa-chevron-left prev"></i>
+            <i class="fas fa-chevron-right next"></i>
+            <div class="post-wrapper">
+                <div class="post">
+                    <img src=""  class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post">
+                    <img src=""  class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post">
+                    <img src="" class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post">
+                    <img src="" class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post clearfix">
+                    <img src="" class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user">N</i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="slider">
+                <div class="slider-text">
+                    <span></span>
+                    
+                </div>
+            </div>
+        </div> <!-- Closing post-slider -->
+
+        <div class="content clearfix">
+          
+            <div class="maen-content">
+                <h7 class="recent-stories-title">Recent Stories</h7>
+                <!-- Main content -->
+            <div class="main-content single">
+                <h1 class="post-title">post head</h1>
+                <div class="post-content">
+                  <!---- ahazajya post --->
+              <div class="post-img">
+              <!--- ahazagaragara ifoto--->
+              </div>
+                   
+                </div>
+            </div>
+            <!--// Main content -->
+                
+                
+            
+            </div> <!-- Closing main-content -->
+
+            <div class="sidebar">
+                <div class="section-search">
+                    <h2 class="section-title">Search</h2>
+                    <form action="homepage.html" method="post">
+                        <input type="text" name="search-term" class="text-input" placeholder="Search stories...">
+                    </form>
+             
+                </div>
+
+                <div class="section-topic">
+                    <h2>STORIES</h2>
+                    <ul id="topics-list">
+                     <li><a href=""></a></li>
+                       
+                    </ul>
+                </div>
+            </div> <!-- Closing sidebar -->
+        </div> <!-- Closing content -->
+    </div> <!-- Closing page-wrapper -->
+
+
+
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section a">
+                <a href="homepage.html" class="footer-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="#" class="footer-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="" class="footer-link">
+                    <i class="fas fa-wallet"></i> Check Balance
+                </a>
+            </div>
+
+            <div class="footer-section b">
+                <form action="#" class="subscribe-form">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+
+            <div class="footer-section c">
+                <a href="#" class="footer-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" class="footer-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="footer-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="footer-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2024 New Talents | All Rights Reserved.
+        </div>
+    </footer>
+
+ <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    // Konfigura Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
+        authDomain: "newtalents-a7c29.firebaseapp.com",
+        projectId: "newtalents-a7c29",
+        storageBucket: "newtalents-a7c29.appspot.com",
+        messagingSenderId: "507408992610",
+        appId: "1:507408992610:web:05ce220a4cb4922de9843b"
+    };
+
+    // Tangira Firebase App
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Fungura collection ya 'folders'
+    const foldersCollection = collection(db, 'folders');
+
+    // Fungura inyandiko za 'folders'
+    async function loadTopics() {
+        try {
+            const querySnapshot = await getDocs(foldersCollection);
+            const topicsList = document.getElementById('topics-list');
+            topicsList.innerHTML = '';  // Gusiba ibyari bihari mbere
+
+            querySnapshot.forEach((doc) => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = '#';  // Ushobora kongeraho link niba ihari
+                link.textContent = doc.data().title;  // Ufata content iri muri field 'title'
+
+                listItem.appendChild(link);
+                topicsList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error("Ikosa ryabaye: ", error);
+        }
+    }
+
+    // Fungura collection ya 'posts'
+    const postsCollection = collection(db, 'posts');
+
+    // Function ifata documents ziri muri collection ya 'posts'
+    async function fetchPosts() {
+        try {
+            const querySnapshot = await getDocs(postsCollection);
+            let postContainer = document.querySelector('.post-wrapper');
+            
+            postContainer.innerHTML = ''; // Gukuraho content ya mbere
+
+            querySnapshot.forEach((doc) => {
+                let post = doc.data();
+
+                // Gukora isura ya post muri HTML
+                let postElement = `
+                    <div class="post" style="display: inline-block; width: 100%;">
+                        <img src="${post.imageUrl}" alt="${post.head}" style="width: 100%; height: 200px; border-radius: 28px 8px 0 0;" class="slider-image"/>
+                        <div class="post-info">
+                            <h4><a href="#">${post.head}</a></h4>
+                            <i class="far fa-user"></i>&nbsp;
+                            <i class="far fa-calendar">${post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'No date available'}</i>
+                        </div>
+                    </div>
+                `;
+
+                postContainer.innerHTML += postElement;
+            });
+
+            // Kwambara slick carousel
+            $('.post-wrapper').slick({
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                nextArrow: $('.next'),
+                prevArrow: $('.prev'),
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        } catch (error) {
+            console.error("Error fetching posts: ", error);
+        }
+    }
+
+    // Fungura document ya post imwe
+    async function fetchSinglePost(postId) {
+        try {
+            const postRef = doc(db, "posts", postId);
+            const postSnapshot = await getDoc(postRef);
+
+            if (postSnapshot.exists()) {
+                const postData = postSnapshot.data();
+
+                document.querySelector(".main-content").innerHTML = `
+                    <div class="post" id="${postId}">
+                        <h1 class="post-title">${postData.head || 'Untitled Post'}</h1>
+                        <div class="post-content" style="line-height: 1.6; margin-bottom: 16px; gap: 12px;">
+                            <p>${postData.post || 'No content available.'}</p>
+                        </div>
+                        <div class="post-img">
+                            <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 90%; height: auto; border-radius: 14px;" />
+                        </div>
+                    </div>
+                `;
+            } else {
+                console.log("No such document!");
+                document.querySelector(".main-content").innerHTML = `<p>No post found with the specified ID.</p>`;
+            }
+        } catch (error) {
+            console.log("Error getting document: ", error);
+        }
+    }
+
+    // Function yo gufata posts zose hamwe na "Read More"
+    async function loadRecentStories() {
+        try {
+            const querySnapshot = await getDocs(postsCollection);
+            let postsHtml = '';
+
+            querySnapshot.forEach((doc) => {
+                const postData = doc.data();
+                const postId = doc.id;
+
+                postsHtml += `
+                    <div class="post" id="${postId}">
+                        <h1 class="post-title">${postData.head}</h1>
+                        <div class="post-content">
+                            <p>${postData.post.substring(0, 200)}...</p>
+                        </div>
+                        <div class="post-img">
+                            <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 89%; height: auto; border-radius: 14px;"/>
+                        </div>
+                        <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
+                    </div>
+                `;
+            });
+
+            document.querySelector(".main-content").innerHTML = postsHtml;
+
+            const readMoreButtons = document.querySelectorAll('.read-more');
+            readMoreButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const postId = event.target.getAttribute('data-id');
+                    fetchSinglePost(postId);
+                });
+            });
+        } catch (error) {
+            console.log("Error getting documents: ", error);
+        }
+    }
+
+    // Fungura function ya ads
+    async function displayAdsInSlider() {
+        const adRef = collection(db, "ads");
+        const adsSnapshot = await getDocs(adRef);
+        const sliderTextDiv = document.querySelector(".slider-text");
+        const adSpan = sliderTextDiv.querySelector("span");
+        
+        adSpan.innerHTML = ''; 
+
+        adsSnapshot.forEach(doc => {
+            const ad = doc.data();
+            adSpan.innerHTML += `${ad.ad} `;
+        });
+    }
+
+    // Hamagara functions
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTopics();
+        fetchPosts();
+        loadRecentStories();
+        displayAdsInSlider();
+    });
+
+</script>
+
+
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+        integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+</body>
+</html>
