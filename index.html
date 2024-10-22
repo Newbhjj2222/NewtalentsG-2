@@ -18,21 +18,6 @@
 
 <body>
 
-    <style>
-  .theme{
-    top: 66px;
-  height: 64px;
-  width: 100%;
-  position: fixed;
-  display: flex;
-  margin-bottom: 43px;
-  z-index: 1000;
-  align-items: center;
-  cursor: pointer;
-  background:  #008489;
-  color: white;
-  }
-    </style>
     <header>
         <div>
             <div class="logo">
@@ -54,8 +39,7 @@
             </a>
                     <ul>
                         <li><a href="#">Dashboard</a></li>
-                        <li><a href="#">Register</a></li>
-                        <li><a href="#" class="logout">Logout</a></li>
+                      
                     </ul>
                 </li>
             </ul>
@@ -214,7 +198,7 @@
     <footer>
         <div class="footer-container">
             <div class="footer-section a">
-                <a href="index.html" class="footer-link">
+                <a href="homepage.html" class="footer-link">
                     <i class="fas fa-home"></i> Home
                 </a>
                 <a href="#" class="footer-link">
@@ -452,7 +436,32 @@
         loadRecentStories();
         displayAdsInSlider();
     });
+    document.getElementById('loginLink').addEventListener('click', function(event) {
+        event.preventDefault();  // Banza wirinde ko link ifungura uko isanzwe
+        window.location.href = 'login.html';  // Fungura login.html
+    });
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Get the username from localStorage
+    const username = localStorage.getItem('username');
+    
+    // Ahari 'Login' link hazahita hiyongeramo 'Logout' igihe username ibonetse
+    if (username) {
+        document.getElementById("usernameDisplay").textContent = username;
+        
+        // Hindura 'Login' button ikaba 'Logout'
+        const loginLink = document.getElementById("loginLink");
+        loginLink.textContent = "Logout";
+        loginLink.href = "#";
+        loginLink.addEventListener("click", () => {
+            // Gusiba username muri localStorage no gukora logout
+            localStorage.removeItem('username');
+            window.location.reload(); // Reload page to reset the state
+        });
+    } else {
+        document.getElementById("usernameDisplay").textContent = "Guest";
+    }
+});
 </script>
 
 
@@ -466,4 +475,4 @@
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
 </body>
-</html>
+                      </html>
