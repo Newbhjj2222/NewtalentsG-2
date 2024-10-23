@@ -527,4 +527,24 @@ document.addEventListener("DOMContentLoaded", () => {
         loginLink.href = "#";
         loginLink.addEventListener("click", () => {
             // Gusiba username muri localStorage no gukora logout
-        
+            localStorage.removeItem('username');
+            window.location.reload(); // Reload page to reset the state
+        });
+    } else {
+        document.getElementById("usernameDisplay").textContent = "Guest";
+    }
+});
+</script>
+
+
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+        integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+</body>
+                      </html>
