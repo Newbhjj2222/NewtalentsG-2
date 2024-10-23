@@ -239,7 +239,7 @@
  <script type="module">
     // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, addDoc,} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     // Konfigura Firebase
     const firebaseConfig = {
@@ -348,71 +348,143 @@
     }
 
     // Fungura document ya post imwe
-    async function fetchSinglePost(postId) {
-        try {
-            const postRef = doc(db, "posts", postId);
-            const postSnapshot = await getDoc(postRef);
-
-            if (postSnapshot.exists()) {
-                const postData = postSnapshot.data();
-
-                document.querySelector(".main-content").innerHTML = `
-                    <div class="post" id="${postId}">
-                        <h1 class="post-title">${postData.head || 'Untitled Post'}</h1>
-                        <div class="post-content" style="line-height: 1.6; margin-bottom: 16px; gap: 12px;">
-                            <p>${postData.post || 'No content available.'}</p>
-                        </div>
-                        <div class="post-img">
-                            <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 90%; height: auto; border-radius: 14px;" />
-                        </div>
-                    </div>
-                `;
-            } else {
-                console.log("No such document!");
-                document.querySelector(".main-content").innerHTML = `<p>No post found with the specified ID.</p>`;
-            }
-        } catch (error) {
-            console.log("Error getting document: ", error);
+  // Function yo gufata post imwe
+// Function yo kubika comment muri Firestore
+async function addComment(postId, username, comment) {
+    try {
+        if (!postId || !comment || !username) {
+            console.error("Post ID, username and comment text cannot be empty.");
+            return;
         }
+
+        const commentsRef = collection(db, "posts", postId, "comments");
+
+        await addDoc(commentsRef, {
+            username: username,
+            text: comment, // Hano hakoreshwa comment, ntabwo commentData.text
+            createdAt: new Date() // Shyiramo isaha
+        });
+        
+        console.log("Comment added successfully.");
+    } catch (error) {
+        console.error("Error adding comment: ", error);
+        alert("Icyo gikorwa kiranze: " + error.message);
     }
+}
+// Function yo gufata post imwe
+async function fetchSinglePost(postId) {
+    try {
+        const postRef = doc(db, "posts", postId);
+        const postSnapshot = await getDoc(postRef);
 
-    // Function yo gufata posts zose hamwe na "Read More"
-    async function loadRecentStories() {
-        try {
-            const querySnapshot = await getDocs(postsCollection);
-            let postsHtml = '';
+        if (postSnapshot.exists()) {
+            const postData = postSnapshot.data();
 
-            querySnapshot.forEach((doc) => {
-                const postData = doc.data();
-                const postId = doc.id;
-
-                postsHtml += `
-                    <div class="post" id="${postId}">
-                        <h1 class="post-title">${postData.head}</h1>
-                        <div class="post-content">
-                            <p>${postData.post.substring(0, 200)}...</p>
-                        </div>
-                        <div class="post-img">
-                            <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 89%; height: auto; border-radius: 14px;"/>
-                        </div>
-                        <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
+            // Shyiramo igice cyo kwandika comments
+            document.querySelector(".main-content").innerHTML = `
+                <div class="post" id="${postId}">
+                    <h1 class="post-title">${postData.head || 'Untitled Post'}</h1>
+                    <div class="post-content" style="line-height: 1.6; margin-bottom: 16px; gap: 12px;">
+                        <p>${postData.post || 'No content available.'}</p>
                     </div>
-                `;
-            });
+                    <div class="post-img">
+                        <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 90%; height: auto; border-radius: 14px;" />
+                    </div>
+                    <div class="comments-section" style="display: flex;           /* Gukoresha flexbox */
+    flex-direction: column; /* Kwatandukanya ibintu mu murongo umwe (column) */
+    gap: 10px;">
+                        <h3>Comments:</h3>
+                        <div class="comments-list" id="comments-list"></div>
+                        <textarea id="comment-input" style="border-radius: 12px;  margin-top: 30px;" placeholder="Write your comment..."></textarea>
+                        <button id="submit-comment" style=" background: blue; color: white; border-radius: 12px;">Submit Comment</button>
+                    </div>
+                </div>
+            `;
 
-            document.querySelector(".main-content").innerHTML = postsHtml;
+// Kora kuri button yo gushyira comment
+document.getElementById("submit-comment").addEventListener("click", async () => {
+    const commentInput = document.getElementById("comment-input");
+    const commentText = commentInput.value;
 
-            const readMoreButtons = document.querySelectorAll('.read-more');
-            readMoreButtons.forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const postId = event.target.getAttribute('data-id');
-                    fetchSinglePost(postId);
-                });
-            });
-        } catch (error) {
-            console.log("Error getting documents: ", error);
+    const username = document.getElementById("usernameDisplay").textContent; // Fata izina ry'umukoresha
+
+    // Andika comment
+    await addComment(postId, username, commentText); // Ohereza izina ry'umukoresha hamwe na comment
+    commentInput.value = ''; // Hagarika comment input
+    loadComments(postId); // Tangira kugaragaza comments nyuma yo kongeramo
+});
+        } else {
+            console.log("No such document!");
+            document.querySelector(".main-content").innerHTML = `<p>No post found with the specified ID.</p>`;
         }
+    } catch (error) {
+        console.log("Error getting document: ", error);
     }
+}
+
+// Function yo gufata comments
+async function loadComments(postId) {
+    try {
+        const commentsRef = collection(db, "posts", postId, "comments");
+        const querySnapshot = await getDocs(commentsRef);
+        const commentsList = document.getElementById("comments-list");
+        commentsList.innerHTML = ''; // Fata ibiri mu comments list
+
+        querySnapshot.forEach((doc) => {
+            const commentData = doc.data();
+            commentsList.innerHTML += `
+                <div class="comment">
+                    <p><strong>${commentData.username}</strong>: ${commentData.text}</p>
+                    <small>${commentData.createdAt.toDate().toLocaleString()}</small>
+                </div>
+            `;
+        });
+     } catch (error) {
+        console.log("Error loading comments: ", error);
+        alert("Hari ikibazo mu gihe cyo kubona comments: " + error.message); // Tangaza impamvu itabitswe
+    }
+}
+
+// Function yo gufata posts zose hamwe na "Read More"
+async function loadRecentStories() {
+    try {
+        const querySnapshot = await getDocs(postsCollection);
+        let postsHtml = '';
+
+        querySnapshot.forEach((doc) => {
+            const postData = doc.data();
+            const postId = doc.id;
+
+            postsHtml += `
+                <div class="post" id="${postId}">
+                    <h1 class="post-title">${postData.head}</h1>
+                    <div class="post-content">
+                        <p>${postData.post.substring(0, 200)}...</p>
+                    </div>
+                    <div class="post-img">
+                        <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 89%; height: auto; border-radius: 14px;"/>
+                    </div>
+                    <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
+                </div>
+            `;
+        });
+
+        document.querySelector(".main-content").innerHTML = postsHtml;
+
+        const readMoreButtons = document.querySelectorAll('.read-more');
+        readMoreButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const postId = event.target.getAttribute('data-id');
+                fetchSinglePost(postId);
+            });
+        });
+    } catch (error) {
+        console.log("Error getting documents: ", error);
+    }
+}
+
+// Banza uhamagare iyi function kugirango ushireho posts mu ntangiriro
+loadRecentStories();
 
     // Fungura function ya ads
     async function displayAdsInSlider() {
@@ -455,24 +527,4 @@ document.addEventListener("DOMContentLoaded", () => {
         loginLink.href = "#";
         loginLink.addEventListener("click", () => {
             // Gusiba username muri localStorage no gukora logout
-            localStorage.removeItem('username');
-            window.location.reload(); // Reload page to reset the state
-        });
-    } else {
-        document.getElementById("usernameDisplay").textContent = "Guest";
-    }
-});
-</script>
-
-
-
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
-        integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="script.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
-</body>
-                      </html>
+        
