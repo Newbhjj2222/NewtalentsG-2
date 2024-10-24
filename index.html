@@ -17,7 +17,18 @@
 </head>
 
 <body>
-
+<style>
+    .theme {
+  top: 66px;
+  height: 64px;
+  width: 100px;
+  position: fixed;
+  display: flex;
+  margin-bottom: 43px;
+  z-index: 1000;
+  align-items: center;
+  cursor: pointer;
+</style>
     <header>
         <div>
             <div class="logo">
@@ -217,7 +228,7 @@
             </div>
 
             <div class="footer-section c">
-                <a href="#" class="footer-icon">
+                <a href="https://chat.whatsapp.com/HTV7wUW2HTwD10A3R3BYhd" class="footer-icon">
                     <i class="fab fa-whatsapp"></i>
                 </a>
                 <a href="#" class="footer-icon">
@@ -455,22 +466,41 @@ async function loadRecentStories() {
             const postData = doc.data();
             const postId = doc.id;
 
+            // Reba niba createdAt iriho kandi ari Timestamp, niba itariho igaragaze igihe kitazwi
+            let createdAt = 'Unknown date';
+            if (postData.createdAt && postData.createdAt) {
+                createdAt = new Date(postData.createdAt).toLocaleDateString();
+            }
+
+            // Reba niba izina ry'umwanditsi ririho, niba ntaryo, rigaragaze ko atazwi
+            const author = postData.author || 'NewtalentsG';
+
+            // Irinde ibishobora gutera HTML injection, ugire data yawe neza
+            const sanitizedHead = sanitizeHtml(postData.head);
+            const sanitizedPost = sanitizeHtml(postData.post);
+
             postsHtml += `
                 <div class="post" id="${postId}">
-                    <h1 class="post-title">${postData.head}</h1>
+                    <h1 class="post-title">${sanitizedHead}</h1>
                     <div class="post-content">
-                        <p>${postData.post.substring(0, 200)}...</p>
+                        <p>${sanitizedPost.substring(0, 200)}...</p>
                     </div>
                     <div class="post-img">
-                        <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 89%; height: auto; border-radius: 14px;"/>
+                        <img src="${postData.imageUrl}" alt="${sanitizedHead}" style="width: 89%; height: auto; border-radius: 14px;"/>
+                    </div>
+                    <div class="post-info">
+                        <p><strong>Written by:</strong> ${author}</p>
+                        <p><strong>Date:</strong> ${createdAt}</p>
                     </div>
                     <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
                 </div>
             `;
         });
 
-        document.querySelector(".main-content").innerHTML = postsHtml;
+        // Shyira posts mu gice cyagenwe
+        document.querySelector('.main-content.single').innerHTML = postsHtml;
 
+        // Ongera ushyireho event listener ku batoni
         const readMoreButtons = document.querySelectorAll('.read-more');
         readMoreButtons.forEach(button => {
             button.addEventListener('click', (event) => {
@@ -479,8 +509,15 @@ async function loadRecentStories() {
             });
         });
     } catch (error) {
-        console.log("Error getting documents: ", error);
+        console.error("Error loading recent stories: ", error);
     }
+}
+
+// Iyi function ikora sanitize ya HTML, ikirinda injection mu izina ry'inkuru no muri post.
+function sanitizeHtml(unsafeHtml) {
+    const tempDiv = document.createElement('div');
+    tempDiv.textContent = unsafeHtml;
+    return tempDiv.innerHTML;
 }
 
 // Banza uhamagare iyi function kugirango ushireho posts mu ntangiriro
