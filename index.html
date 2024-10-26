@@ -460,7 +460,7 @@ async function loadComments(postId) {
 async function loadRecentStories() {
     try {
         // Gushyiraho query ishingiye ku miterere ya createdAt kugera kuz'ejyanye na post nshya
-        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'), limit(10));
+        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(recentPostsQuery);
         
         let postsHtml = '';
@@ -471,8 +471,8 @@ async function loadRecentStories() {
 
             // Reba niba createdAt iriho kandi ari Timestamp, niba itariho igaragaze igihe kitazwi
             let createdAt = 'Unknown date';
-            if (postData.createdAt && postData.createdAt.toDate) {
-                createdAt = postData.createdAt.toDate().toLocaleDateString();
+            if (postData.createdAt && postData.createdAt) {
+                createdAt = postData.createdAt
             }
 
             // Reba niba izina ry'umwanditsi ririho, niba ntaryo, rigaragaze ko atazwi
