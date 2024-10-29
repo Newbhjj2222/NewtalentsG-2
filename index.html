@@ -294,25 +294,27 @@
     const postsCollection = collection(db, 'posts');
 
     // Function ifata documents ziri muri collection ya 'posts'
-    async function fetchPosts() {
+    
+        async function fetchPosts() {
     try {
-        const querySnapshot = await getDocs(postsCollection);
-        let postContainer = document.querySelector('.post-wrapper');
+        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'), limit(5));
+        const querySnapshot = await getDocs(recentPostsQuery);
 
+        let postsHtml = '';
+        let postContainer = document.querySelector('.post-wrapper');
         postContainer.innerHTML = ''; // Gukuraho content ya mbere
 
+        // Iterating over each document
         querySnapshot.forEach((doc) => {
-            let post = doc.data();
-
-            // Gukora isura ya post muri HTML
-            let postElement = `
+            const postData = doc.data();
+            const postElement = `
                 <div class="post" style="display: inline-block; width: 100%;" onclick="openPost('${doc.id}')">
-                    <img src="${post.imageUrl}" alt="${post.head}" style="width: 100%; height: 200px; border-radius: 28px 8px 0 0;" class="slider-image"/>
+                    <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 100%; height: 200px; border-radius: 28px 8px 0 0;" class="slider-image"/>
                     <div class="post-info">
-                        <h4><a href="#">${post.head}</a></h4>
+                        <h4><a href="#">${postData.head}</a></h4>
                         <i class="far fa-user"></i>&nbsp;
-                        <span>${post.author || "NewtalentsG"}</span>
-                        <i class="far fa-calendar">${post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'No date available'}</i>
+                        <span>${postData.author || "NewtalentsG"}</span>
+                        <i class="far fa-calendar">${postData.createdAt ? new Date(postData.createdAt).toLocaleDateString() : 'No date available'}</i>
                     </div>
                 </div>
             `;
