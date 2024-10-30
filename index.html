@@ -102,6 +102,7 @@
        </div>
             </div>
        </div>
+         
      </div>
 
     <div class="page-wrapper">
@@ -163,6 +164,13 @@
           
             <div class="maen-content">
                 <h7 class="recent-stories-title">Recent Stories</h7>
+                <div class="section-search search">
+                    <h2 class="section-title">Search</h2>
+                  <form action="homepage.html" method="post" id="search-form">
+        <input type="text" name="search-term" class="text-input" placeholder="Search stories...">
+    </form>
+             
+                </div>
                 <!-- Main content -->
             <div class="main-content single">
                 <h1 class="post-title">post head</h1>
@@ -181,13 +189,7 @@
             </div> <!-- Closing main-content -->
 
             <div class="sidebar">
-                <div class="section-search">
-                    <h2 class="section-title">Search</h2>
-                    <form action="homepage.html" method="post">
-                        <input type="text" name="search-term" class="text-input" placeholder="Search stories...">
-                    </form>
-             
-                </div>
+             <div class="fb-page" data-href="https://m.facebook.com/profile.php?id=100063727930149" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://m.facebook.com/profile.php?id=100063727930149" class="fb-xfbml-parse-ignore"><a href="https://m.facebook.com/profile.php?id=100063727930149">Navio nv</a></blockquote></div>
 
                 <div class="section-topic">
                     <h2>STORIES</h2>
@@ -201,7 +203,15 @@
     </div> <!-- Closing page-wrapper -->
 
 
-
+<div class="quick">
+  <ul>
+    <li><a href="index.html" 
+                    <i class="fas fa-home home"></i>
+                </a></li>
+   <li><a href=""><i class="fas fa-inbox message"></i></a></li>
+<li><a href="#" class="back-button"><i class="fab fa-dyalog back"></i></a></li>
+  </ul>
+</div>
 
     <footer>
         <div class="footer-container">
@@ -459,7 +469,7 @@ async function loadComments(postId) {
 async function loadRecentStories() {
     try {
         // Gushyiraho query ishingiye ku miterere ya createdAt kugera kuz'ejyanye na post nshya
-        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'));
+        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'),limit(10));
         const querySnapshot = await getDocs(recentPostsQuery);
         
         let postsHtml = '';
@@ -512,13 +522,98 @@ async function loadRecentStories() {
         document.querySelector('.main-content.single').innerHTML = postsHtml;
 
         // Ongera ushyireho event listener ku batoni
-        const readMoreButtons = document.querySelectorAll('.read-more');
-        readMoreButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const postId = event.target.getAttribute('data-id');
-                fetchSinglePost(postId);
-            });
-        });
+        // Select and handle 'Read More' buttons
+// Gufata original content mbere yo gukanda kuri 'read more'
+// Gufata original content mbere yo gukanda kuri 'read more'
+// Kubika kopi ya original content ya document body
+// Kubika original content
+// Kubika content ya mbere nk'initial state
+// Kubika content ya mbere nk'initial state
+let initialContent = document.body.innerHTML;
+let currentContent = initialContent;
+let backButtonListener; // Kubika listener
+let observer; // Kubika observer
+
+function attachReadMoreListeners() {
+  const readMoreButtons = document.querySelectorAll('.read-more');
+  readMoreButtons.forEach(button => {
+    button.addEventListener('click', async (event) => {
+      const postId = event.currentTarget.getAttribute('data-id');
+      if (postId) {
+        try {
+          // Kubika content ya none imbere yo kwinjira muri post nshya
+          currentContent = document.body.innerHTML;
+          await fetchSinglePost(postId);
+          // Kongera gushyira event listener kuri 'Back' button nyuma yo kubikora
+          attachBackButtonListener();
+          observeFooter();
+        } catch (error) {
+          console.error('Error fetching post:', error);
+        }
+      } else {
+        console.error('Data-id attribute not found');
+      }
+    });
+  });
+}
+
+function attachBackButtonListener() {
+  const backButton = document.querySelector('.back-button');
+
+  // Kureka listener irimo
+  if (backButtonListener) {
+    backButton.removeEventListener('click', backButtonListener);
+  }
+
+  backButtonListener = (event) => {
+    event.preventDefault();
+    // Gusubiza current content muri DOM (content yari ihari mbere y'uko 'read more' button ikandwa)
+    document.body.innerHTML = currentContent;
+
+    // Gushyira event listeners zose kuri 'read more' na 'back' buttons
+    attachReadMoreListeners();
+    attachBackButtonListener();
+    observeFooter();
+  };
+
+  if (backButton) {
+    backButton.addEventListener('click', backButtonListener);
+  }
+}
+
+// Function yo gukurikirana igihe footer igeze mu ishusho (viewport)
+function observeFooter() {
+  const footer = document.querySelector('.footer');
+  const quickElements = document.querySelectorAll('.quick');
+
+  // Kuraho observer mbere yo kongera umwanya
+  if (observer) {
+    observer.disconnect();
+  }
+
+  if (footer && quickElements.length) {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Bihita bikurwaho igihe footer igeze muri viewport
+          quickElements.forEach(element => element.style.display = 'none');
+        } else {
+          // Bigarurwa igihe footer itari muri viewport
+          quickElements.forEach(element => element.style.display = '');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(footer);
+  }
+}
+
+// Kwita kuri 'read-more' buttons bwa mbere
+attachReadMoreListeners();
+// Kwita kuri 'Back' button bwa mbere
+attachBackButtonListener();
+// Kwita kuri footer bwa mbere
+observeFooter();
     } catch (error) {
         console.error("Error loading recent stories: ", error);
     }
@@ -605,6 +700,8 @@ document.getElementById('subscribeForm').addEventListener('submit', async functi
         alert('Error to subscribe: ' + error.message);
     }
 });
+
+
 </script>
 
 
