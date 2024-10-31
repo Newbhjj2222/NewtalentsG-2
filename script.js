@@ -215,23 +215,44 @@ const observer = new IntersectionObserver((entries) => {
 // Reba footer na observer
 observer.observe(footer);
 
-// Shaka form n'input
+ // Shaka form n'input
 const searchForm = document.getElementById("search-form");
 const searchInput = document.querySelector(".text-input");
+const showAllButton = document.getElementById("show-all");
+const postsContainer = document.querySelector(".main-content");
+const messageContainer = document.createElement("div");
+messageContainer.id = "message";
+messageContainer.style.display = "none";
+postsContainer.appendChild(messageContainer); // Ubutumwa bugaragare aho posts zigaragara
 
-// Fungura uburyo bwo gushakisha
-searchForm.addEventListener("submit", function(event) {
-  event.preventDefault();
-
+// Koresha auto-search igihe wandika muri searchInput
+searchInput.addEventListener("input", function() {
   const searchTerm = searchInput.value.toLowerCase();
   const posts = document.querySelectorAll(".main-content .post");
+  let found = false;
 
   posts.forEach(post => {
     const postContent = post.textContent.toLowerCase();
-    post.style.display = postContent.includes(searchTerm) ? "block" : "none";
+    if (postContent.includes(searchTerm)) {
+      post.style.display = "block";
+      found = true;
+    } else {
+      post.style.display = "none";
+    }
   });
+
+  // Erekana ubutumwa igihe post itabonetse
+  if (!found && searchTerm) {
+    messageContainer.textContent = "Mwihangane, iyo nkuru ntiturayishyiraho.";
+    messageContainer.style.display = "block";
+  } else {
+    messageContainer.style.display = "none";
+  }
 });
-    
-    
-    
- 
+
+// Erekana posts zose igihe showAll button ikanditsweho
+showAllButton.addEventListener("click", function() {
+  const posts = document.querySelectorAll(".main-content .post");
+  posts.forEach(post => post.style.display = "block");
+  messageContainer.style.display = "none";
+});
