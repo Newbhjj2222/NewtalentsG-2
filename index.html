@@ -526,6 +526,7 @@ async function loadRecentStories() {
                         <p><strong>Comments:</strong> <span class="post-comments">${commentsCount}</span></p>
                     </div>
                     <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
+                      <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
                 </div>
             `;
         }
@@ -570,6 +571,38 @@ function attachReadMoreListeners() {
       }
     });
   });
+}
+// Add event listeners after the posts are rendered
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('share')) {
+        const postId = event.target.getAttribute('data-id');
+        sharePost(postId);
+    }
+});
+
+// Function to handle sharing
+function sharePost(postId) {
+    // Get the post element using the ID
+    const postElement = document.getElementById(postId);
+    const title = postElement.querySelector('.post-title').textContent;
+    const content = postElement.querySelector('.post-content p').textContent;
+    const imageUrl = postElement.querySelector('.post-img img').src;
+
+    // Check if the Web Share API is available
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: content,
+            url: window.location.href + '#' + postId, // Use current page URL with post ID for easy sharing
+        }).then(() => {
+            console.log('Post shared successfully!');
+        }).catch((error) => {
+            console.error('Error sharing the post:', error);
+        });
+    } else {
+        // Fallback if Web Share API is not available
+        alert('Sharing is not supported on this browser.');
+    }
 }
 
 function attachBackButtonListener() {
