@@ -572,80 +572,46 @@ function attachReadMoreListeners() {
     });
   });
 }
-// Add event listeners after the posts are rendered
-document.addEventListener('click', function(event) {
+
+// Adding event listener to the document to capture clicks on the "Share" button
+document.addEventListener('click', (event) => {
     if (event.target.classList.contains('share')) {
+        // Get the post ID from the data-id attribute
         const postId = event.target.getAttribute('data-id');
-        sharePost(postId);
+        
+        // Generate the link to the post (update base URL as needed)
+        const postLink = `${window.location.origin}/post/${postId}`;
+        
+        // Call the share function
+        sharePost(postLink);
     }
 });
 
-// Function to handle sharing
-function sharePost(postId) {
-    // Retrieve the post element by its ID
-    const postElement = document.getElementById(postId);
-    
-    // Check if the post element exists
-    if (!postElement) {
-        console.error('Error: Post element not found');
-        return;
+// Share function using navigator.share with clipboard support
+async function sharePost(link) {
+    // Copy the link to the clipboard
+    try {
+        await navigator.clipboard.writeText(link);
+        console.log('Link copied to clipboard!');
+    } catch (error) {
+        console.error('Failed to copy link to clipboard:', error);
     }
 
-    // Extract relevant elements from the post
-    const headElement = postElement.querySelector('.post-title');
-    const contentElement = postElement.querySelector('.post-content p');
-    const imgElement = postElement.querySelector('.post-img img');
-
-    // Set default values if elements are not found
-    const head = headElement ? headElement.textContent : 'Untitled';
-    const content = contentElement ? contentElement.textContent : 'No content';
-    const imageUrl = imgElement ? imgElement.src : '';
-    const shareUrl = `${window.location.href}#${postId}`;
-
-    // Check if the browser supports the share feature
-    if (navigator.canShare && navigator.canShare({ files: [new File([], '')] })) {
-        // Fetch the image and prepare it for sharing
-        fetch(imageUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch image');
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                const file = new File([blob], "image.jpg", { type: blob.type });
-                
-                return navigator.share({
-                    title: head,
-                    text: content,
-                    files: [file],
-                    url: shareUrl
-                });
-            })
-            .then(() => {
-                console.log('Post shared successfully!');
-            })
-            .catch(error => {
-                console.error('Error sharing the post:', error);
-                alert('Failed to share the post.');
-            });
+    // Use Web Share API if available
+    if (navigator.share) {
+        navigator.share({
+            title: 'Check out this post!',
+            text: 'Here’s something interesting I found!',
+            url: link
+        })
+        .then(() => console.log('Post shared successfully!'))
+        .catch((error) => console.error('Error sharing post:', error));
     } else {
-        // Fallback for unsupported browsers
-        const fallbackText = `${head}\n${content}\nLink: ${shareUrl}`;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(fallbackText)
-                .then(() => {
-                    alert('Link copied to clipboard! Share it with others.');
-                })
-                .catch(error => {
-                    console.error('Error copying to clipboard:', error);
-                    alert('Sharing is not supported on this browser.');
-                });
-        } else {
-            alert('Sharing is not supported on this browser.');
-        }
+        // Fallback for browsers that don’t support navigator.share
+        alert("Sharing is not supported on this browser. The link has been copied to your clipboard: " + link);
     }
 }
+
 function attachBackButtonListener() {
   const backButton = document.querySelector('.back-button');
 
