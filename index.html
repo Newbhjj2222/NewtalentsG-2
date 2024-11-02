@@ -425,35 +425,58 @@ async function fetchSinglePost(postId) {
                     <div class="post-img">
                         <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 90%; height: auto; border-radius: 14px;" />
                     </div>
-                    <div class="comments-section" style="display: flex;           /* Gukoresha flexbox */
-    flex-direction: column; /* Kwatandukanya ibintu mu murongo umwe (column) */
-    gap: 10px;">
+                    <div class="comments-section" style="display: flex; flex-direction: column; gap: 10px;">
                         <h3>Comments:</h3>
                         <div class="comments-list" id="comments-list"></div>
                         <textarea id="comment-input" style="border-radius: 12px;  margin-top: 30px;" placeholder="Write your comment..."></textarea>
-                        <button id="submit-comment" style=" background: blue; color: white; border-radius: 12px;">Submit Comment</button>
+                        <button id="submit-comment" style="background: blue; color: white; border-radius: 12px;">Submit Comment</button>
+                        <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
                     </div>
                 </div>
             `;
 
-// Kora kuri button yo gushyira comment
-document.getElementById("submit-comment").addEventListener("click", async () => {
-    const commentInput = document.getElementById("comment-input");
-    const commentText = commentInput.value;
+            // Function y'igikorwa cyo gusangira post
+            document.querySelector('.share').addEventListener('click', async (e) => {
+                const shareUrl = `${window.location.origin}/post/${postId}`;
+                if (navigator.share) {  // Genzura niba browser ifite navigator.share
+                    try {
+                        await navigator.share({
+                            title: postData.head,
+                            text: postData.post,
+                            url: shareUrl,
+                        });
+                        alert("Post has been shared successfully!");
+                    } catch (error) {
+                        console.error("Error sharing the post:", error);
+                    }
+                } else {
+                    // Niba sharing itekanye idahari
+                    navigator.clipboard.writeText(shareUrl)
+                        .then(() => alert("Link copied to clipboard!"))
+                        .catch(error => console.error("Error copying link:", error));
+                }
+            });
 
-    const username = document.getElementById("usernameDisplay").textContent; // Fata izina ry'umukoresha
+            // Kora kuri button yo gushyira comment
+            document.getElementById("submit-comment").addEventListener("click", async () => {
+                const commentInput = document.getElementById("comment-input");
+                const commentText = commentInput.value;
 
-    // Andika comment
-    await addComment(postId, username, commentText); // Ohereza izina ry'umukoresha hamwe na comment
-    commentInput.value = ''; // Hagarika comment input
-    loadComments(postId); // Tangira kugaragaza comments nyuma yo kongeramo
-});
+                const username = document.getElementById("usernameDisplay").textContent; // Fata izina ry'umukoresha
+
+                // Andika comment
+                await addComment(postId, username, commentText); // Ohereza izina ry'umukoresha hamwe na comment
+                commentInput.value = ''; // Hagarika comment input
+                loadComments(postId); // Tangira kugaragaza comments nyuma yo kongeramo
+            });
+
+            loadComments(postId); // Kora kuri comments nyuma yo kwerekana inyandiko
         } else {
             console.log("No such document!");
             document.querySelector(".main-content").innerHTML = `<p>No post found with the specified ID.</p>`;
         }
     } catch (error) {
-        console.log("Error getting document: ", error);
+        console.error("Error fetching post:", error);
     }
 }
 
@@ -479,6 +502,9 @@ async function loadComments(postId) {
         alert("Hari ikibazo mu gihe cyo kubona comments: " + error.message); // Tangaza impamvu itabitswe
     }
 }
+
+
+
 
 // Function yo gufata posts zose hamwe na "Read More"
 async function loadRecentStories() {
@@ -526,7 +552,7 @@ async function loadRecentStories() {
                         <p><strong>Comments:</strong> <span class="post-comments">${commentsCount}</span></p>
                     </div>
                     <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
-                      <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
+                     
                 </div>
             `;
         }
@@ -573,44 +599,6 @@ function attachReadMoreListeners() {
   });
 }
 
-// Adding event listener to the document to capture clicks on the "Share" button
-document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('share')) {
-        // Get the post ID from the data-id attribute
-        const postId = event.target.getAttribute('data-id');
-        
-        // Generate the link to the post (update base URL as needed)
-        const postLink = `${window.location.origin}/post/${postId}`;
-        
-        // Call the share function
-        sharePost(postLink);
-    }
-});
-
-// Share function using navigator.share with clipboard support
-async function sharePost(link) {
-    // Copy the link to the clipboard
-    try {
-        await navigator.clipboard.writeText(link);
-        console.log('Link copied to clipboard!');
-    } catch (error) {
-        console.error('Failed to copy link to clipboard:', error);
-    }
-
-    // Use Web Share API if available
-    if (navigator.share) {
-        navigator.share({
-            title: 'Check out this post!',
-            text: 'Here’s something interesting I found!',
-            url: link
-        })
-        .then(() => console.log('Post shared successfully!'))
-        .catch((error) => console.error('Error sharing post:', error));
-    } else {
-        // Fallback for browsers that don’t support navigator.share
-        alert("Sharing is not supported on this browser. The link has been copied to your clipboard: " + link);
-    }
-}
 
 function attachBackButtonListener() {
   const backButton = document.querySelector('.back-button');
