@@ -584,15 +584,15 @@ document.addEventListener('click', function(event) {
 function sharePost(postId) {
     // Get the post element using the ID
     const postElement = document.getElementById(postId);
-    const title = postElement.querySelector('.post-title').textContent;
+    const head = postElement.querySelector('.post-title').textContent;
     const content = postElement.querySelector('.post-content p').textContent;
     const imageUrl = postElement.querySelector('.post-img img').src;
 
     // Check if the Web Share API is available
     if (navigator.share) {
         navigator.share({
-            title: title,
-            text: content,
+            title: head,
+            text: `${content}\nImage: ${imageUrl}`, // Add image URL link in the text
             url: window.location.href + '#' + postId, // Use current page URL with post ID for easy sharing
         }).then(() => {
             console.log('Post shared successfully!');
@@ -604,7 +604,6 @@ function sharePost(postId) {
         alert('Sharing is not supported on this browser.');
     }
 }
-
 function attachBackButtonListener() {
   const backButton = document.querySelector('.back-button');
 
