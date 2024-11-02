@@ -175,7 +175,7 @@
                 </div>
                 <!-- Main content -->
             <div class="main-content single">
-                <h1 class="post-title">post head</h1>
+                <h1 class="post-title">Mwihangane gato tuzane inkuru zose....</h1>
                 <div class="post-content">
                   <!---- ahazajya post --->
               <div class="post-img">
@@ -430,32 +430,9 @@ async function fetchSinglePost(postId) {
                         <div class="comments-list" id="comments-list"></div>
                         <textarea id="comment-input" style="border-radius: 12px;  margin-top: 30px;" placeholder="Write your comment..."></textarea>
                         <button id="submit-comment" style="background: blue; color: white; border-radius: 12px;">Submit Comment</button>
-                        <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
                     </div>
                 </div>
             `;
-
-            // Function y'igikorwa cyo gusangira post
-            document.querySelector('.share').addEventListener('click', async (e) => {
-                const shareUrl = `${window.location.origin}/post/${postId}`;
-                if (navigator.share) {  // Genzura niba browser ifite navigator.share
-                    try {
-                        await navigator.share({
-                            title: postData.head,
-                            text: postData.post,
-                            url: shareUrl,
-                        });
-                        alert("Post has been shared successfully!");
-                    } catch (error) {
-                        console.error("Error sharing the post:", error);
-                    }
-                } else {
-                    // Niba sharing itekanye idahari
-                    navigator.clipboard.writeText(shareUrl)
-                        .then(() => alert("Link copied to clipboard!"))
-                        .catch(error => console.error("Error copying link:", error));
-                }
-            });
 
             // Kora kuri button yo gushyira comment
             document.getElementById("submit-comment").addEventListener("click", async () => {
