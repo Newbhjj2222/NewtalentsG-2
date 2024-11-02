@@ -582,26 +582,45 @@ document.addEventListener('click', function(event) {
 
 // Function to handle sharing
 function sharePost(postId) {
-    // Get the post element using the ID
     const postElement = document.getElementById(postId);
-    const head = postElement.querySelector('.post-title').textContent;
-    const content = postElement.querySelector('.post-content p').textContent;
-    const imageUrl = postElement.querySelector('.post-img img').src;
+    
+    if (!postElement) {
+        console.error('Error: Post element not found');
+        return;
+    }
 
-    // Check if the Web Share API is available
+    const headElement = postElement.querySelector('.post-title');
+    const contentElement = postElement.querySelector('.post-content p');
+    const imgElement = postElement.querySelector('.post-img img');
+
+    const head = headElement ? headElement.textContent : 'Untitled';
+    const content = contentElement ? contentElement.textContent : 'No content';
+    const imageUrl = imgElement ? imgElement.src : '';
+    const shareUrl = window.location.href + '#' + postId;
+
     if (navigator.share) {
         navigator.share({
             title: head,
-            text: `${content}\nImage: ${imageUrl}`, // Add image URL link in the text
-            url: window.location.href + '#' + postId, // Use current page URL with post ID for easy sharing
+            text: `${content}\nImage: ${imageUrl}`,
+            url: shareUrl,
         }).then(() => {
             console.log('Post shared successfully!');
         }).catch((error) => {
             console.error('Error sharing the post:', error);
         });
     } else {
-        // Fallback if Web Share API is not available
-        alert('Sharing is not supported on this browser.');
+        // Fallback for unsupported browsers
+        const fallbackText = `${head}\n${content}\nImage: ${imageUrl}\nLink: ${shareUrl}`;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(fallbackText).then(() => {
+                alert('Link copied to clipboard! Share it with others.');
+            }).catch((error) => {
+                console.error('Error copying to clipboard:', error);
+                alert('Sharing is not supported on this browser.');
+            });
+        } else {
+            alert('Sharing is not supported on this browser.');
+        }
     }
 }
 function attachBackButtonListener() {
