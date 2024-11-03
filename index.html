@@ -561,8 +561,8 @@ async function sharePost(postId) {
             console.error("Gusangiza ntibyashobotse:", error);
         }
     } else {
-        // Niba Web Share API idashyigikiwe, gukora copy kuri clipboard
-        const shareText = `${head}\n\n${postContent}\n\nLink: ${postUrl}`; // Hindura `postTitle` ikoreshe `head`
+        // Niba Web Share API idashyigikiwe, kora copy kuri clipboard cyangwa fungura link ya Facebook
+        const shareText = `${head}\n\n${postContent}\n\nLink: ${postUrl}`;
         try {
             await navigator.clipboard.writeText(shareText);  // Copy title, content, na link kuri clipboard
             alert("Ibyo gusangiza byakozweho copy kuri clipboard!");
@@ -570,6 +570,10 @@ async function sharePost(postId) {
             console.error("Gukora copy ntibyashobotse:", error);
             alert("Igikoresho cyawe ntabwo gishyigikira Clipboard API.");
         }
+
+        // Fungura link ya Facebook
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}&quote=${encodeURIComponent(head)}`;
+        window.open(facebookShareUrl, '_blank');
     }
 }
 
