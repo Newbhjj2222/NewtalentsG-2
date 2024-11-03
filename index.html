@@ -529,13 +529,49 @@ async function loadRecentStories() {
                         <p><strong>Comments:</strong> <span class="post-comments">${commentsCount}</span></p>
                     </div>
                     <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
-                     
+                      <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
                 </div>
             `;
         }
+// Event listener ku button ya share ifite class ya "share"
+document.addEventListener("click", function(event) {
+    if (event.target.classList.contains("share")) {
+        const postId = event.target.getAttribute("data-id");
+        sharePost(postId);
+    }
+});
 
-        
+// Function yo gusangiza cyangwa gukora copy kuri clipboard
+async function sharePost(postId) {
+    // Fata amakuru ya post
+    const postElement = document.getElementById(postId);
+    const head = postElement.querySelector(".post-title").innerText;
+    const postContent = postElement.querySelector(".post-content p").innerText;
+    const postUrl = window.location.href + "#" + postId; // Link ya post yihariye
 
+    if (navigator.share) {  // Reba niba Web Share API ishigikiwe
+        try {
+            await navigator.share({
+                title: head,
+                text: `${postContent}\n\n${postUrl}`,
+                url: postUrl
+            });
+            console.log("Post yasangijwe neza!");
+        } catch (error) {
+            console.error("Gusangiza ntibyashobotse:", error);
+        }
+    } else {
+        // Niba Web Share API idashyigikiwe, gukora copy kuri clipboard
+        const shareText = `${head}\n\n${postContent}\n\nLink: ${postUrl}`; // Hindura `postTitle` ikoreshe `head`
+        try {
+            await navigator.clipboard.writeText(shareText);  // Copy title, content, na link kuri clipboard
+            alert("Ibyo gusangiza byakozweho copy kuri clipboard!");
+        } catch (error) {
+            console.error("Gukora copy ntibyashobotse:", error);
+            alert("Igikoresho cyawe ntabwo gishyigikira Clipboard API.");
+        }
+    }
+}
 
         // Shyira posts mu gice cyagenwe
         document.querySelector('.main-content.single').innerHTML = postsHtml;
