@@ -216,14 +216,23 @@
             </div> <!-- Closing sidebar -->
         </div> <!-- Closing content -->
     </div> <!-- Closing page-wrapper -->
-
-
+<div class="notification-box" id="notificationBox">
+    <ul>
+        <li><h2>ikamba ry'amarira ep18</h2>iraza kuri uyu wa kabiri</li>
+    </ul>
+</div>
 <div class="quick">
   <ul>
-    <li><a href="index.html" 
+    <li><a href="index.html">
                     <i class="fas fa-home home"></i>
                 </a></li>
-   <li><a href=""><i class="fas fa-inbox message"></i></a></li>
+  <li id="notificationItem">
+  <a href="#" id="notificationLink">
+    <i class="far fa-bell message" onclick="toggleNotifications(event)"></i>
+    <span class="badge" id="notificationCount" style="position: absolute; background: crimson; color: white; padding: 2px 5px; border-radius: 50%; font-size: 12px; cursor: pointer;
+    display: none;">3+</span>
+  </a>
+</li>
 <li><a href="#" class="back-button"><i class="fab fa-dyalog back"></i></a></li>
   </ul>
 </div>
@@ -274,6 +283,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getFirestore, collection, getDocs, doc, getDoc, addDoc, query, orderBy, limit, setDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
+import { getMessaging, onMessage, getToken } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging.js";
     // Konfigura Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
@@ -287,6 +297,7 @@
     // Tangira Firebase App
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const messaging = getMessaging(app);
 
     // Fungura collection ya 'folders'
     const foldersCollection = collection(db, 'folders');
@@ -761,9 +772,69 @@ document.getElementById('subscribeForm').addEventListener('submit', async functi
     }
 });
 
+// Function to load and display notifications in the notification box
+// Function to load and display notifications in the notification box
+async function displayNotificationsInBox() {
+  try {
+    // Reba collection ya "Notifications"
+    const notifyRef = collection(db, "Notifications");
+    const notifySnapshot = await getDocs(notifyRef);
 
+    // Fata notification box na notification count badge muri HTML
+    const notificationBox = document.querySelector("#notificationBox ul");
+    const notificationCount = document.querySelector("#notificationCount");
+    notificationBox.innerHTML = ''; // Gusiba notifications zishaje
+
+    // Umubare wa notifications
+    const notificationCountValue = notifySnapshot.docs.length;
+
+    // Reba niba hari notifications zishya kandi zitarasomwa
+    if (notificationCountValue > 0 && !localStorage.getItem("notificationsRead")) {
+      // Set notification count value
+      notificationCount.innerText = notificationCountValue;
+      notificationCount.style.display = "inline"; // Yerekana badge ya count
+    } else {
+      notificationCount.style.display = "none"; // Niba nta notifications cyangwa zarasomwe, yihishe
+    }
+
+    // Gushyira notifications nshya muri notification box
+    notifySnapshot.docs.forEach(doc => {
+      const notification = doc.data();
+      const createdAtFormatted = notification.createdAt ? new Date(notification.createdAt).toLocaleString() : "";
+      
+      const listItem = document.createElement("li");
+      listItem.innerHTML = `
+        <h2>${notification.name}</h2>
+        <p>${notification.info}</p>
+        <small>${createdAtFormatted}</small>
+      `;
+      notificationBox.appendChild(listItem);
+    });
+
+  } catch (error) {
+    console.error("Error fetching notifications: ", error);
+    alert("Error fetching notifications: " + error.message);
+  }
+}
+
+// Function to toggle visibility of notifications box and mark as read
+function toggleNotifications(event) {
+  event.preventDefault();
+  const notificationBox = document.querySelector("#notificationBox");
+
+  // Toggle notification box visibility
+  notificationBox.style.display = notificationBox.style.display === "none" || notificationBox.style.display === "" ? "block" : "none";
+
+  // Mark notifications as read and hide badge if notifications are shown
+  if (notificationBox.style.display === "block") {
+    localStorage.setItem("notificationsRead", "true"); // Bika ko zasomwe muri localStorage
+    document.querySelector("#notificationCount").style.display = "none"; // Hide badge
+  }
+}
+
+// Call the function to display notifications and set count
+displayNotificationsInBox();
 </script>
-
 
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
