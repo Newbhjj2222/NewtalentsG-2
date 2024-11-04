@@ -399,8 +399,8 @@ text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Ibi bizafasha ko amagambo arusha
 
 .post-slider .next {
   right: 26px;
-}
 
+}
 .post-slider .prev {
   left: 26px;
 }
@@ -751,6 +751,50 @@ footer {
         }
 
         .dropdown-content a:hover {background-color: #f1f1f1;}
+        
+         .notification-icon .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 6px;
+            font-size: 12px;
+        }
+
+        /* Style ya notification box */
+        .notification-box {
+           display: none;/* By default irahishwe */
+            position: fixed;
+            bottom: 85px;
+            right: 18px;
+            width: 300px;
+            max-height: 200px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 22px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 6.2);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .notification-box ul {
+            list-style: none;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .notification-box ul li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .notification-box ul li:last-child {
+            border-bottom: none;
+        }
+        
+        
 
 /* Media Queries */
 @media only screen and (max-width: 934px) {
@@ -953,6 +997,8 @@ footer {
   padding: 10px;
   font-size: 1.3rem;
 }
+ 
+  
 
 @media only screen and (max-width: 600px) {
   .content .post-content{
