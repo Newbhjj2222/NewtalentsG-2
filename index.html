@@ -652,32 +652,7 @@ function attachBackButtonListener() {
   }
 }
 
-// Function yo gukurikirana igihe footer igeze mu ishusho (viewport)
-function observeFooter() {
-  const footer = document.querySelector('.footer');
-  const quickElements = document.querySelectorAll('.quick');
 
-  // Kuraho observer mbere yo kongera umwanya
-  if (observer) {
-    observer.disconnect();
-  }
-
-  if (footer && quickElements.length) {
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Bihita bikurwaho igihe footer igeze muri viewport
-          quickElements.forEach(element => element.style.display = 'none');
-        } else {
-          // Bigarurwa igihe footer itari muri viewport
-          quickElements.forEach(element => element.style.display = '');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    observer.observe(footer);
-  }
-}
 
 // Kwita kuri 'read-more' buttons bwa mbere
 attachReadMoreListeners();
@@ -834,6 +809,29 @@ function toggleNotifications(event) {
 
 // Call the function to display notifications and set count
 displayNotificationsInBox();
+
+
+// Fata ibintu byose biri muri class ya 'quick'
+const quickElements = document.querySelectorAll('.quick');
+
+// Fungura footer
+const footer = document.querySelector('footer');
+
+// Fungura observer ikurikirana igihe footer igeze cyangwa ivuye mu ishusho
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Igihe footer igeze mu ishusho, hisha ibintu bya 'quick'
+            quickElements.forEach(element => element.style.display = 'none');
+        } else {
+            // Igihe footer ivuye mu ishusho, garura ibintu bya 'quick'
+            quickElements.forEach(element => element.style.display = '');
+        }
+    });
+});
+
+// Tangira gukurikirana footer
+observer.observe(footer);
 </script>
 
 
