@@ -145,14 +145,19 @@
         color:blue;
     } 
     .messageDiv{
-        background-color:hsl(327,90%,28%);
-        color:white;
-        padding:10px 20px;
-        margin:10px;
-        border-radius: 5px;
-        font-size:1rem;
-        opacity:0;
-        animation:fadeOut 7s forwards;
+      font-size: 9px;
+      padding: 5px;
+      height: auto;
+      width: 100%;
+      color: white;
+      background: red;
+      border-radius: 10px;
+      border: 1px solid grey;
+     
+    }
+    #signInMessage, #signUpMessage{
+      margin-bottom: 34px;
+      display: none;
     }
     .role{
       height: 30px;
@@ -174,7 +179,7 @@
   <div class="container" id="signup" style="display:none;">
     <h1 class="form-title">Register</h1>
     <form id="registerForm">
-        <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
+        <div id="signUpMessage" class="messageDiv"></div>
         <div class="input-group">
             <i class="fas fa-user"></i>
             <input type="text" id="fName" placeholder="Full Name" required>
@@ -197,7 +202,7 @@
         </div>
         <div class="input-group">
             <i class="fab fa-whatsapp"></i>
-            <input type="text" id="rWhatsAppNumber" placeholder="WhatsApp Number" required>
+            <input type="text" id="rWhatsAppNumber" placeholder="WhatsApp Number">
             <label for="rWhatsAppNumber">WhatsApp Number</label>
         </div>
         <div class="input-group">
@@ -214,10 +219,6 @@
         <button class="btn" type="submit">Sign Up</button>
     </form>
     <p class="or">----------or--------</p>
-    <div class="icons">
-        <i class="fab fa-google"></i>
-        <i class="fab fa-facebook"></i>
-    </div>
     <div class="links">
         <p>Already Have Account?</p>
         <button id="signInButton">Sign In</button>
@@ -228,7 +229,7 @@
   <div class="container" id="signIn">
     <h1 class="form-title">Sign In</h1>
     <form id="loginForm">
-        <div id="signInMessage" class="messageDiv" style="display:none;"></div>
+        <div id="signInMessage" class="messageDiv"></div>
         <div class="input-group">
             <i class="fas fa-envelope"></i>
             <input type="email" id="email" placeholder="Email" required>
@@ -243,10 +244,7 @@
         <button class="btn" type="submit">Sign In</button>
     </form>
     <p class="or">----------or--------</p>
-    <div class="icons">
-        <i class="fab fa-google"></i>
-        <i class="fab fa-facebook"></i>
-    </div>
+
     <div class="links">
         <p>Don't have an account yet?</p>
         <button id="signUpButton">Sign Up</button>
@@ -272,113 +270,112 @@
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
+    const auth = getAuth(app);
     const db = getFirestore(app);
 
     document.addEventListener("DOMContentLoaded", () => {
-  // Toggle between Sign In and Sign Up forms
-  document.getElementById("signUpButton").addEventListener("click", () => {
-    document.getElementById("signup").style.display = 'block';
-    document.getElementById("signIn").style.display = 'none';
-  });
-  document.getElementById("signInButton").addEventListener("click", () => {
-    document.getElementById("signup").style.display = 'none';
-    document.getElementById("signIn").style.display = 'block';
-  });
-
-  // Handle Sign-Up
-  document.getElementById("registerForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("rEmail").value;
-    const password = document.getElementById("rPassword").value;
-    const fName = document.getElementById("fName").value;
-    const phoneNumber = document.getElementById("rPhoneNumber").value;
-    const whatsAppNumber = document.getElementById("rWhatsAppNumber").value;
-    const role = document.getElementById("role").value;
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Access 'userdate' document
-      const userdateRef = doc(db, "userdate", "data");
-
-      // Check if the document exists
-      const userdateSnapshot = await getDoc(userdateRef);
-
-      if (userdateSnapshot.exists()) {
-        // If it exists, update it with the new user's information
-        await updateDoc(userdateRef, {
-                    [user.uid]: {
-            fName,
-            phoneNumber,
-            whatsAppNumber,
-            role,
-            email,
-            createdAt: new Date().toISOString()
-          }
+        // Toggle between Sign In and Sign Up forms
+        document.getElementById("signUpButton").addEventListener("click", () => {
+            document.getElementById("signup").style.display = 'block';
+            document.getElementById("signIn").style.display = 'none';
         });
-      } else {
-        // If it doesn't exist, create a new document with the user's ID and data
-        await setDoc(userdateRef, {
-                    [user.uid]: {
-            fName,
-            phoneNumber,
-            whatsAppNumber,
-            role,
-            email,
-            createdAt: new Date().toISOString()
-          }
+        document.getElementById("signInButton").addEventListener("click", () => {
+            document.getElementById("signup").style.display = 'none';
+            document.getElementById("signIn").style.display = 'block';
         });
-      }
 
-      // Save user's first name in localStorage
-      localStorage.setItem('username', fName);
+        // Handle Sign-Up
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("rEmail").value;
+            const password = document.getElementById("rPassword").value;
+            const fName = document.getElementById("fName").value;
+            const phoneNumber = document.getElementById("rPhoneNumber").value;
+            const whatsAppNumber = document.getElementById("rWhatsAppNumber").value;
+            const role = document.getElementById("role").value;
 
-      alert("User registered successfully!");
-      document.getElementById("signup").style.display = "none";
-      document.getElementById("signIn").style.display = "block";
-    } catch (error) {
-      console.error("Error signing up:", error.message);
-      document.getElementById("signUpMessage").textContent = error.message;
-      document.getElementById("signUpMessage").style.display = 'block';
-    }
-  });
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
-  // Handle Sign-In
-  document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+                // Access 'userdate' document
+                const userdateRef = doc(db, "userdate", "data");
+                const userdateSnapshot = await getDoc(userdateRef);
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+                const userData = {
+                    fName,
+                    phoneNumber,
+                    whatsAppNumber,
+                    role,
+                    email,
+                    createdAt: new Date().toISOString()
+                };
 
-      // Access 'userdate' document
-      const userdateRef = doc(db, "userdate", "data");
-      const userdateSnapshot = await getDoc(userdateRef);
+                if (userdateSnapshot.exists()) {
+                    // Update existing document with new user's information
+                    await updateDoc(userdateRef, { [user.uid]: userData });
+                } else {
+                    // Create a new document with user's data
+                    await setDoc(userdateRef, { [user.uid]: userData });
+                }
 
-      if (userdateSnapshot.exists()) {
-        const userData = userdateSnapshot.data()[user.uid];
-        const fName = userData.fName;
+                // Save user's first name in localStorage
+                localStorage.setItem('username', fName);
 
-        // Save user's first name in localStorage
-        localStorage.setItem('username', fName);
-      }
+                alert("User registered successfully!");
+                document.getElementById("signup").style.display = "none";
+                document.getElementById("signIn").style.display = "block";
+            } catch (error) {
+                console.error("Error signing up:", error.message);
+                document.getElementById("signUpMessage").textContent = error.message;
+                document.getElementById("signUpMessage").style.display = 'block';
+            }
+            
+        });
 
-      alert("Signed in successfully!");
-      window.location.href = "index.html";
-    } catch (error) {
-      console.error("Error signing in:", error.message);
-      document.getElementById("signInMessage").textContent = error.message;
-      document.getElementById("signInMessage").style.display = 'block';
-    }
-  });
-});
+        // Handle Sign-In
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-    
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
+                // Access 'userdate' document
+                const userdateRef = doc(db, "userdate", "data");
+                const userdateSnapshot = await getDoc(userdateRef);
+
+                if (userdateSnapshot.exists()) {
+                    const userData = userdateSnapshot.data()[user.uid];
+                    const fName = userData?.fName || "";
+
+                    // Save user's first name in localStorage
+                    localStorage.setItem('username', fName);
+                }
+
+                alert("Signed in successfully!");
+                window.location.href = "index.html";
+            } catch (error) {
+                console.error("Error signing in:", error.message);
+
+                // Show error message in the appropriate language
+                const messageElement = document.getElementById("signInMessage");
+                if (error.code === 'auth/wrong-rpassword') {
+                    messageElement.textContent = "Password si yo. Nyamuneka gerageza kongera!";
+                } else if (error.code === 'auth/user-not-found') {
+                    messageElement.textContent = "Email ntabwo yabonetse. Nyamuneka reba neza cyangwa wandike nshya.";
+                } else {
+    messageElement.textContent = "Wrong password: " + error.message;
+    messageElement.style.color = "white";
+    messageElement.style.background = "red";
+}
+
+                messageElement.style.display = 'block'; // Ensure the message is visible
+            }
+        });
+    });
 </script>
  
   
