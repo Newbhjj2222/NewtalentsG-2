@@ -214,3 +214,24 @@ showAllButton.addEventListener("click", function() {
     document.addEventListener("click", function() {
         document.getElementById("notificationBox").style.display = "none";
     });
+// Fata ibintu byose biri muri class ya 'quick'
+const quickElements = document.querySelectorAll('.quick');
+
+// Fungura footer
+const footer = document.querySelector('footer');
+
+// Fungura observer ikurikirana igihe footer igeze cyangwa ivuye mu ishusho
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Igihe footer igeze mu ishusho, hisha ibintu bya 'quick'
+            quickElements.forEach(element => element.style.display = 'none');
+        } else {
+            // Igihe footer ivuye mu ishusho, garura ibintu bya 'quick'
+            quickElements.forEach(element => element.style.display = '');
+        }
+    });
+});
+
+// Tangira gukurikirana footer
+observer.observe(footer);
