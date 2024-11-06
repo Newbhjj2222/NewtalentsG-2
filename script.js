@@ -154,32 +154,7 @@ mobileMenu.addEventListener('click', () => {
   nav.classList.toggle('show');
 });
 
-// Search functionality with debounce
-let debounceTimer;
-searchInput.addEventListener("input", function() {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
-    const searchTerm = searchInput.value.toLowerCase();
-    const posts = document.querySelectorAll(".main-content .post");
-    let found = false;
 
-    posts.forEach(post => {
-      const postContent = post.textContent.toLowerCase();
-      post.style.display = postContent.includes(searchTerm) ? "block" : "none";
-      if (postContent.includes(searchTerm)) found = true;
-    });
-
-    messageContainer.textContent = found || !searchTerm ? "" : "Mwihangane, iyo nkuru ntiturayishyiraho.";
-    messageContainer.style.display = found || !searchTerm ? "none" : "block";
-  }, 300);
-});
-
-// Show all posts
-showAllButton.addEventListener("click", function() {
-  const posts = document.querySelectorAll(".main-content .post");
-  posts.forEach(post => post.style.display = "block");
-  messageContainer.style.display = "none";
-});
 
 // Toggle notifications
  // Fungura cyangwa uhishe notifications
@@ -235,3 +210,20 @@ const observer = new IntersectionObserver((entries) => {
 
 // Tangira gukurikirana footer
 observer.observe(footer);
+
+
+function searchPosts() {
+    // Retrieve search term and convert to lowercase
+    let searchTerm = document.querySelector('input[name="search-term"]').value.toLowerCase();
+    // Get all posts in main-content
+    let posts = document.querySelectorAll('.main-content .post');
+
+    posts.forEach(post => {
+        // Check if post text includes search term
+        if (post.textContent.toLowerCase().includes(searchTerm)) {
+            post.style.display = ""; // Show post if match found
+        } else {
+            post.style.display = "none"; // Hide post if no match
+        }
+    });
+}
