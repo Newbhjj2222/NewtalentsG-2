@@ -166,13 +166,12 @@
           
             <div class="maen-content">
                 <h7 class="recent-stories-title">Recent Stories</h7>
-                <div class="section-search search">
-                    <h2 class="section-title">Search</h2>
-                  <form action="homepage.html" method="post" id="search-form">
-        <input type="text" name="search-term" class="text-input" placeholder="Search stories...">
-    </form>
-             
-                </div>
+               <div class="section-search search">
+  <h2 class="section-title">Search</h2>
+  <form action="homepage.html" method="post" id="search-form" onsubmit="return false;">
+    <input type="text" name="search-term" class="text-input" placeholder="Search stories..." oninput="searchPosts()">
+  </form>
+</div>
                 <!-- Main content -->
             <div class="main-content single">
                 <h1 class="post-title">Mwihangane gato tuzane inkuru zose....</h1>
@@ -832,6 +831,10 @@ const observer = new IntersectionObserver((entries) => {
 
 // Tangira gukurikirana footer
 observer.observe(footer);
+
+
+
+
 </script>
 
 
