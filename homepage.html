@@ -239,7 +239,7 @@
     <footer>
         <div class="footer-container">
             <div class="footer-section a">
-                <a href="index.html" class="footer-link">
+                <a href="homepage.html" class="footer-link">
                     <i class="fas fa-home"></i> Home
                 </a>
                 <a href="#" class="footer-link">
@@ -430,7 +430,7 @@ async function fetchSinglePost(postId) {
                 <div class="post" id="${postId}">
                     <h1 class="post-title">${postData.head || 'Untitled Post'}</h1>
                     <div class="post-content" style="line-height: 1.6; margin-bottom: 16px; gap: 12px;">
-                        <p>${postData.post || 'No content available.'}</p>
+                       <p>${postData.post || postData.story || 'No content available.'}</p>
                     </div>
                     <div class="post-img">
                         <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 90%; height: auto; border-radius: 14px;" />
