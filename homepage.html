@@ -517,8 +517,7 @@ async function loadRecentStories() {
 
             // Irinde ibishobora gutera HTML injection, ugire data yawe neza
             const sanitizedHead = sanitizeHtml(postData.head);
-            const sanitizedPost = sanitizeHtml(postData.post);
-
+            const sanitizedPost = sanitizeHtml(postData.post || postData.story);
             // Fungura collection ya comments, urebe umubare wa comments kuri iyi post
             const commentsQuery = query(collection(postsCollection, postId, 'comments'));
             const commentsSnapshot = await getDocs(commentsQuery);
