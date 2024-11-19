@@ -361,11 +361,101 @@ header .menu-toggle {
   font-size: 14px;
   color: grey;
 }
+.screen{
+  display: inline-block;
+  margin-top: 130px;
+  height: 90px;
+  width: 100%;
+  background: #008489;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  
+}
+.logo img {
+  width: 20px;
+  height: 20px;
+  margin-left: 2px;
+  top: 0;
+  position: sticky;
+}
+.tv {
+  margin-left: 40px;
+  margin-right: 40px;
+  height: 100%;
+  text-align: center;
+  border-radius: 12px;
+  background: black;
+  color: inherit;
+  border: 1px solid gray;
+  overflow: hidden; /* Igaragaza byiza ibyo birimo */
+}
+.tv p{
+  gap: 3px;
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  padding: 12px;
+  padding-left: 25px;
+  padding-right: 25px;
+  transform: rotate(12deg);
+  
+}
+.tv p img{
+  position: relative;
+  width: 20%;
+  height: 20%;
+  margin-left: 0px;
+}
+.tv p video{
+  width: 90%;
+  height: auto;
+}
+@keyframes tv {
+  0% {
+    transform: translateZ(100%); /* Tangira hanze ya screen ibumoso */
+    opacity: 0;
+  }
+  20% {
+    transform: translateZ(0); /* Yinjira neza muri screen */
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-50%); /* Kwikuramo bigenda gahoro */
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%); /* Ikurwamo burundu ibumoso */
+    opacity: 0;
+  }
+}
 
+.tv p {
+  animation: tv 20s forwards infinite;
+  opacity: 0;
+}
+
+.tv p:nth-child(1) {
+  color: white;
+  animation-delay: 0s; /* Umurongo wa mbere uhita ugaragara */
+}
+
+.tv p:nth-child(2) {
+  color: goldenrod;
+  animation-delay: 1s; /* Umurongo wa kabiri ugaragara nyuma y'isogonda rimwe */
+}
+
+.tv p:nth-child(3) {
+  color: green;
+  animation-delay: 2s; /* Umurongo wa gatatu nyuma y'amasegonda abiri */
+}
+
+/* Ongeraho andi mirongo ukoresheje .tv p:nth-child(n) ukurikije uko wifuza */
 .page-wrapper {
-  margin-top: 45px;
+  margin-top: 30px;
   min-height: 100%;
-  padding-top: 60px;
+  padding-top: 20px;
 }
 .maen-content h7{
   width: 100%;
@@ -755,12 +845,13 @@ footer {
          .notification-icon .badge {
             position: absolute;
             top: -8px;
-            right: -8px;
             background-color: red;
             color: white;
             border-radius: 50%;
             padding: 4px 6px;
             font-size: 12px;
+            display: none;
+            border: 1px solid darkred;
         }
 
         /* Style ya notification box */
@@ -794,7 +885,130 @@ footer {
             border-bottom: none;
         }
         
-        
+        #create-post{
+  margin-left: 40px;
+  font-size: 22px;
+  width: 12px;
+  height: 12px;
+  border-radius: 24px;
+  cursor: pointer;
+  border: 3px solid grey;
+}
+#notificationLink{
+  margin-left: 0;
+  display: inline-block;
+ 
+}
+#notificationItem{
+  width: 26px;
+  margin-left: 30px;
+  
+}
+#noty{
+  margin-left: 0;
+  position: 0;
+  
+}
+.editor-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      display: none;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+     
+    }
+.form-container{
+  width: 83%;
+  height: 430px;
+  margin-left: 35px;
+  margin-bottom: 15px;
+  padding: 20px;
+  background: darkgray;
+  border-radius: 23px;
+  display: none;
+  box-shadow: 62px;
+  overflow: hidden;
+  position: fixed;
+  bottom: 85px;
+  z-index: 1000;
+}
+#stories{
+  margin-top: 10px;
+  width: 99%;
+  height: 90%;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid grey;
+}
+.form-group{
+  padding: 9px;
+}
+#head{
+  height: 32px;
+ border-radius: 23px;
+ padding: 12px;
+ margin-top: 6px;
+  
+}
+#story{
+  margin-top: 6px;
+  border-radius: 23px;
+  padding: 8px;
+}
+#cover{
+  margin-top: 3px;
+  margin-bottom: 6px;
+  padding: 12px;
+  
+}
+#image{
+  margin-top: 6px;
+  width: 60%;
+ 
+}
+#folderSelector{
+  margin-left: 10px;
+  border-radius: 12px;
+}
+#button{
+  margin-top: 10px;
+  margin-left: 45px;
+  margin-bottom: 12px;
+  background: seagreen;
+  border-radius: 12px;
+  color: white;
+  transition: background 0.3s ease;
+  
+}
+/* Hover effect */
+#button:hover {
+  color: #3498db; /* Uhindura text color kugirango igaragarire ku loading color */
+  background: darkslategray; /* Background color igaragara imbere ya loading effect */
+}
+
+/* Loading effect ya hover */
+#button::before {
+  content: '';
+  top: 0;
+  left: -100%; /* Gutangirira hanze ya button */
+  width: 100%;
+  height: 100%;
+  background: #3498db; /* Loading color */
+  transition: left 0.5s ease; /* Speed ya loading */
+  
+}
+
+#button:hover::before {
+  left: 0; /* Loading yinjira muri button */
+}
+
+#button:hover {
+  color: springgreen; /* Text irasubira kuba white nyuma ya hover */
+}
+
+
+
+
 
 /* Media Queries */
 @media only screen and (max-width: 934px) {
@@ -827,6 +1041,7 @@ footer {
   padding: 10px;
 }
 }
+
 @media only screen and (max-width: 770px) {
   header{
     position: fixed;
