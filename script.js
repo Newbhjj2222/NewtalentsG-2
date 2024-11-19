@@ -84,6 +84,7 @@ function applyColor(colorClass) {
   document.querySelector('footer').style.backgroundColor = primaryColor;
   document.querySelector('.theme').style.backgroundColor = primaryColor;
   document.querySelector('.quick').style.backgroundColor = primaryColor;
+document.querySelector('.screen').style.backgroundColor = primaryColor;
 }
 
 // Load saved color
@@ -227,3 +228,44 @@ function searchPosts() {
         }
     });
 }
+document.addEventListener("DOMContentLoaded", function() {
+    var video = document.getElementById("myVideo");
+    video.muted = true; // Gushyiraho "muted" kugira ngo ikine automatic
+    video.play();
+  });
+  
+  
+  
+  // Simulated user role
+        function togglePostForm(event) {
+    event.stopPropagation(); // Bituma idahita ifunga ako kanya
+
+    var formContainer = document.getElementById("form-container");
+
+    // Kureba niba user afite role ya writer
+    var userRole = localStorage.getItem("role");
+    if (userRole === "writer") {
+        // Fungura cyangwa uhishe form container
+        if (formContainer.style.display === "none" || formContainer.style.display === "") {
+            formContainer.style.display = "block";
+        } else {
+            formContainer.style.display = "none";
+        }
+    } else {
+        alert("ntiwemerewe kwandika inkuru kuri uru rubuga, kuko utari umwanditsi. iyandikishe cyangwa winjire muri account yawe ukoresha nk'umwanditsi.");
+    }
+}
+
+// Fungura igihe ukanda kuri button
+document.getElementById("create-post").addEventListener("click", togglePostForm);
+
+// Funga igihe ukanda ahandi hose
+document.addEventListener("click", function () {
+    var formContainer = document.getElementById("form-container");
+    formContainer.style.display = "none";
+});
+
+// Igihe ukanda kuri container idafunga
+document.getElementById("form-container").addEventListener("click", function (event) {
+    event.stopPropagation();
+});
