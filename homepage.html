@@ -106,6 +106,24 @@
        </div>
          
      </div>
+     <div class="screen">
+         <div class="logo">
+         <img src="/blog/new/pro11.png">
+       </div>
+      <div class="tv">
+            <p id="content">
+            
+            urakaze neza mu nkuru zuzuye ubutumwa bwagufasha kuba muri ubu buzima
+             📚</p>
+           
+            
+  
+</div>
+     
+     </div>
+     
+     
+     
 
     <div class="page-wrapper">
         <div class="post-slider">
@@ -217,17 +235,54 @@
     </div> <!-- Closing page-wrapper -->
 <div class="notification-box" id="notificationBox">
     <ul>
-        <li><h2>ikamba ry'amarira ep18</h2>iraza kuri uyu wa kabiri</li>
+        <li><h2>NewtalentsG</h2>notifications</li>
     </ul>
 </div>
+
+
+  <div class="form-container" id="form-container">
+        <h2>WRITE YOUR STORY</h2>
+       <form id="stories" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="head" name="name" required placeholder="Title of your story...">
+    </div>
+
+    <div class="form-group">
+        <label for="post_content">Description:</label>
+        <textarea id="story" name="post_content" placeholder="Write your story..."></textarea>
+    </div>
+
+    <div class="form-group" id="cover">
+        <label for="post_image">Cover picture:</label>
+        <input type="file" id="image" name="post_image" accept="image/*" required>
+    </div>
+
+    <select id="folderSelector">
+        <option value="">-- Choose a folder --</option>
+        <!-- Add options dynamically if needed -->
+    </select>
+
+    <div class="form-group">
+        <button type="submit" id="button">Publishing Post</button>
+    </div>
+</form>
+    </div>
+        </div>
+
+
+
 <div class="quick">
   <ul>
-    <li><a href="index.html">
+    <li><a href="homepage.html">
                     <i class="fas fa-home home"></i>
                 </a></li>
+                <li><a href="#" id="create-post">
+   <i class="fas fa-plus"
+   onclick="togglePostForm(event)" id="writer"></i></a></li>
   <li id="notificationItem">
   <a href="#" id="notificationLink">
-    <i class="far fa-bell message" onclick="toggleNotifications(event)"></i>
+    <i class="far fa-bell message" onclick="toggleNotifications(event)" id="noty"></i>
     <span class="badge" id="notificationCount" style="position: absolute; background: crimson; color: white; padding: 2px 5px; border-radius: 50%; font-size: 12px; cursor: pointer;
     display: none;">3+</span>
   </a>
@@ -283,6 +338,7 @@
     import { getFirestore, collection, getDocs, doc, getDoc, addDoc, query, orderBy, limit, setDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 import { getMessaging, onMessage, getToken } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging.js";
+import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
     // Konfigura Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
@@ -297,6 +353,7 @@ import { getMessaging, onMessage, getToken } from "https://www.gstatic.com/fireb
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const messaging = getMessaging(app);
+    const storage = getStorage(app);
 
     // Fungura collection ya 'folders'
     const foldersCollection = collection(db, 'folders');
@@ -832,7 +889,105 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(footer);
 
 
+async function fetchScreensData() {
+    const tvElement = document.getElementById("content");
 
+    if (!tvElement) {
+        console.error("Element with id 'content' not found in the document.");
+        return; // Stop function if element does not exist
+    }
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "screens")); // Await inside async function
+        let content = "";
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data(); // Get document data
+            
+            // Extract content, excluding date and ID
+            const contentField = data.content || "No content found";
+
+            // Append the content without ID and date
+            content += `${contentField}<br><hr>`; // Add horizontal line to separate each entry
+        });
+
+        tvElement.innerHTML = content || "New talents stories group, amamaza aha. twandikire kuri whatsapp 0722319367";
+    } catch (error) {
+        tvElement.innerHTML = "Error fetching data: " + error.message;
+    }
+}
+
+// Call the function to load data
+fetchScreensData();
+
+
+async function fetchFolders() {
+       const folderSelector = document.getElementById('folderSelector');
+       try {
+           const querySnapshot = await getDocs(collection(db, "folders"));
+           querySnapshot.forEach((doc) => {
+               const folderData = doc.data();
+               const option = document.createElement("option");
+               option.value = doc.id;
+               option.textContent = folderData.title;
+               folderSelector.appendChild(option);
+           });
+       } catch (error) {
+           console.error("Error fetching folders: ", error);
+       }
+   }
+
+   fetchFolders();
+
+   //* post //
+   
+async function handlePostSubmit(event) {
+    event.preventDefault();
+    const title = document.getElementById('head').value;
+    const content = document.getElementById('story').value;
+    const file = document.getElementById('image').files[0];
+    const selectedFolder = document.getElementById('folderSelector').value;  // Folder watoranyije
+
+    // Fata izina rya author muri localStorage
+    const author = localStorage.getItem("username");  // Izina rya author ryabitse muri localStorage
+    // Genzura niba ifoto yatowe
+    if (!file) {
+        alert('Please select an image file.');
+        return;
+    }
+
+    // Genzura niba umutwe n'ibisobanuro byuzuye
+    
+    try {
+        // Bika ifoto muri Firebase Storage
+        const storageRef = ref(storage, `amafoto/${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        console.log('Amafoto abitswe neza!');
+        
+        // Fata URL y'aho amafoto abitswe
+        const url = await getDownloadURL(storageRef);
+
+        // Bika URL muri Firestore
+        const newPostsRef = doc(collection(db, "posts"));
+        await setDoc(newPostsRef, {
+            head: title,
+            story: content,
+            imageUrl: url, // Bika URL y'ifoto muri database
+            folderId: selectedFolder,  // Fata folder watoranyije
+            author: author,  // Bika izina rya author
+            createdAt: new Date().toISOString()
+        });
+
+        alert('Post saved successfully!');
+document.getElementById('stories').reset();
+window.location.href = 'homepage.html'; // Reba niba "posts" ari izina ry'ikibuga
+        displayPosts(); // Fungura uburyo bwo kugaragaza izo posts
+    } catch (error) {
+        console.error('Error saving post: ', error);
+        alert('Error saving post: ' + error.message);
+    }
+}
+document.getElementById("stories").addEventListener("submit", handlePostSubmit);
 
 </script>
 
