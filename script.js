@@ -242,17 +242,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var formContainer = document.getElementById("form-container");
 
-    // Kureba niba user afite role ya writer
-    var userRole = localStorage.getItem("role");
-    if (userRole === "writer") {
-        // Fungura cyangwa uhishe form container
-        if (formContainer.style.display === "none" || formContainer.style.display === "") {
-            formContainer.style.display = "block";
-        } else {
-            formContainer.style.display = "none";
-        }
+    // Fungura cyangwa uhishe form container
+    if (formContainer.style.display === "none" || formContainer.style.display === "") {
+        formContainer.style.display = "block";
     } else {
-        alert("ntiwemerewe kwandika inkuru kuri uru rubuga, kuko utari umwanditsi. iyandikishe cyangwa winjire muri account yawe ukoresha nk'umwanditsi.");
+        formContainer.style.display = "none";
     }
 }
 
