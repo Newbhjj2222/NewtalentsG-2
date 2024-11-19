@@ -256,7 +256,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-
+import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
     // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
@@ -272,7 +272,8 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
+const storage = getStorage(app);
+   // Baza Storage na Firestore
     document.addEventListener("DOMContentLoaded", () => {
         // Toggle between Sign In and Sign Up forms
         document.getElementById("signUpButton").addEventListener("click", () => {
@@ -285,53 +286,65 @@
         });
 
         // Handle Sign-Up
-        document.getElementById("registerForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const email = document.getElementById("rEmail").value;
-            const password = document.getElementById("rPassword").value;
-            const fName = document.getElementById("fName").value;
-            const phoneNumber = document.getElementById("rPhoneNumber").value;
-            const whatsAppNumber = document.getElementById("rWhatsAppNumber").value;
-            const role = document.getElementById("role").value;
+        // Register form submit event
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("rEmail").value;
+    const password = document.getElementById("rPassword").value;
+    const fName = document.getElementById("fName").value;
+    const phoneNumber = document.getElementById("rPhoneNumber").value;
+    const whatsAppNumber = document.getElementById("rWhatsAppNumber").value;
+    const role = document.getElementById("role").value;
+    const profilePicture = document.getElementById("profilePicture").files[0]; // Get the file
 
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
+    try {
+        // Create user with email and password
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-                // Access 'userdate' document
-                const userdateRef = doc(db, "userdate", "data");
-                const userdateSnapshot = await getDoc(userdateRef);
+        // Upload profile picture to Firebase Storage
+        let profilePictureURL = "";
+        if (profilePicture) {
+            const storageRef = ref(storage, `profilePictures/${user.uid}`);
+            await uploadBytes(storageRef, profilePicture);
+            profilePictureURL = await getDownloadURL(storageRef); // Get the download URL
+        }
 
-                const userData = {
-                    fName,
-                    phoneNumber,
-                    whatsAppNumber,
-                    role,
-                    email,
-                    createdAt: new Date().toISOString()
-                };
+        // Prepare user data
+        const userData = {
+            fName,
+            phoneNumber,
+            whatsAppNumber,
+            role,
+            email,
+            profilePictureURL, // Add profile picture URL to the data
+            createdAt: new Date().toISOString()
+        };
 
-                if (userdateSnapshot.exists()) {
-                    // Update existing document with new user's information
-                    await updateDoc(userdateRef, { [user.uid]: userData });
-                } else {
-                    // Create a new document with user's data
-                    await setDoc(userdateRef, { [user.uid]: userData });
-                }
+        // Access 'userdate' document in Firestore
+        const userdateRef = doc(db, "userdate", "data");
+        const userdateSnapshot = await getDoc(userdateRef);
 
-                // Save user's first name in localStorage
-                localStorage.setItem('username', fName);
+        if (userdateSnapshot.exists()) {
+            // Update existing document with new user's information
+            await updateDoc(userdateRef, { [user.uid]: userData });
+        } else {
+            // Create a new document with user's data
+            await setDoc(userdateRef, { [user.uid]: userData });
+        }
 
-                alert("User registered successfully!");
-                document.getElementById("signup").style.display = "none";
-                document.getElementById("signIn").style.display = "block";
-            } catch (error) {
-                console.error("Error signing up:", error.message);
-                document.getElementById("signUpMessage").textContent = error.message;
-                document.getElementById("signUpMessage").style.display = 'block';
-            }
-            
-        });
+        // Save user's first name in localStorage
+        localStorage.setItem('username', fName);
+
+        alert("User registered successfully!");
+        document.getElementById("signup").style.display = "none";
+        document.getElementById("signIn").style.display = "block";
+    } catch (error) {
+        console.error("Error signing up:", error.message);
+        document.getElementById("signUpMessage").textContent = error.message;
+        document.getElementById("signUpMessage").style.display = 'block';
+    }
+});
 
         // Handle Sign-In
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -376,6 +389,7 @@
             }
         });
     });
+</script>
 </script>
  
   
