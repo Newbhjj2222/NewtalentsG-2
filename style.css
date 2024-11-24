@@ -402,6 +402,9 @@ header .menu-toggle {
   transform: rotate(12deg);
   
 }
+.tv p link{
+  color: red;
+}
 .tv p img{
   position: relative;
   width: 20%;
@@ -414,11 +417,11 @@ header .menu-toggle {
 }
 @keyframes tv {
   0% {
-    transform: translateZ(100%); /* Tangira hanze ya screen ibumoso */
+    transform: translateY(100%); /* Tangira hanze ya screen ibumoso */
     opacity: 0;
   }
   20% {
-    transform: translateZ(0); /* Yinjira neza muri screen */
+    transform: translateY(0); /* Yinjira neza muri screen */
     opacity: 1;
   }
   80% {
@@ -426,13 +429,13 @@ header .menu-toggle {
     opacity: 1;
   }
   100% {
-    transform: translateY(-100%); /* Ikurwamo burundu ibumoso */
+    transform: translateY(+100%); /* Ikurwamo burundu ibumoso */
     opacity: 0;
   }
 }
 
 .tv p {
-  animation: tv 20s forwards infinite;
+  animation: tv 18s forwards infinite;
   opacity: 0;
 }
 
@@ -499,6 +502,63 @@ text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Ibi bizafasha ko amagambo arusha
   text-align: center;
   margin: 30px auto;
 }
+.profile{
+  display: none;
+  margin-left: 34px;
+  color: black;
+  position: fixed;
+  width: 80%;
+  height: 390px;
+  background: lightgray;
+  border-radius: 24px;
+  box-shadow: 45px;
+  border: 1px solid grey;
+  bottom: 85px;
+  z-index: 1000;
+}
+.profile li{
+  margin-left: 12px;
+  margin-top: 20px;
+ list-style-type: none;
+}
+#bio{
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  color: red;
+  margin-right: 12px;
+  background: gold;
+  border-radius: 6px;
+ 
+}
+.bio{
+  margin-left: 15px;
+  margin-bottom: 15px;
+  font-style: italic;
+  margin-right: 12px;
+  padding: 6px;
+  border: 0.001px solid grey;
+  border-radius: 14px;
+}
+.profile a{
+  margin-top: 30px;
+  font-weight: bold;
+  margin-left: 100px;
+  margin-bottom: 12px;
+}
+.profile img{
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  margin-top: 30px;
+  border: 1px solid darkgray;
+  margin-left: 40%;
+  border-radius: 20px;
+}
+
+
+
+
 .quick{
   background:  #008489;
   width: 100%;
