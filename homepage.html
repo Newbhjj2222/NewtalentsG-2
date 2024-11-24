@@ -40,7 +40,7 @@
             </div>
             <i class="fa fa-bars menu-toggle"></i>
             <ul class="nav">
-                <li><a href="#" id="index.html">Home</a></li>
+                <li><a href="#" id="homepage.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="#">Service</a></li>
               <li><a href="#" id="loginLink">Login</a></li>
@@ -896,19 +896,31 @@ async function fetchScreensData() {
 
     try {
         const querySnapshot = await getDocs(collection(db, "screens")); // Await inside async function
-        let content = "";
+        const contents = []; // Array to hold each piece of content
 
         querySnapshot.forEach((doc) => {
             const data = doc.data(); // Get document data
             
             // Extract content, excluding date and ID
             const contentField = data.content || "No content found";
-
-            // Append the content without ID and date
-            content += `${contentField}<br><hr>`; // Add horizontal line to separate each entry
+            contents.push(`<p>${contentField}</p>`); // Wrap content in a <p> tag for animation
         });
 
-        tvElement.innerHTML = content || "New talents stories group, amamaza aha. twandikire kuri whatsapp 0722319367";
+        if (contents.length === 0) {
+            tvElement.innerHTML = "<p>New talents stories group, amamaza aha. twandikire kuri whatsapp 0722319367</p>";
+        } else {
+            // Function to display one content at a time
+            let currentIndex = 0;
+
+            function displayContent() {
+                tvElement.innerHTML = contents[currentIndex]; // Display the current content
+                currentIndex = (currentIndex + 1) % contents.length; // Move to the next, loop back if at end
+            }
+
+            // Start the slideshow
+            displayContent(); // Display the first content immediately
+            setInterval(displayContent, 18000); // Change content every 10 seconds (same as CSS animation)
+        }
     } catch (error) {
         tvElement.innerHTML = "Error fetching data: " + error.message;
     }
