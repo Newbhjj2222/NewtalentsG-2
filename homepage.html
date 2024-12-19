@@ -130,7 +130,7 @@
             <h1 class="slider-title">Trending Stories</h1>
             <i class="fas fa-chevron-left prev"></i>
             <i class="fas fa-chevron-right next"></i>
-            <div class="post-wrapper">
+            <div class="post-wrapper" >
                 <div class="post">
                     <img src=""  class="slider-image">
                     <div class="post-info">
@@ -250,7 +250,7 @@
 
     <div class="form-group">
         <label for="post_content">Description:</label>
-        <textarea id="story" name="post_content" placeholder="Write your story..."></textarea>
+        <textarea id="story" name="post_content" placeholder="Write your story..." required></textarea>
     </div>
 
     <div class="form-group" id="cover">
@@ -258,9 +258,9 @@
         <input type="file" id="image" name="post_image" accept="image/*" required>
     </div>
 
-    <select id="folderSelector">
+    <select id="folderSelector" required>
+      <button type="submit">creens</button>
         <option value="">-- Choose a folder --</option>
-        <!-- Add options dynamically if needed -->
     </select>
 
     <div class="form-group">
@@ -270,7 +270,22 @@
     </div>
         </div>
 
-
+<div class="ad-content ad" id="reader">
+      <h2 class="page-title">Create Folders</h2>
+        <div class="content">
+         <form id="postForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title" class="nb">Forder name: </label>
+                <input type="text" id="title" name="title" required placeholder="write title of folder....."></input>
+            </div>
+            <div class="form-group">
+                <label for="content" class="nb">forder description:</label>
+                <textarea id="content" name="content" required placeholder=" write description of folder...."></textarea>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+        </div>
+    </div>
 
 <div class="quick">
   <ul>
@@ -907,7 +922,7 @@ async function fetchScreensData() {
         });
 
         if (contents.length === 0) {
-            tvElement.innerHTML = "<p>New talents stories group, amamaza aha. twandikire kuri whatsapp 0722319367</p>";
+            tvElement.innerHTML = "<p> shaka network ubundi eongere ugerageze. New talents stories group, amamaza aha. twandikire kuri whatsapp 0722319367</p>";
         } else {
             // Function to display one content at a time
             let currentIndex = 0;
@@ -930,23 +945,87 @@ async function fetchScreensData() {
 fetchScreensData();
 
 
+// Function yo gufata amafolders
 async function fetchFolders() {
-       const folderSelector = document.getElementById('folderSelector');
-       try {
-           const querySnapshot = await getDocs(collection(db, "folders"));
-           querySnapshot.forEach((doc) => {
-               const folderData = doc.data();
-               const option = document.createElement("option");
-               option.value = doc.id;
-               option.textContent = folderData.title;
-               folderSelector.appendChild(option);
-           });
-       } catch (error) {
-           console.error("Error fetching folders: ", error);
-       }
-   }
+    const folderSelector = document.getElementById("folderSelector");
 
-   fetchFolders();
+    try {
+        // Gukuraho amahitamo yose muri selector kugirango utangire bundi bushya
+        folderSelector.innerHTML = ""; 
+
+        // Fata username muri localStorage
+        const username = localStorage.getItem("username");
+        if (!username) {
+            throw new Error("Username not found in localStorage.");
+        }
+
+        // Fata amafolders yose muri Firestore
+        const querySnapshot = await getDocs(collection(db, "folders"));
+        let foldersFound = false;
+
+        querySnapshot.forEach((doc) => {
+            const folderData = doc.data();
+
+            // Reba niba folder ifitanye isano n'umwanditsi (username)
+            if (folderData.author === username) {
+                const option = document.createElement("option");
+                option.value = doc.id;
+                option.textContent = folderData.title;
+                folderSelector.appendChild(option);
+                foldersFound = true;
+            }
+        });
+
+        // Ongeraho amahitamo yo kurema folder nshya
+        setupFolderCreation(folderSelector, username, db);
+    } catch (error) {
+        console.error("Error fetching folders: ", error);
+    }
+}
+
+// Function yo kurema folder
+async function createNewFolder(newFolderName, username, db) {
+    try {
+        await addDoc(collection(db, "folders"), {
+            title: newFolderName,
+            author: username,
+            createdAt: new Date().toISOString()
+        });
+        alert("Folder created successfully!");
+        return true;
+    } catch (createError) {
+        console.error("Error creating new folder: ", createError);
+        alert("Failed to create folder. Please try again.");
+        return false;
+    }
+}
+
+// Function yo gushyiraho uburyo bwo kurema folder
+function setupFolderCreation(folderSelector, username, db) {
+    const createNewOption = document.createElement("option");
+    createNewOption.value = "create-new";
+    createNewOption.textContent = "Create New Folder";
+
+    // Ongera amahitamo yo kurema folder nshya niba atarimo
+    if (!Array.from(folderSelector.options).some((opt) => opt.value === "create-new")) {
+        folderSelector.appendChild(createNewOption);
+    }
+
+    folderSelector.addEventListener("change", async (event) => {
+        if (event.target.value === "create-new") {
+            const newFolderName = prompt("Enter the name of your  story for the new folder:");
+            if (newFolderName) {
+                const created = await createNewFolder(newFolderName, username, db);
+                if (created) {
+                    fetchFolders(); // Re-fetch folders kugirango zigaragare neza
+                }
+            }
+        }
+    });
+}
+
+// Guhamagara fetchFolders
+fetchFolders();
 
    //* post //
    
@@ -992,11 +1071,12 @@ document.getElementById('stories').reset();
 window.location.href = 'homepage.html'; // Reba niba "posts" ari izina ry'ikibuga
         displayPosts(); // Fungura uburyo bwo kugaragaza izo posts
     } catch (error) {
-        console.error('Error saving post: ', error);
-        alert('Error saving post: ' + error.message);
+        console.error('thank you ', error);
+        alert('reflesh your page: ' + error.message);
     }
 }
 document.getElementById("stories").addEventListener("submit", handlePostSubmit);
+
 
 </script>
 
