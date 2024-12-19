@@ -371,6 +371,7 @@ header .menu-toggle {
   position: relative;
   overflow: hidden;
   
+  
 }
 .logo img {
   width: 20px;
@@ -456,9 +457,10 @@ header .menu-toggle {
 
 /* Ongeraho andi mirongo ukoresheje .tv p:nth-child(n) ukurikije uko wifuza */
 .page-wrapper {
-  margin-top: 30px;
+  margin-top: 20px;
   min-height: 100%;
   padding-top: 20px;
+  
 }
 .maen-content h7{
   width: 100%;
@@ -647,7 +649,7 @@ text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Ibi bizafasha ko amagambo arusha
 .slider-text {
   display: inline-block;
   white-space: nowrap; /* Kurinda ko amagambo apfuka umirongo myinshi */
-  animation: slide 60s linear infinite; /* Koresha animation kuri text yose */
+  animation: slide 30s linear infinite; /* Koresha animation kuri text yose */
 }
 
 /* Text ya slider */
@@ -661,11 +663,11 @@ text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Ibi bizafasha ko amagambo arusha
   0% {
     transform: translateX(100%); /* Tangira hanze ya screen iburyo */
   }
-  33% {
+  20% {
     transform: translateX(0); /* Yinjira mu rwego rw'ibanze */
   }
-  66% {
-    transform: translateX(-100%); /* Yikura ibumoso, iva muri screen */
+  80% {
+    transform: translateX(-50%); /* Yikura ibumoso, iva muri screen */
   }
   100% {
     transform: translateX(-100%); /* Komeza kugenda ibumoso */
@@ -1065,10 +1067,33 @@ footer {
 #button:hover {
   color: springgreen; /* Text irasubira kuba white nyuma ya hover */
 }
-
-
-
-
+#reader{
+  display: none;
+  position: fixed;
+  width: 60%;
+  padding: 8px;
+  margin-left: 20px;
+  align-items: center;
+  margin-bottom: 12px;
+  background:darkgray;
+  border-radius: 8px;
+  bottom: 100px;
+  z-index: 1000;
+}
+#reader h2{
+  text-align: center;
+}
+#reader input{
+  border-radius: 8px;
+  margin-top: 18px;
+}
+#content{
+  border-radius: 12px;
+  margin-top: 18px;
+}
+#reader button{
+  margin-left:  40px;
+}
 
 /* Media Queries */
 @media only screen and (max-width: 934px) {
@@ -1101,6 +1126,7 @@ footer {
   padding: 10px;
 }
 }
+
 
 @media only screen and (max-width: 770px) {
   header{
