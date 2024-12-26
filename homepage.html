@@ -22,6 +22,7 @@
 <style>
     .theme {
   top: 66px;
+  background: #008489;
   height: 64px;
   width: 100%;
   position: fixed;
@@ -574,7 +575,7 @@ async function loadRecentStories() {
         
         let postsHtml = '';
 
-        for (const doc of querySnapshot.docs) {  // Nta foreach irimo
+        for (const doc of querySnapshot.docs) { // Nta foreach irimo
             const postData = doc.data();
             const postId = doc.id;
 
@@ -588,8 +589,9 @@ async function loadRecentStories() {
             const author = postData.author || 'NewtalentsG';
 
             // Irinde ibishobora gutera HTML injection, ugire data yawe neza
-            const sanitizedHead = sanitizeHtml(postData.head);
-            const sanitizedPost = sanitizeHtml(postData.post || postData.story);
+            const sanitizedHead = sanitizeHtml(postData.head, { allowedTags: [] });
+// Hindura tags zigire aho zigaragara nk'inyuguti zisanzwe
+const sanitizedPost = (postData.post || postData.story || '').replace(/<[^>]*>/g, '');
 
             postsHtml += `
                 <div class="post" id="${postId}">
@@ -605,11 +607,12 @@ async function loadRecentStories() {
                         <p><strong>Date:</strong> ${createdAt}</p>
                     </div>
                     <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
-                      <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
+                    <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
                 </div>
             `;
         }
 
+  
 
 // Event listener ku button ya share ifite class ya "share"
 document.addEventListener("click", function(event) {
