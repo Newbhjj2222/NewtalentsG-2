@@ -144,15 +144,15 @@
                     <img src="pro11.png"  class="slider-image">
                     <div class="post-info">
                         <h4><a href=""></a></h4>
-                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-user">NewtalentsG</i>&nbsp;
                         <i class="far fa-calendar"></i>
                     </div>
                 </div>
                 <div class="post">
-                    <img src="" class="slider-image">
+                    <img src="pro11.png" class="slider-image">
                     <div class="post-info">
                         <h4><a href=""></a></h4>
-                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-user">NewtalentsG</i>&nbsp;
                         <i class="far fa-calendar"></i>
                     </div>
                 </div>
@@ -191,6 +191,30 @@
     <input type="text" name="search-term" class="text-input" placeholder="Search stories..." oninput="searchPosts()">
   </form>
 </div>
+
+<div class="banner-container">
+        <div class="banner">
+            <div class="slid">
+                <h1>Murakaza neza!</h1>
+                <p>Menya byinshi ku byo dukora hano.</p>
+            </div>
+            <div class="slid">
+                <h1>Uri umwanditsi?</h1>
+                <p>Sangiza abandi inkuru zishimishije.</p>
+            </div>
+            <div class="slid">
+                <h1>Serivisi zacu!</h1>
+                <p>Tugufasha mu bikorwa byawe bya buri munsi tukwamamariza.</p>
+            </div>
+            <div class="slid">
+                <h1>Ibyiza byacu!</h1>
+                <p>Twigisha abantu mu nkuru zitandukanye.</p>
+            </div>
+        </div>
+    </div>
+
+
+
                 <!-- Main content -->
             <div class="main-content single">
                 <h1 class="post-title">Mwihangane gato tuzane inkuru zose....</h1>
@@ -1080,6 +1104,21 @@ window.location.href = 'homepage.html'; // Reba niba "posts" ari izina ry'ikibug
 }
 document.getElementById("stories").addEventListener("submit", handlePostSubmit);
 
+const banner = document.querySelector('.banner');
+        const slides = document.querySelectorAll('.slid');
+        const totalSlides = slides.length;
+        let currentIndex = 0;
+
+        function slide() {
+            currentIndex++;
+            if (currentIndex >= totalSlides) {
+                currentIndex = 0; // Garuka ku ya mbere
+            }
+            banner.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        // Hita utangira auto-slide buri segonda 3 (3000ms)
+        setInterval(slide, 6000);
 
 </script>
 
