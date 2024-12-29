@@ -1094,11 +1094,62 @@ footer {
 #reader button{
   margin-left:  40px;
 }
+.banner-container {
+        width: 80%;
+        max-width: 800px;
+        padding: 0;
+        height: auto;
+        background: black;
+        margin-left: 23px;
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid gray;
+         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .banner {
+            display: flex;
+            transition: transform 1s ease-in-out;
+        }
+
+        .slid {
+            min-width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            padding: 12px;
+            height: auto;
+            background: linear-gradient(to right, palevioletred,black,grey,black, black, black, black, grey, black,palevioletred);
+            color: white;
+            font-size: 18px;
+        }
+
+        .slid h1 {
+          color: white;
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .slid p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+        }
+        
 
 /* Media Queries */
 @media only screen and (max-width: 934px) {
   .content {
   width: 100%;
+}
+.banner-container{
+  width: 95%;
+  height: auto;
+  margin-left: 10px;
+}
+.slid p{
+  font-size: 12px;
+}
+.slid h1{
+  font-size: 15px;
 }
 .auth-content{
       width: 50%;
