@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="ctus.css">
+  <title>contact us</title>
+</head>
+<body>
+      <header>
+        <div class="logo">
+          <span>New</span><span>talents</span><span>G</span>
+          
+        </div>
+        <ul>
+          <li><a href="homepage.html">Home</a></li>
+          <li><a href="">Service</a></li>
+        </ul>
+      </header>
+      
+        
+      
+       <div class="about">
+         <span>Welcome in new talents stories group</span>
+         <p>nawe waba umunyamigabane natwe cyangwa umuterankunga. kanda aha:</p>
+        <button type="reset" onclick="showTeam()">JOIN US</button>
+       </div>
+      <div class="team" id="teamDivs">
+        <h2>JOIN OUR TEAM</h2>
+        <form action="sign-up" id="join">
+          <input type="text" name="" id="nome" placeholder="your name....." required>
+          <input type="email" name="email" id="emai" placeholder="Your Email....." required>
+          <input type="number" name="" id="number" placeholder="your phone number....">
+          <input type="number" name="" id="whats" placeholder="Your Whatsapp number..." required>
+          <button type="submit">Join</button>
+        </form>
+      </div>
+       <div class="write">
+         <form action="message-us" id="mesa">
+           <h2>SEND TO US MESSAGE</h2>
+           <input type="text" name="" id="messageName" placeholder="your name...." required>
+           <input type="text" name="" id="messageEmail" placeholder="Email...." required>
+           <input type="text" name="" id="message" placeholder="your message...." required>
+           <button type="submit">send</button>
+         </form>
+         
+       </div>
+       <h3>ADVERTISING</h3>
+       <form action="ads" class="ads" id="ads">
+         <h4>Amamaza</h4>
+         <p>tubwire busines yawe tukwamamarize</p>
+         <input type="text" name="" id="busines" placeholder="Name of your busines..." required>
+         <input type="text" name="" id="description" placeholder="Tubwire icyo busines yawe ikora..." required>
+        <select name="" id="periode" required>
+          <option value="">---Hitamo igihe--- </option>
+          <option value="">Icyumweru</option>
+          <option value="">ibyumweru 2</option>
+          <option value=""> Ukwezi kumwe</option>
+          <option value="">Amazi 2</option>
+          <option value="">Amezi 3</option>
+        </select>
+        <select name="category" id="category" required>
+          <option value="">Hitamo ubwoko</option>
+          <option value="">Half package(2500 rwf/ukwezi 1)</option>
+          <option value=""> Full package(8000 rwf/ukwezi 1)</option>
+        </select>
+        <input type="text" name="" id="own" placeholder="Your name..." required>
+        <input type="tel" name="" id="Whatsapp" placeholder="your WhatsApp number..." required>
+        <input type="tel" name="" id="payer" placeholder="nimero ukoresha wishyura...." required>
+        <h6>Nimero wishyura ho:  0780786300</h6>
+        <p>Mugihe wahisemo igihe kiri munsi y'ukwezi urafata amafaranga y'ukwezi, ugabanye igihe wahisemo uhite umenya ayo wishyura. kandi menya neza ko wohereje ubwishyu bwawe.</p>
+        <button type="submit">Send</button>
+       </form>
+       <footer>
+         
+       <div class="ourline">
+         <p>MUGIHE UKENEYE UBUNDI BUSOBANURO CYANGWA UKENEYE UBUNDI BUFASHA WADUSHAKIRA KURI IYI MIRONGO </p>
+         <span>Call: +250780786300</span>
+         <span>Whatsapp: +250722319367</span>
+         <span>Email: newtalents403@gmail.com</span>
+         
+       </div>
+       </footer>
+       
+       <script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+   import { getAuth,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+   import { getFirestore, doc, getDoc, updateDoc, deleteField, deleteDoc, setDoc, collection, getDocs,addDoc, serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+   import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+   const firebaseConfig = {
+       apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
+       authDomain: "newtalents-a7c29.firebaseapp.com",
+       databaseURL: "https://newtalents-a7c29-default-rtdb.firebaseio.com",
+       projectId: "newtalents-a7c29",
+       storageBucket: "newtalents-a7c29.appspot.com",
+       messagingSenderId: "507408992610",
+       appId: "1:507408992610:web:05ce220a4cb4922de9843b"
+   };
+
+   const app = initializeApp(firebaseConfig);
+   const auth = getAuth(app);
+   const db = getFirestore(app);
+   const storage = getStorage(app);
+   // Baza Storage na Firestore
+   
+  // 3. Handle form submission
+document.getElementById("join").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  // 4. Get input values
+  const name = document.getElementById("nome").value;
+  const email = document.getElementById("emai").value;
+  const number = document.getElementById("number").value;
+  const whatsapp = document.getElementById("whats").value;
+
+  // 5. Add data to Firestore
+  try {
+    await addDoc(collection(db, "join"), {
+      name: name,
+      email: email,
+      phoneNumber: number,
+      whatsappNumber: whatsapp,
+      createdAt: new Date()
+    });
+
+    alert("Urakoze kwiyandikisha mu team yacu vuba turaza kukuvugisha kuri whatsapp.");
+    document.getElementById("join").reset();
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    alert("Failed to submit details. Please try again.");
+  }
+});
+
+// Form submission handler yo gusaba kwamamaza 
+document.getElementById("ads").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const busines = document.getElementById("busines").value;
+  const description = document.getElementById("description").value;
+  const periode = document.getElementById("periode").value;
+  const category = document.getElementById("category").value;
+  const own = document.getElementById("own").value;
+  const whatsapp = document.getElementById("Whatsapp").value;
+  const payer = document.getElementById("payer").value;
+
+  try {
+    await addDoc(collection(db, "sponsor"), {
+      busines,
+      description,
+      periode,
+      category,
+      own,
+      whatsapp,
+      payer,
+      timestamp: serverTimestamp() // Add timestamp
+    });
+
+    alert("Amakuru yoherejwe neza! vuba harasuzunwa niba wohereje ubwishyu hanyuma dutangire ku kwamamariza.");
+    document.getElementById("ads").reset();
+  } catch (error) {
+    console.error("Ikosa ryabaye:", error);
+    alert(`Habaye ikosa: ${error.message}`);
+  }
+});
+
+
+// message sender
+
+document.getElementById('mesa').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Gukumira refresh ya page
+
+    // Fata amakuru yavuye muri form
+    const name = document.getElementById('messageName').value;
+    const email = document.getElementById('messageEmail').value;
+    const message = document.getElementById('message').value;
+
+    try {
+        // Bika muri Firestore
+        await addDoc(collection(db, "messages"), {
+            name: name,
+            email: email,
+            message: message,
+            timestamp: new Date() // Gushyiraho igihe cyoherejwe
+        });
+        alert('Message yoherejwe neza!');
+        document.getElementById('mesa').reset(); // Gusubiza form ku busanzwe
+    } catch (error) {
+        console.error("Error yo kubika message: ", error);
+
+        // Sobanurira umu user ikibazo cyabaye
+        let errorMessage = "Habaye ikibazo mugihe cyo kohereza ubutumwa. ";
+        if (error.code) {
+            errorMessage += `Ikosa: ${error.code}. `;
+        }
+        if (error.message) {
+            errorMessage += `Impamvu: ${error.message}.`;
+        }
+        alert(errorMessage);
+    }
+});
+</script>
+       
+<script src="contact.js"></script>
+</body>
+</html>
