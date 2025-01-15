@@ -44,7 +44,7 @@
                 <li><a href="#" id="homepage.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="https://newtalents-g-2.vercel.app/form.html">Sell story</a></li>
-                <li><a href="contact.html">Contact us</a></li>
+                <li><a href="tv.html">NewtalentsG TV</a></li>
               <li><a href="#" id="loginLink">Login</a></li>
                 <li>
                    <a href="#">
@@ -134,26 +134,26 @@
             <i class="fas fa-chevron-right next"></i>
             <div class="post-wrapper" >
                 <div class="post">
-                    <img src="pro11.png"  class="slider-image">
+                    <img src=""  class="slider-image">
                     <div class="post-info">
                         <h4><a href=""></a></h4>
-                        <i class="far fa-user">NewtalentsG</i>&nbsp;
+                        <i class="far fa-user"></i>&nbsp;
                         <i class="far fa-calendar"></i>
                     </div>
                 </div>
                 <div class="post">
-                    <img src="pro11.png"  class="slider-image">
+                    <img src=""  class="slider-image">
                     <div class="post-info">
                         <h4><a href=""></a></h4>
-                        <i class="far fa-user">NewtalentsG</i>&nbsp;
+                        <i class="far fa-user"></i>&nbsp;
                         <i class="far fa-calendar"></i>
                     </div>
                 </div>
                 <div class="post">
-                    <img src="pro11.png" class="slider-image">
+                    <img src="" class="slider-image">
                     <div class="post-info">
                         <h4><a href=""></a></h4>
-                        <i class="far fa-user">NewtalentsG</i>&nbsp;
+                        <i class="far fa-user"></i>&nbsp;
                         <i class="far fa-calendar"></i>
                     </div>
                 </div>
@@ -195,22 +195,11 @@
 
 <div class="banner-container">
         <div class="banner">
-            <div class="slid">
-                <h1>Murakaza neza!</h1>
-                <p>Menya byinshi ku byo dukora hano.</p>
-            </div>
-            <div class="slid" >
-                <h1>Uri umwanditsi?</h1>
-                <p>Sangiza abandi inkuru zishimishije.</p>
-            </div>
-            <div class="slid">
-                <h1>Serivisi zacu!</h1>
-                <p>Tugufasha mu bikorwa byawe bya buri munsi tukwamamariza.</p>
-            </div>
-            <div class="slid">
-                <h1>Ibyiza byacu!</h1>
-                <p>Twigisha abantu mu nkuru zitandukanye.</p>
-            </div>
+         <div class="slid" id="banner">
+    <h1 id="banner-title"> Murakaze neza</h1>
+    <p id="banner-description"> menya byinshi dukorana hano!</p>
+</div>
+            
         
         </div>
     </div>
@@ -329,7 +318,8 @@
     display: none;">3+</span>
   </a>
 </li>
-<li><a href="#" class="back-button"><i class="fab fa-dyalog back"></i></a></li>
+<li><a href="tv.html"><i class="fas fa-tv" style="font-size: 22px; margin-left: 20px;"></i></a></li>
+<li><a href="#" class="back-button"><i class="fab fa-dyalog back" style="margin-left: 45px; margin-top: 0px;"></i></a></li>
   </ul>
 </div>
 
@@ -1074,50 +1064,49 @@ fetchFolders();
    //* post //
    
 async function handlePostSubmit(event) {
-    event.preventDefault();
-    const title = document.getElementById('head').value;
-    const content = document.getElementById('story').value;
-    const file = document.getElementById('image').files[0];
-    const selectedFolder = document.getElementById('folderSelector').value;  // Folder watoranyije
+  event.preventDefault();
+  const title = document.getElementById('head').value;
+  const content = document.getElementById('story').value;
+  const file = document.getElementById('image').files[0];
+  const selectedFolder = document.getElementById('folderSelector').value; // Folder watoranyije
 
-    // Fata izina rya author muri localStorage
-    const author = localStorage.getItem("username");  // Izina rya author ryabitse muri localStorage
-    // Genzura niba ifoto yatowe
-    if (!file) {
-        alert('Please select an image file.');
-        return;
-    }
+  // Fata izina rya author muri localStorage
+  const author = localStorage.getItem("username"); // Izina rya author ryabitse muri localStorage
+  // Genzura niba ifoto yatowe
+  if (!file) {
+    alert('Please select an image file.');
+    return;
+  }
 
-    // Genzura niba umutwe n'ibisobanuro byuzuye
-    
-    try {
-        // Bika ifoto muri Firebase Storage
-        const storageRef = ref(storage, `amafoto/${file.name}`);
-        const snapshot = await uploadBytes(storageRef, file);
-        console.log('Amafoto abitswe neza!');
-        
-        // Fata URL y'aho amafoto abitswe
-        const url = await getDownloadURL(storageRef);
+  // Genzura niba umutwe n'ibisobanuro byuzuye
 
-        // Bika URL muri Firestore
-        const newPostsRef = doc(collection(db, "posts"));
-        await setDoc(newPostsRef, {
-            head: title,
-            story: content,
-            imageUrl: url, // Bika URL y'ifoto muri database
-            folderId: selectedFolder,  // Fata folder watoranyije
-            author: author,  // Bika izina rya author
-            createdAt: new Date().toISOString()
-        });
+  try {
+    // Bika ifoto muri Firebase Storage
+    const storageRef = ref(storage, `amafoto/${file.name}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    console.log('Amafoto abitswe neza!');
 
-        alert('Post saved successfully!');
-document.getElementById('stories').reset();
-window.location.href = 'homepage.html'; // Reba niba "posts" ari izina ry'ikibuga
-        displayPosts(); // Fungura uburyo bwo kugaragaza izo posts
-    } catch (error) {
-        console.error('thank you ', error);
-        alert('reflesh your page: ' + error.message);
-    }
+    // Fata URL y'aho amafoto abitswe
+    const url = await getDownloadURL(storageRef);
+
+    // Bika URL muri Firestore
+    const newPostsRef = doc(collection(db, "posts"));
+    await setDoc(newPostsRef, {
+      head: title,
+      story: content,
+      imageUrl: url, // Bika URL y'ifoto muri database
+      folderId: selectedFolder, // Fata folder watoranyije
+      author: author, // Bika izina rya author
+      createdAt: new Date().toISOString()
+    });
+
+    alert('Posts saved successfully!');
+    document.getElementById('stories').reset(); // Reba niba "posts" ari izina ry'ikibuga
+    displayPosts(); // Fungura uburyo bwo kugaragaza izo posts
+  } catch (error) {
+    console.error('Error saving post: ', error);
+    alert('Error saving post: ' + error.message);
+  }
 }
 document.getElementById("stories").addEventListener("submit", handlePostSubmit);
 
@@ -1136,7 +1125,58 @@ const banner = document.querySelector('.banner');
 
         // Hita utangira auto-slide buri segonda 3 (3000ms)
         setInterval(slide, 6000);
+        
+        
+        
+async function loadBanners() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "banners"));
+    const bannerContainer = document.querySelector(".banner");
+    let slidesData = [];
 
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      slidesData.push({
+        title: data.title,
+        description: data.description,
+        timestamp: data.timestamp // Igihe cyatanzwe
+      });
+    });
+
+    // Tumenye uko tuzashyira banners hashingiwe ku gihe
+    slidesData.sort((a, b) => a.timestamp - b.timestamp); // Turebe ko ibyo bishyirwaho bikurikirana
+
+    slidesData.forEach((slideData) => {
+      const slide = document.createElement("div");
+      slide.classList.add("slid");
+      slide.innerHTML = `
+        <h1>${slideData.title}</h1>
+        <p>${slideData.description}</p>
+      `;
+      bannerContainer.appendChild(slide);
+    });
+
+    // Tangiza slider
+    startSlider();
+  } catch (error) {
+    console.error("Ikibazo kibaye:", error);
+  }
+}
+
+function startSlider() {
+  const banner = document.querySelector(".banner");
+  const slides = document.querySelectorAll(".slid");
+  let index = 0;
+
+  // Fungura slider hashingiye ku gihe
+  setInterval(() => {
+    index = (index + 1) % slides.length;
+    banner.style.transform = `translateX(-${index * 100}%)`;
+  }, 5000); // Hindura buri masegonda 5
+}
+
+// Tangiza function ya load
+loadBanners();
 </script>
 
 
