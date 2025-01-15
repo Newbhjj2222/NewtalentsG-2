@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="tv.css">
+  <title>NewtalentsG Tv</title>
+</head>
+<body>
+  <div class="ntv">
+    <header>
+    <img src="pro11.png" alt="">
+    <h2>NewtalentsG Tv</h2>
+    <button type="flow" id="follow">Follow</button>
+    </header>
+<div class="tv">
+ <video 
+    id="autoPlayVideo" 
+    src="db835438-e8f5-d49b-d6ef-c4d1ef33aa35.mp4" 
+    playsinline 
+    autoplay
+    controls>
+  </video>
+
+    
+</div>
+  <div class="flower">
+      <span id="flower">0 followers</span>
+      <span id="view"> 0 views</span>
+    </div>
+  </div>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs,addDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+  const firebaseConfig = {
+      apiKey: "AIzaSy...",
+      authDomain: "newtalents-a7c29.firebaseapp.com",
+      projectId: "newtalents-a7c29",
+      storageBucket: "newtalents-a7c29.appspot.com",
+      messagingSenderId: "507408992610",
+      appId: "1:507408992610:web:05ce220a4cb4922de9843b"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+async function playAndDownloadVideosFromFirestore() {
+  try {
+    const showsRef = collection(db, "shows"); // Fata collection ya 'shows'
+    const snapshot = await getDocs(showsRef); // Fata document zose muri 'shows'
+
+    // Tegura urutonde rwa videoUrls
+    const videoUrls = [];
+    snapshot.forEach((doc) => {
+      const videoUrl = doc.data().videoUrl;
+      if (videoUrl) {
+        videoUrls.push(videoUrl);
+      }
+    });
+
+    // Kora download ya video zose
+    const downloadedUrls = await Promise.all(
+      videoUrls.map(async (videoUrl) => {
+        const videoRef = ref(storage, videoUrl);
+        return await getDownloadURL(videoRef);
+      })
+    );
+
+    // Tangira gukina video zose nk'urwo rutonde
+    playPlaylist(downloadedUrls);
+  } catch (error) {
+    console.error("Ikosa ribaye: ", error);
+  }
+}
+
+function playPlaylist(videoUrls) {
+  const videoElement = document.getElementById("autoPlayVideo");
+  if (!videoElement) {
+    console.error("Element ya 'autoPlayVideo' ntabwo ibonetse.");
+    return;
+  }
+
+  let currentIndex = 0;
+
+  // Function yo gukina video imwe
+  function playNextVideo() {
+    if (currentIndex < videoUrls.length) {
+      videoElement.src = videoUrls[currentIndex];
+      currentIndex++;
+      videoElement.play();
+    } else {
+      console.log("Playlist irarangiye!");
+    }
+  }
+
+  // Tangiza igihe video irangiye
+  videoElement.onended = playNextVideo;
+
+  // Tangira gukina video ya mbere
+  playNextVideo();
+}
+
+playAndDownloadVideosFromFirestore();
+
+
+
+// Function yo gufata cyangwa gushyiraho username
+function getUsername() {
+  let username = localStorage.getItem("username");
+  if (!username) {
+    // Shyiraho username nka guest niba itaraboneka
+    username = `guest${Math.floor(Math.random() * 10000)}`;
+    localStorage.setItem("username", username);
+  }
+  return username;
+}
+
+// Function yo kugenzura niba user yaramaze gufollowinze
+async function checkIfUserFollowed(username) {
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, "Newtalentsg"), where("username", "==", username))
+    );
+    return !querySnapshot.empty; // True niba username ibonetse muri database
+  } catch (error) {
+    console.error("Ikosa ribaye ubwo twagenzuraga Firestore: ", error);
+    return false; // Fata nk'aho atarafollowinze niba habaye ikibazo
+  }
+}
+
+// Function yo kubika follow muri Firestore
+async function saveFollowToFirestore(username, followCount) {
+  try {
+    await addDoc(collection(db, "Newtalentsg"), {
+      username: username,
+      follow: followCount,
+      timestamp: new Date(),
+    });
+    console.log("Byakunze kubikwa muri Firestore!");
+    return { success: true };
+  } catch (error) {
+    console.error("Ikosa ribaye ubwo twabikaga muri Firestore: ", error);
+    return { success: false, message: error.message };
+  }
+}
+
+// Function yo guhindura button ikajya yerekana "Following" cyangwa "Ikosa"
+function updateButtonText(result) {
+  const followButton = document.getElementById("follow");
+
+  if (result.success) {
+    followButton.textContent = "Following";
+    followButton.disabled = true; // Hindura button ntibishoboke kongera kuyikandaho
+  } else {
+    followButton.textContent = `Ikosa: ${result.message}`;
+    followButton.disabled = false; // Reba ko umukoresha yagerageza kongera
+    setTimeout(() => {
+      followButton.textContent = "Follow"; // Subiza button ku nyandiko isanzwe nyuma y'igihe runaka
+    }, 5000); // Igihe runaka (5s) button isubire ku "Follow"
+  }
+}
+
+// Gushyira Event kuri Button
+document.getElementById("follow").addEventListener("click", async () => {
+  const username = getUsername(); // Fata username
+
+  // Reba niba user yaramaze gufollowinze
+  const hasFollowed = await checkIfUserFollowed(username);
+
+  if (hasFollowed) {
+    // Niba user yaramaze gufollowinze, hindura button gusa
+    updateButtonText({ success: true });
+    console.log(`${username} yaramaze gufollowinze.`);
+  } else {
+    // Niba user atarafollowinze, ongera followCount hanyuma ubike muri Firestore
+    let followCount = localStorage.getItem("followCount");
+    followCount = followCount ? parseInt(followCount) + 1 : 1;
+    localStorage.setItem("followCount", followCount);
+
+    // Bika muri Firestore
+    const result = await saveFollowToFirestore(username, followCount);
+
+    // Hindura button ushingiye ku musaruro
+    updateButtonText(result);
+
+    // Ohereza ubutumwa muri console
+    if (result.success) {
+      console.log(`Username: ${username}, Follow: ${followCount}`);
+    } else {
+      console.error("Kubika muri Firestore byanze:", result.message);
+    }
+  }
+});
+
+// Function yo gufata umubare wa documents muri Firestore
+async function getFollowerCount() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "Newtalentsg"));
+    const followerCount = querySnapshot.size; // Umubare wa documents
+    document.getElementById("flower").textContent = `${followerCount} followers`; // Hindura HTML
+    console.log(`Umubare wa followers: ${followerCount}`);
+  } catch (error) {
+    console.error("Ikosa ribaye igihe twageragezaga gufata umubare wa documents: ", error);
+    document.getElementById("flower").textContent = "Ikosa ryabaye!";
+  }
+}
+
+// Hamagara function yo kugaragaza umubare wa followers
+getFollowerCount();
+
+// Variables to track time and views
+let seconds = 0;
+let views = 0;
+
+// Function to save a view in Firestore
+async function saveView() {
+  try {
+    const docRef = await addDoc(collection(db, "views"), {
+      timestamp: new Date(),
+      userID: "USER_ID_OR_ANONYMOUS", // Replace with user's ID if available
+    });
+    console.log("View saved with ID: ", docRef.id);
+  } catch (error) {
+    console.error("Error saving view: ", error);
+  }
+}
+
+// Function to track time and views
+function startCounting() {
+  setInterval(() => {
+    seconds += 1;
+
+    if (seconds % 30 === 0) {
+      views += 1;
+      saveView();
+      console.log(`View ${views} recorded.`);
+    }
+  }, 1000);
+}
+
+// Start tracking when the user accesses the page
+window.onload = startCounting;
+
+
+// Function to fetch and update the view count in human-readable format
+    function formatViewCount(count) {
+      if (count >= 1000000) {
+        return (count / 1000000).toFixed(1) + 'M'; // For millions
+      } else if (count >= 1000) {
+        return (count / 1000).toFixed(1) + 'K'; // For thousands
+      } else {
+        return count.toString(); // For smaller numbers
+      }
+    }
+
+    // Function to fetch and update the view count
+    async function updateViewCount() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "views"));
+        const viewCount = querySnapshot.size; // Count of documents
+        const formattedCount = formatViewCount(viewCount); // Format the count
+        document.getElementById("view").textContent = `${formattedCount} views`;
+      } catch (error) {
+        console.error("Error fetching views: ", error);
+      }
+    }
+
+    // Update view count every 35 seconds
+    setInterval(updateViewCount, 35000);
+
+    // Initial call to update view count when the page loads
+    updateViewCount();
+
+
+</script>
+<script src="tv.js"></script>
+</body>
+</html>
