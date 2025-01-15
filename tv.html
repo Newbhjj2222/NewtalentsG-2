@@ -94,7 +94,10 @@ function playPlaylist(videoUrls) {
       currentIndex++;
       videoElement.play();
     } else {
-      console.log("Playlist irarangiye!");
+      // Playlist irarangiye, tangira bundi bushya
+      console.log("Playlist irarangiye, iratangira bundi bushya!");
+      currentIndex = 0;
+      playNextVideo();
     }
   }
 
@@ -105,6 +108,7 @@ function playPlaylist(videoUrls) {
   playNextVideo();
 }
 
+// Fata video ziva muri Firestore hanyuma uhamagare iyi function
 playAndDownloadVideosFromFirestore();
 
 
@@ -235,7 +239,7 @@ function startCounting() {
   setInterval(() => {
     seconds += 1;
 
-    if (seconds % 30 === 0) {
+    if (seconds % 100 === 0) {
       views += 1;
       saveView();
       console.log(`View ${views} recorded.`);
