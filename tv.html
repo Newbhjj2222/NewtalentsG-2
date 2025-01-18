@@ -33,7 +33,7 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs,addDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs,addDoc,query, orderBy } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
   import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
   const firebaseConfig = {
@@ -50,19 +50,22 @@
   const storage = getStorage(app);
 
 async function playAndDownloadVideosFromFirestore() {
-  try {
-    const showsRef = collection(db, "shows"); // Fata collection ya 'shows'
-    const snapshot = await getDocs(showsRef); // Fata document zose muri 'shows'
+    try {
+      const showsRef = collection(db, "shows"); // Fata collection ya 'shows'
 
-    // Tegura urutonde rwa videoUrls
-    const videoUrls = [];
-    snapshot.forEach((doc) => {
-      const videoUrl = doc.data().videoUrl;
-      if (videoUrl) {
-        videoUrls.push(videoUrl);
-      }
-    });
+      // Query ya kureba video zateguwe hakurikijwe igihe zashyizweho (createdAt)
+      const showsQuery = query(showsRef, orderBy("createdAt", "desc")); // 'asc' ni ugutondekanya mu buryo bwazamutse, 'desc' niba ushaka ubundi buryo
 
+      const snapshot = await getDocs(showsQuery); // Fata document zose hakurikijwe iyo query
+
+      // Tegura urutonde rwa videoUrls
+      const videoUrls = [];
+      snapshot.forEach((doc) => {
+        const videoUrl = doc.data().videoUrl;
+        if (videoUrl) {
+          videoUrls.push(videoUrl);
+        }
+      });
     // Kora download ya video zose
     const downloadedUrls = await Promise.all(
       videoUrls.map(async (videoUrl) => {
