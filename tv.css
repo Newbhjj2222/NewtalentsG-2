@@ -44,6 +44,8 @@ button:hover{
   border: 1px solid green;
 }
 .tv{
+  max-width: 100%;
+  position: relative;
   height: 180px;
   background: black;
   margin-top: 10px;
@@ -71,4 +73,39 @@ button:hover{
 #flower{
   font-weight: bold;
   font-style: italic;
+}
+.live-badge {
+  position: absolute;
+  top: 2%; /* Intera hejuru */
+  right: 2%; /* Intera iburyo */
+  background: none;
+  color: orangered;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px; /* Gukoramo imipaka izengurutswe */
+  z-index: 10; /* Shyira imbere kugirango ihishe inyuma ya videwo */
+  text-transform: uppercase;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+@keyframes blink {
+  0%, 100% {
+    opacity: 3;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.live-badge {
+  animation: blink 3s infinite;
+}
+@media screen and (orientation: landscape) {
+  .tv {
+    height: 100vw; /* Igana uburebure bw'ubugari bwa screen */
+  }
+  .live-badge {
+    top: 2%; /* Guma hejuru mu buriganya (ni responsive) */
+    right: 2%; /* Guma iburyo */
+  }
 }
