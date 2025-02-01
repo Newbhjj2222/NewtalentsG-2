@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amabwiriza | New Talents Stories Group</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        header {
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+        }
+        .language-selector {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+        select {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #28a745;
+        }
+        a {
+            color: #28a745;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <span id="header-title">Amabwiriza | New Talents Stories Group</span>
+    <div class="language-selector">
+        <label for="language">🌍</label>
+        <select id="language" onchange="changeLanguage()">
+            <option value="rw">🇷🇼 Kinyarwanda</option>
+            <option value="en">🇬🇧 English</option>
+        </select>
+    </div>
+</header>
+
+<div class="container">
+    <h2 id="section1-title">1. Kwiyandikisha</h2>
+    <p id="section1-text">Ushobora kwiyandikisha nk’umwanditsi cyangwa umusomyi. Umwanditsi yishyura 5000 RWF ku kwezi, naho umusomyi yishyura 250 RWF ku cyumweru.</p>
+
+    <h2 id="section2-title">2. Gushyira Inkuru</h2>
+    <p id="section2-text">Abanditsi bemerewe gushyira inkuru, amafoto, no gukoresha imbuga zabo. Inkuru zigomba kuba zifite ireme kandi zidahungabanya abandi.</p>
+
+    <h2 id="section3-title">3. Kwinjiza Amafaranga</h2>
+    <p id="section3-text">Amafaranga avuye mu gusomwa kw’inkuru ashorwa kuri konti yawe yemewe. Wishyurwa kuri mobile money nimero +250780786300.</p>
+
+    <h2 id="section4-title">4. Ibihano</h2>
+    <p id="section4-text">Uwanditse inkuru zifite ibinyoma, ibitutsi, cyangwa ibitubahirije amategeko, ashobora guhagarikwa.</p>
+</div>
+
+<script>
+    function changeLanguage() {
+        let lang = document.getElementById("language").value;
+        let translations = {
+            rw: {
+                "header-title": "Amabwiriza | New Talents Stories Group",
+                "section1-title": "1. Kwiyandikisha",
+                "section1-text": "Ushobora kwiyandikisha nk’umwanditsi cyangwa umusomyi. Umwanditsi yishyura 5000 RWF ku kwezi, naho umusomyi yishyura 250 RWF ku cyumweru.",
+                "section2-title": "2. Gushyira Inkuru",
+                "section2-text": "Abanditsi bemerewe gushyira inkuru, amafoto, no gukoresha imbuga zabo. Inkuru zigomba kuba zifite ireme kandi zidahungabanya abandi.",
+                "section3-title": "3. Kwinjiza Amafaranga",
+                "section3-text": "Amafaranga avuye mu gusomwa kw’inkuru ashorwa kuri konti yawe yemewe. Wishyurwa kuri mobile money nimero +250780786300.",
+                "section4-title": "4. Ibihano",
+                "section4-text": "Uwanditse inkuru zifite ibinyoma, ibitutsi, cyangwa ibitubahirije amategeko, ashobora guhagarikwa."
+            },
+            en: {
+                "header-title": "Guidelines | New Talents Stories Group",
+                "section1-title": "1. Registration",
+                "section1-text": "You can register as a writer or a reader. Writers pay 5000 RWF per month, while readers pay 250 RWF per week.",
+                "section2-title": "2. Posting Stories",
+                "section2-text": "Writers are allowed to post stories, upload photos, and manage their pages. All content must be high quality and respectful.",
+                "section3-title": "3. Earning Money",
+                "section3-text": "Money earned from story views is deposited into your verified account. Payments are made via mobile money to +250780786300.",
+                "section4-title": "4. Penalties",
+                "section4-text": "Anyone posting fake stories, insults, or violating platform rules may face suspension."
+            }
+        };
+
+        for (let id in translations[lang]) {
+            document.getElementById(id).textContent = translations[lang][id];
+        }
+    }
+</script>
+
+</body>
+</html>
