@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | New Talents Stories Group</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+        }
+        .language-selector {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+        select {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007bff;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <span id="header-title">Privacy Policy | New Talents Stories Group</span>
+    <div class="language-selector">
+        <label for="language">🌍</label>
+        <select id="language" onchange="changeLanguage()">
+            <option value="rw">🇷🇼 Kinyarwanda</option>
+            <option value="en">🇬🇧 English</option>
+        </select>
+    </div>
+</header>
+
+<div class="container">
+    <h2 id="section1-title">1. Amakuru Dukusanya</h2>
+    <p id="section1-text">Tukusanya amakuru nk'izina, email, nimero ya telefone, n'andi makuru yifashishwa mu gukorana n’urubuga.</p>
+
+    <h2 id="section2-title">2. Uko Dukoreshwa Amakuru</h2>
+    <p id="section2-text">Amakuru yanyu dukoreshwa mu kubaha serivisi nziza, kunoza uburambe bwanyu, no gukomeza umutekano.</p>
+
+    <h2 id="section3-title">3. Kwagurira Abandi Amakuru</h2>
+    <p id="section3-text">Ntituzigera tugurisha cyangwa dusangiza amakuru yanyu ku bandi batari abemerewe.</p>
+
+    <h2 id="section4-title">4. Uburenganzira Bwanyu</h2>
+    <p id="section4-text">Mufite uburenganzira bwo gusaba gusiba cyangwa gukosora amakuru yanyu igihe cyose.</p>
+</div>
+
+<script>
+    function changeLanguage() {
+        let lang = document.getElementById("language").value;
+        let translations = {
+            rw: {
+                "header-title": "Privacy Policy | New Talents Stories Group",
+                "section1-title": "1. Amakuru Dukusanya",
+                "section1-text": "Tukusanya amakuru nk'izina, email, nimero ya telefone, n'andi makuru yifashishwa mu gukorana n’urubuga.",
+                "section2-title": "2. Uko Dukoreshwa Amakuru",
+                "section2-text": "Amakuru yanyu dukoreshwa mu kubaha serivisi nziza, kunoza uburambe bwanyu, no gukomeza umutekano.",
+                "section3-title": "3. Kwagurira Abandi Amakuru",
+                "section3-text": "Ntituzigera tugurisha cyangwa dusangiza amakuru yanyu ku bandi batari abemerewe.",
+                "section4-title": "4. Uburenganzira Bwanyu",
+                "section4-text": "Mufite uburenganzira bwo gusaba gusiba cyangwa gukosora amakuru yanyu igihe cyose."
+            },
+            en: {
+                "header-title": "Privacy Policy | New Talents Stories Group",
+                "section1-title": "1. Information We Collect",
+                "section1-text": "We collect information such as name, email, phone number, and other data used to interact with the platform.",
+                "section2-title": "2. How We Use Information",
+                "section2-text": "Your information is used to provide better services, enhance user experience, and ensure security.",
+                "section3-title": "3. Sharing Information",
+                "section3-text": "We do not sell or share your information with unauthorized third parties.",
+                "section4-title": "4. Your Rights",
+                "section4-text": "You have the right to request deletion or correction of your data at any time."
+            }
+        };
+
+        for (let id in translations[lang]) {
+            document.getElementById(id).textContent = translations[lang][id];
+        }
+    }
+</script>
+
+</body>
+</html>
