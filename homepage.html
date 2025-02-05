@@ -1182,6 +1182,12 @@ function startSlider() {
 
 // Tangiza function ya load
 loadBanners();
+
+     document.addEventListener("DOMContentLoaded", function() {
+    document.body.addEventListener("selectstart", function(e) {
+        e.preventDefault();
+    });
+});
 </script>
 
 
