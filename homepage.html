@@ -1188,8 +1188,19 @@ loadBanners();
         e.preventDefault();
     });
 });
+     window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "e0ef3bbd-9bec-4d6c-a50a-7a330d1bc902",
+      safari_web_id: "web.onesignal.auto.57017041-c410-4b69-86f6-455278402f0c",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
 </script>
-
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
         integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
