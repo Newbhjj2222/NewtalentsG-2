@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $('.menu-toggle').on('click', function () {
+  $('.menu-toggle').on('click', function() {
     $('.nav').toggleClass('showing');
     $('.theme').toggle(); // Toggle visibility of the theme class
   });
@@ -9,27 +9,23 @@ $(document).ready(function() {
 const theme = document.querySelector(".theme");
 const themeModal = document.querySelector(".customize-theme");
 
-const toggleThemeModal = () => {
-  themeModal.style.display = (themeModal.style.display === 'grid') ? 'none' : 'grid';
+if (theme && themeModal) {
+  const toggleThemeModal = () => {
+    themeModal.style.display = themeModal.style.display === 'grid' ? 'none' : 'grid';
+  };
+
+  theme.addEventListener('click', toggleThemeModal);
+
+  window.addEventListener('click', (e) => {
+    if (e.target === themeModal) {
+      themeModal.style.display = 'none';
+    }
+  });
 }
-
-theme.addEventListener('click', toggleThemeModal);
-
-window.addEventListener('click', (e) => {
-  if (e.target === themeModal) {
-    themeModal.style.display = 'none';
-  }
-});
 
 const fontSizes = document.querySelectorAll('.choose-size span');
 const colors = document.querySelectorAll('.choose-color span');
 const backgrounds = document.querySelectorAll('.choose-bg div');
-const messageContainer = document.createElement("div");
-const postsContainer = document.querySelector(".main-content");
-const searchInput = document.querySelector(".text-input");
-const showAllButton = document.getElementById("show-all");
-const notificationBox = document.getElementById("notificationBox");
-const notificationCount = document.getElementById("notificationCount");
 const sidebar = document.querySelector('.sidebar');
 const toggleSidebar = document.querySelector('.toggle-sidebar');
 const mobileMenu = document.querySelector('.mobile-menu');
@@ -50,8 +46,11 @@ function applyFontSize(sizeClass) {
 document.addEventListener('DOMContentLoaded', () => {
   const savedFontSize = localStorage.getItem('selectedFontSize');
   if (savedFontSize) {
-    document.querySelector(`.${savedFontSize}`).classList.add('active');
-    applyFontSize(savedFontSize);
+    const activeSize = document.querySelector(`.${savedFontSize}`);
+    if (activeSize) {
+      activeSize.classList.add('active');
+      applyFontSize(savedFontSize);
+    }
   }
 });
 
@@ -68,31 +67,29 @@ fontSizes.forEach(size => {
 
 // Function to apply color
 function applyColor(colorClass) {
-  const colors = {
+  const colorsMap = {
     'color-1': '#008489',
     'color-2': 'hsl(52, 75%, 60%)',
     'color-3': 'hsl(352, 75%, 60%)',
     'color-4': 'hsl(152, 75%, 60%)',
     'color-5': 'hsl(202, 75%, 60%)'
   };
-  const primaryColor = colors[colorClass] || '#000';
-  document.querySelectorAll('.btn').forEach(button => {
-    button.style.backgroundColor = primaryColor;
+  const primaryColor = colorsMap[colorClass] || '#000';
+
+  document.querySelectorAll('.btn, .slider, header, footer, .theme, .quick, .screen').forEach(element => {
+    element.style.backgroundColor = primaryColor;
   });
-  document.querySelector('.slider').style.backgroundColor = primaryColor;
-  document.querySelector('header').style.backgroundColor = primaryColor;
-  document.querySelector('footer').style.backgroundColor = primaryColor;
-  document.querySelector('.theme').style.backgroundColor = primaryColor;
-  document.querySelector('.quick').style.backgroundColor = primaryColor;
-document.querySelector('.screen').style.backgroundColor = primaryColor;
 }
 
 // Load saved color
 document.addEventListener('DOMContentLoaded', () => {
   const savedColor = localStorage.getItem('selectedColor');
   if (savedColor) {
-    document.querySelector(`.${savedColor}`).classList.add('active');
-    applyColor(savedColor);
+    const activeColor = document.querySelector(`.${savedColor}`);
+    if (activeColor) {
+      activeColor.classList.add('active');
+      applyColor(savedColor);
+    }
   }
 });
 
@@ -101,23 +98,24 @@ colors.forEach(color => {
   color.addEventListener('click', () => {
     colors.forEach(c => c.classList.remove('active'));
     color.classList.add('active');
-    const selectedColorClass = color.classList[0];
-    applyColor(selectedColorClass);
-    localStorage.setItem('selectedColor', selectedColorClass);
+    applyColor(color.classList[0]);
+    localStorage.setItem('selectedColor', color.classList[0]);
   });
 });
 
 // Function to apply background
 function applyBackground(bgClass) {
-  const backgrounds = {
+  const backgroundsMap = {
     'bg-1': 'floralwhite',
     'bg-2': 'linear-gradient(to left, black, #333, black)',
     'bg-3': 'linear-gradient(to right, #333, #777, #333)'
   };
-  const primaryBgColor = backgrounds[bgClass] || 'white';
+  const primaryBgColor = backgroundsMap[bgClass] || 'white';
+
   document.querySelectorAll('.page-wrapper, .post-wrapper, .post, .main-content, .section-topic, .sidebar *').forEach(element => {
     element.style.background = primaryBgColor;
   });
+
   const textColor = (bgClass === 'bg-2' || bgClass === 'bg-3') ? 'white' : '';
   document.querySelectorAll('body *:not(.logo)').forEach(element => {
     element.style.color = textColor;
@@ -128,8 +126,11 @@ function applyBackground(bgClass) {
 document.addEventListener('DOMContentLoaded', () => {
   const savedBg = localStorage.getItem('selectedBackground');
   if (savedBg) {
-    document.querySelector(`.${savedBg}`).classList.add('active');
-    applyBackground(savedBg);
+    const activeBg = document.querySelector(`.${savedBg}`);
+    if (activeBg) {
+      activeBg.classList.add('active');
+      applyBackground(savedBg);
+    }
   }
 });
 
@@ -138,128 +139,153 @@ backgrounds.forEach(bg => {
   bg.addEventListener('click', () => {
     backgrounds.forEach(b => b.classList.remove('active'));
     bg.classList.add('active');
-    const selectedBgClass = bg.classList[0];
-    applyBackground(selectedBgClass);
-    localStorage.setItem('selectedBackground', selectedBgClass);
+    applyBackground(bg.classList[0]);
+    localStorage.setItem('selectedBackground', bg.classList[0]);
   });
 });
 
 // Toggle sidebar display
-toggleSidebar.addEventListener('click', () => {
-  sidebar.classList.toggle('show');
-});
+if (toggleSidebar) {
+  toggleSidebar.addEventListener('click', () => {
+    sidebar.classList.toggle('show');
+  });
+}
 
 // Toggle mobile menu display
-mobileMenu.addEventListener('click', () => {
-  const nav = document.querySelector('.nav');
-  nav.classList.toggle('show');
-});
-
-
+if (mobileMenu) {
+  mobileMenu.addEventListener('click', () => {
+    const nav = document.querySelector('.nav');
+    if (nav) {
+      nav.classList.toggle('show');
+    }
+  });
+}
 
 // Toggle notifications
- // Fungura cyangwa uhishe notifications
-    function toggleNotifications(event) {
-        event.stopPropagation(); // Bituma idahita ifunga ako kanya
+function toggleNotifications(event) {
+  event.stopPropagation();
 
-        var notificationBox = document.getElementById("notificationBox");
-        var notificationCount = document.getElementById("notificationCount");
+  const notificationBox = document.getElementById("notificationBox");
+  const notificationCount = document.getElementById("notificationCount");
 
-        // Fungura cyangwa uhishe notification box
-        if (notificationBox.style.display === "none" || notificationBox.style.display === "") {
-            notificationBox.style.display = "block";
-
-            // Siba badge ya notifications igihe ifunguwe kandi ubike muri localStorage
-            notificationCount.style.display = "none";
-            localStorage.setItem("notificationCleared", "true");
-        } else {
-            notificationBox.style.display = "none";
-        }
+  if (notificationBox && notificationCount) {
+    notificationBox.style.display = notificationBox.style.display === "none" ? "block" : "none";
+    if (notificationBox.style.display === "block") {
+      notificationCount.style.display = "none";
+      localStorage.setItem("notificationCleared", "true");
     }
+  }
+}
 
-    // Gusubiza agaciro ka badge iyo paji yongeye gufungurwa
-    window.onload = function() {
-        var notificationCount = document.getElementById("notificationCount");
-        // Reba niba notifications zaramaze gusibwa muri localStorage
-        if (localStorage.getItem("notificationCleared") === "true") {
-            notificationCount.style.display = "none";
-        }
-    };
+window.onload = function() {
+  const notificationCount = document.getElementById("notificationCount");
+  if (notificationCount && localStorage.getItem("notificationCleared") === "true") {
+    notificationCount.style.display = "none";
+  }
+};
 
-    // Ifunga notification box igihe ukanda ahandi hatariho
-    document.addEventListener("click", function() {
-        document.getElementById("notificationBox").style.display = "none";
-    });
-// Fata ibintu byose biri muri class ya 'quick'
-const quickElements = document.querySelectorAll('.quick');
-
-// Fungura footer
-const footer = document.querySelector('footer');
-
-// Fungura observer ikurikirana igihe footer igeze cyangwa ivuye mu ishusho
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            // Igihe footer igeze mu ishusho, hisha ibintu bya 'quick'
-            quickElements.forEach(element => element.style.display = 'none');
-        } else {
-            // Igihe footer ivuye mu ishusho, garura ibintu bya 'quick'
-            quickElements.forEach(element => element.style.display = '');
-        }
-    });
+document.addEventListener("click", function() {
+  const notificationBox = document.getElementById("notificationBox");
+  if (notificationBox) notificationBox.style.display = "none";
 });
 
-// Tangira gukurikirana footer
-observer.observe(footer);
-
-
+// Search function
 function searchPosts() {
-    // Retrieve search term and convert to lowercase
-    let searchTerm = document.querySelector('input[name="search-term"]').value.toLowerCase();
-    // Get all posts in main-content
-    let posts = document.querySelectorAll('.main-content .post');
+  let searchTerm = document.querySelector('input[name="search-term"]').value.toLowerCase();
+  let posts = document.querySelectorAll('.main-content .post');
 
-    posts.forEach(post => {
-        // Check if post text includes search term
-        if (post.textContent.toLowerCase().includes(searchTerm)) {
-            post.style.display = ""; // Show post if match found
+  posts.forEach(post => {
+    post.style.display = post.textContent.toLowerCase().includes(searchTerm) ? "" : "none";
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  const video = document.getElementById("myVideo");
+  if (video) {
+    video.muted = true;
+    video.play();
+  }
+});
+
+// Multi-step form handling
+function nextStep(step) {
+  const currentFormStep = document.getElementById(`step-${step}`);
+  const nextFormStep = document.getElementById(`step-${step + 1}`);
+
+  if (currentFormStep) currentFormStep.style.display = "none";
+  if (nextFormStep) nextFormStep.style.display = "block";
+
+  if (step === 5) {
+    document.getElementById("confirmation-message").style.display = "block";
+    document.getElementById("multi-step-form").reset();
+  }
+}
+var depositDiv = document.getElementById("depositBox");
+        var button = document.getElementById("dragBtn");
+
+        // Kwerekana cyangwa guhisha deposit iyo button ikanditsweho
+        button.addEventListener("click", function(event) {
+            event.stopPropagation(); // Kubuza ko biza guhita bihisha ako kanya
+            if (depositDiv.style.display === "none" || depositDiv.style.display === "") {
+                depositDiv.style.display = "flex"; 
+            } else {
+                depositDiv.style.display = "none"; 
+            }
+        });
+
+        // Guhisha deposit iyo ukoze ahandi hose kuri page
+        document.addEventListener("click", function(event) {
+            if (event.target !== button && event.target !== depositDiv) {
+                depositDiv.style.display = "none";
+            }
+        });
+        
+        var depositBtn = document.getElementById("depositBtn");
+    var fmContainer = document.querySelector(".fm-container");
+
+    // Function yo kwerekana no guhisha fm-container
+    function toggleDeposit() {
+        if (fmContainer.style.display === "none" || fmContainer.style.display === "") {
+            fmContainer.style.display = "block"; // Yigaragaze
         } else {
-            post.style.display = "none"; // Hide post if no match
+            fmContainer.style.display = "none"; // Yihishe
+        }
+    }
+
+    // Iyo ukoze kuri button, ihita ifungura fm-container
+    depositBtn.addEventListener("click", function(event) {
+        event.stopPropagation(); // Kubuza guhita bifunga ako kanya
+        toggleDeposit();
+    });
+
+    // Iyo ukoze ahandi hose, fm-container irihisha
+    document.addEventListener("click", function(event) {
+        if (event.target !== depositBtn && !fmContainer.contains(event.target)) {
+            fmContainer.style.display = "none";
         }
     });
-}
-document.addEventListener("DOMContentLoaded", function() {
-    var video = document.getElementById("myVideo");
-    video.muted = true; // Gushyiraho "muted" kugira ngo ikine automatic
-    video.play();
-  });
-  
-  
-  
-  // Simulated user role
-        function togglePostForm(event) {
-    event.stopPropagation(); // Bituma idahita ifunga ako kanya
+        
+        var withdrawBtn = document.getElementById("withdrawBtn");
+var continerDiv = document.querySelector(".continer"); // ✅ Koresha class ya "continer"
 
-    var formContainer = document.getElementById("form-container");
-
-    // Fungura cyangwa uhishe form container
-    if (formContainer.style.display === "none" || formContainer.style.display === "") {
-        formContainer.style.display = "block";
+// Function yo kwerekana no guhisha continer
+function toggleContiner() {
+    if (continerDiv.style.display === "none" || continerDiv.style.display === "") {
+        continerDiv.style.display = "block"; // ✅ "black" yahinduwe ikaba "flex" cyangwa "block"
     } else {
-        formContainer.style.display = "none";
-    }
+        continerDiv.style.display = "none"; // Yihishe
+    };
 }
 
-// Fungura igihe ukanda kuri button
-document.getElementById("create-post").addEventListener("click", togglePostForm);
-
-// Funga igihe ukanda ahandi hose
-document.addEventListener("click", function () {
-    var formContainer = document.getElementById("form-container");
-    formContainer.style.display = "none";
+// Iyo ukoze kuri button, continer iragaragara
+withdrawBtn.addEventListener("click", function(event) {
+    event.stopPropagation(); // Kubuza guhita bihisha ako kanya
+    toggleContiner();
 });
 
-// Igihe ukanda kuri container idafunga
-document.getElementById("form-container").addEventListener("click", function (event) {
-    event.stopPropagation();
-});
+// Iyo ukoze ahandi hose kuri page, continer irihisha
+document.addEventListener("click", function(event) {
+    if (event.target !== withdrawBtn && !continerDiv.contains(event.target)) { // ✅ "contins" yahinduwe "contains"
+        continerDiv.style.display = "none";
+    }
+}); 
