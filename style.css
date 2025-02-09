@@ -454,7 +454,20 @@ header .menu-toggle {
   color: green;
   animation-delay: 2s; /* Umurongo wa gatatu nyuma y'amasegonda abiri */
 }
-
+.help{
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+}
+.help li{
+  font-weight: bold;
+  list-style-type: none;
+}
+.help li a:hover{
+  background: green;
+}
 /* Ongeraho andi mirongo ukoresheje .tv p:nth-child(n) ukurikije uko wifuza */
 .page-wrapper {
   margin-top: 20px;
@@ -1098,7 +1111,7 @@ footer {
         width: 80%;
         max-width: 800px;
         padding: 0;
-        height: auto;
+        height: 80px;
         background: black;
         margin-left: 23px;
         overflow: hidden;
@@ -1117,7 +1130,7 @@ footer {
             box-sizing: border-box;
             text-align: center;
             padding: 12px;
-            height: auto;
+            height: 80px;
             background: linear-gradient(to right, palevioletred,black,grey,black, black, black, black, grey, black,palevioletred);
             color: white;
             font-size: 18px;
@@ -1133,7 +1146,210 @@ footer {
             margin: 10px 0 0;
             font-size: 1.2em;
         }
-        
+       .balance{
+         width: 70%;
+         margin-left: 60px;
+         height: auto;
+         padding: 20px;
+         bottom: 240px;
+         z-index: 1000;
+         position: fixed;
+         background: lightgray;
+         color: black;
+         border-radius: 10px;
+         border: 1px solid gray;
+       }
+.deposit button{
+  background: blue;
+  margin-top: 20px;
+  color: white;
+  border: none;
+  height: 35px;
+  border-radius: 12px;
+}
+.deposit button:hover{
+  background: seagreen;
+}
+.deposit span{
+  font-size: 18px;
+  font-weight: bold;
+}
+.deposit {
+  display: none;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid white;
+  width: 70%;
+  position: fixed;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Igishyira hagati neza */
+  background: darkgray;
+  z-index: 1000;
+  border-radius: 12px;
+}
+.deposit span:nth-child(3){
+  color: red;
+}
+.deposit span:nth-child(5){
+  color: green;
+}
+
+
+/* Kugaragara kwa container */
+.fm-container {
+    max-width: 100%;
+    width: 260px;
+    bottom: 100px;
+    margin-left: 50px;
+    padding: 20px;
+    background: skyblue;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+    position: fixed;
+    display: none;
+    box-shadow: rgba(123, 26, 71, 1);
+}
+
+/* Imitwe */
+.fm-container h1 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Step ya formulaire */
+.form-step {
+    display: none;
+    text-align: left;
+}
+
+.form-step:first-child {
+    display: block;
+}
+
+/* Labels */
+.fm-container label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Inputs */
+.fm-container input, .fm-container  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Inputs */
+
+
+/* Buttons */
+.fm-container button {
+    width: 100%;
+    padding: 10px;
+    background: black;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.fm-container button:hover {
+    background: #0056b3;
+}
+
+
+.continer {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 260px;
+            text-align: center;
+            border: 1px solid green;
+            bottom: 80px;
+            z-index: 1000;
+            position: fixed;
+            margin-left: 50px;
+            display: none;
+        }
+
+     .continer   h2 {
+            margin-bottom: 20px;
+        }
+
+      .continer  form {
+            display: flex;
+            flex-direction: column;
+        }
+
+       .continer label {
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+      .continer  input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+       .continer button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+     .continer   button:hover {
+            background: #0056b3;
+        }
+/* Confirmation message */
+#confirmation-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+
+.floating-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 2px;
+            background-color: blue;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            border: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: grab; /* Ikiganza kigaragara */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+            z-index: 1000;
+        }
+
+        .floating-btn:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
 
 /* Media Queries */
 @media only screen and (max-width: 934px) {
