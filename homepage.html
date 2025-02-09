@@ -340,8 +340,84 @@
 </div>
 
 
+<div class="deposit" id="depositBox">
+    <h3>Account</h3>
+    <span>Your balance: </span><span id="nesWith">0</span>
+    <span>Nes points: </span><span id="nes">0</span>
+    <button id="depositBtn">Gura NeS</button>
+    <button id="withdrawBtn">Bikuza NeS</button>
+</div>
+
+<div class="fm-container">
+    <h1>Gura Nes points kugirango wemererwe gusoma.</h1>
+  <form id="multi-step-form">
+            
+            <!-- Step 1 -->
+            <div class="form-step" id="step-1">
+                <label for="name">Izina ryawe ukoresha kuri uru rubuga:</label>
+                <input type="text" id="name" name="name" required>
+                <button type="button" onclick="nextStep(1)">Next</button>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="form-step" id="step-2" style="display:none;">
+                <label for="momo">Izina ribaruye kuri nimero ukoresha wishyura:</label>
+                <input type="text" id="momo" name="user" required>
+                <button type="button" onclick="nextStep(2)">Next</button>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="form-step" id="step-3" style="display:none;">
+                <label for="phone number">Nimero ukoresha wishyura</label>
+                <input type="number" id="mobile-money" name="phone" required>
+                <button type="button" onclick="nextStep(3)">Next</button>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="form-step" id="step-4" style="display:none;">
+                <label for="payment-method">Uburyo bwo Kwishyura:</label>
+                <select id="payment-method" name="payment-method" required>
+                    <option value="mobile-money">Mobile Money</option>
+                </select>
+                <button type="button" onclick="nextStep(4)">Next</button>
+            </div>
+            
+            <!-- Step 5 -->
+            <div class="form-step" id="step-5" style="display:none;">
+                <label for="plan">Hitamo Plan:</label>
+                <select id="plan" name="plan" required>
+                    <option value="onestory">1 Episode (20 RWF)</option>
+                    <option value="fivestory">5 Episodes (100 RWF)</option>
+                    <option value="tenth">10 Episodes (200 RWF)</option>
+                 
+                    <option value="weakly">Icyumweru (300 RWF)</option>
+                    <option value="monthly">Ukwezi (1000 RWF)</option>
+                </select>
+                <button type="submit">submit</button>
+            </div>
+        </form>
+</div>
+
+<div class="continer">
+    <h2>Form yo Gusaba Kubikurizwa</h2>
+    <form id="withdrawalForm">
+        <input type="text" id="ame" placeholder="Amazina ukoresha ku rubuga">
+        <input type="text" id="fone" placeholder="Numero yakira amafaranga">
+        <input type="number" id="amount" placeholder="Nes point ubikuza">
+        <input type="password" id="password" placeholder="Ijambo ry'ibanga">
+        <button type="submit">Ohereza</button>
+    </form>
+</div>
 
 
+
+
+
+
+
+
+
+<button id="dragBtn" class="floating-btn">💸</button>
 
 
     <footer>
@@ -380,6 +456,15 @@
                 </a>
             </div>
         </div>
+        
+        
+        <div class="help">
+          <li><a href="policy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms and conditions</a></li>
+          <li><a href="instructions.html">Instructions</a></li>
+        </div>
+        
+        
         <div class="footer-bottom">
             &copy; 2025 New Talents | All Rights Reserved.
         </div>
@@ -388,7 +473,7 @@
  <script type="module">
     // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, addDoc, query, orderBy, limit, setDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, addDoc, query, orderBy, limit, setDoc, increment, updateDoc, onSnapshot} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 import { getMessaging, onMessage, getToken } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging.js";
 import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
@@ -659,39 +744,53 @@ document.addEventListener("click", function(event) {
     }
 });
 
-// Function yo gusangiza cyangwa gukora copy kuri clipboard
 async function sharePost(postId) {
-    // Fata amakuru ya post
-    const postElement = document.getElementById(postId);
-    const head = postElement.querySelector(".post-title").innerText;
-    const postContent = postElement.querySelector(".post-content p").innerText;
-    const postUrl = window.location.href + "#" + postId; // Link ya post yihariye
+    try {
+        const postElement = document.getElementById(postId);
+        if (!postElement) throw new Error(`Post ifite ID '${postId}' ntibashije kuboneka kuri page.`);
 
-    if (navigator.share) {  // Reba niba Web Share API ishigikiwe
-        try {
+        const head = postElement.querySelector(".post-title")?.innerText || "Post idafite umutwe";
+        const postContent = postElement.querySelector(".post-content p")?.innerText || "Nta content ibonetse kuri iyi post.";
+
+        const postUrl = `https://www.newtalentsg.co.rw`;  // Default link
+
+        // **Gusangiza post**
+        if (navigator.share) {
             await navigator.share({
                 title: head,
                 text: `${postContent}\n\n${postUrl}`,
                 url: postUrl
             });
             console.log("Post yasangijwe neza!");
-        } catch (error) {
-            console.error("Gusangiza ntibyashobotse:", error);
+        } else {
+            await copyToClipboard(`${head}\n\n${postContent}\n\nLink: ${postUrl}`);
+            openFacebookShare(postUrl, head, postContent);
         }
-    } else {
-        // Niba Web Share API idashyigikiwe, kora copy kuri clipboard cyangwa fungura link ya Facebook
-        const shareText = `${head}\n\n${postContent}\n\nLink: ${postUrl}`;
-        try {
-            await navigator.clipboard.writeText(shareText);  // Copy title, content, na link kuri clipboard
-            alert("Ibyo gusangiza byakozweho copy kuri clipboard!");
-        } catch (error) {
-            console.error("Gukora copy ntibyashobotse:", error);
-            alert("Igikoresho cyawe ntabwo gishyigikira Clipboard API.");
-        }
+    } catch (error) {
+        console.error("Ikosa rusange ryabaye:", error);
+        alert(`Ikosa ryabaye: ${error.message}`);
+    }
+}
 
-        // Fungura link ya Facebook
-        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}&quote=${encodeURIComponent(head)}`;
+// **Function ifasha gukopera link kuri clipboard**
+async function copyToClipboard(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        alert("Ibyo gusangiza byakozweho copy kuri clipboard!");
+    } catch (error) {
+        console.error("Ikosa ryabaye mu gukora copy kuri clipboard:", error);
+        alert(`Ikosa ryabaye mu gukora copy: ${error.message}`);
+    }
+}
+
+// **Function ifungura Facebook share page**
+function openFacebookShare(postUrl, title, content) {
+    try {
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}&quote=${encodeURIComponent(title + "\n" + content)}`;
         window.open(facebookShareUrl, '_blank');
+    } catch (error) {
+        console.error("Ikosa ryabaye mu gufungura link ya Facebook:", error);
+        alert(`Ikosa ryabaye mu gufungura link ya Facebook: ${error.message}`);
     }
 }
 
@@ -711,15 +810,52 @@ let currentContent = initialContent;
 let backButtonListener; // Kubika listener
 let observer; // Kubika observer
 
-function attachReadMoreListeners() {
+
+
+
+//aho bitangirira ibya nes point 
+
+
+
+async function attachReadMoreListeners() {
   const readMoreButtons = document.querySelectorAll('.read-more');
+  
   readMoreButtons.forEach(button => {
     button.addEventListener('click', async (event) => {
+      // Fata ahari nes muri HTML
+      const nesElement = document.getElementById('nes');
+      if (!nesElement) {
+        console.error("Error: ID ya 'nes' ntabwo yabonetse muri HTML.");
+        return;
+      }
+
+      // Fata agaciro kari muri 'nes' ukabihindura mo umubare
+      let nesPoints = parseInt(nesElement.textContent, 10);
+
+      if (isNaN(nesPoints)) {
+        console.error("Error: Agaciro ka 'nes' ntabwo ari umubare.");
+        return;
+      }
+
+      // Reba ko umubare wa 'nes' uri hejuru ya 0
+      if (nesPoints <= 0) {
+        alert("Wamaze gukoza amasomo yawe! Ongera ugure points kugira ngo ubone izindi nkuru.");
+        return;
+      }
+
+      // Kugabanya 1 kuri 'nes'
+      nesPoints -= 1;
+      nesElement.textContent = nesPoints; // Kuvugurura muri HTML
+
+      // Fata ID ya post
       const postId = event.currentTarget.getAttribute('data-id');
       if (postId) {
         try {
-          // Kubika content ya none imbere yo kwinjira muri post nshya
+          // Kubika content ya none mbere yo kwinjira muri post nshya
           currentContent = document.body.innerHTML;
+          
+          // Kugenzura author na nes muri Firestore
+          await handleAuthorAndNes(postId);
           await fetchSinglePost(postId);
           // Kongera gushyira event listener kuri 'Back' button nyuma yo kubikora
           attachBackButtonListener();
@@ -734,29 +870,110 @@ function attachReadMoreListeners() {
   });
 }
 
+async function handleAuthorAndNes(postId) {
+    const nesElement = document.getElementById('nes');
+    if (!nesElement) {
+        console.error("Error: ID ya 'nes' ntabwo yabonetse muri HTML.");
+        alert("Habaye ikibazo: ID ya 'nes' ntabwo yabonetse mu mbuga yawe.");
+        return;
+    }
+
+    let nesPoints = parseInt(nesElement.textContent, 10);
+
+    if (isNaN(nesPoints)) {
+        console.error("Error: Agaciro ka 'nes' ntabwo ari umubare.");
+        alert("Habaye ikibazo: Agaciro ka 'nes' ntabwo ari umubare.");
+        return;
+    }
+
+    if (nesPoints <= 0) {
+        alert("Wamaze gukoza amasomo yawe! Ongera ugure points kugira ngo ubone izindi nkuru.");
+        return;
+    }
+
+    nesPoints -= 1;
+    nesElement.textContent = nesPoints;
+
+    // Kubika author info
+    const db = getFirestore(app);
+    const postRef = doc(db, 'posts', postId);
+    const postSnapshot = await getDoc(postRef);
+
+    if (!postSnapshot.exists()) {
+        console.error("Error: Post ntabwo yabonetse muri Firestore.");
+        alert("Habaye ikibazo: Post ntabwo yabonetse muri Firestore.");
+        return;
+    }
+
+    const post = postSnapshot.data();
+    const authorName = post.author || 'Unknown Author';
+
+    // Kubika author muri localStorage
+    localStorage.setItem('authorInfo', `<p><strong>Written by:</strong> ${authorName}</p>`);
+    
+    if (localStorage.getItem('authorInfo')) {
+        console.log("Izina ry'umwanditsi ryabitswe neza!");
+    } else {
+        console.error("Habaye ikosa: Izina ry'umwanditsi ntiryabitswe.");
+    }
+
+    // Gukora update kuri nes points muri Firestore
+    await setDoc(doc(db, 'authors', authorName), {
+        nes: increment(1)
+    }, { merge: true });
+
+    // Fungura inkuru yose
+    const postContentElement = document.querySelector('.main-content.single');
+    const fullPostElement = document.querySelector('#full-post');
+
+    if (postContentElement && fullPostElement) {
+        fullPostElement.innerHTML = post.content;
+    }
+
+    attachBackButtonListener();
+}
+
+
+//aho bigarukira ibya nes point 
+
+
+
 
 function attachBackButtonListener() {
-  const backButton = document.querySelector('.back-button');
+    const backButton = document.querySelector('.back-button');
 
-  // Kureka listener irimo
-  if (backButtonListener) {
-    backButton.removeEventListener('click', backButtonListener);
-  }
+    // Kureka listener irimo
+    if (backButtonListener) {
+        backButton.removeEventListener('click', backButtonListener);
+    }
 
-  backButtonListener = (event) => {
-    event.preventDefault();
-    // Gusubiza current content muri DOM (content yari ihari mbere y'uko 'read more' button ikandwa)
-    document.body.innerHTML = currentContent;
+    backButtonListener = (event) => {
+        event.preventDefault();
 
-    // Gushyira event listeners zose kuri 'read more' na 'back' buttons
-    attachReadMoreListeners();
-    attachBackButtonListener();
-    observeFooter();
-  };
+        // Kubika agaciro kari muri id="nes" mbere yo gusubiza content ya DOM
+        let nesElement = document.getElementById("nes");
+        let nesValue = nesElement ? nesElement.textContent || nesElement.value : null;
 
-  if (backButton) {
-    backButton.addEventListener('click', backButtonListener);
-  }
+        // Gusubiza content yari ihari mbere
+        document.body.innerHTML = currentContent;
+
+        // Gusubiza agaciro kari muri nes nyuma yo gusubiza content
+        if (nesValue !== null) {
+            let newNesElement = document.getElementById("nes");
+            if (newNesElement) {
+                newNesElement.textContent = nesValue;
+            }
+        }
+
+        // Gushyira event listeners zose kuri 'read more' na 'back' buttons
+        attachReadMoreListeners();
+        attachBackButtonListener();
+        observeFooter();
+    };
+
+    if (backButton) {
+        backButton.addEventListener('click', backButtonListener);
+    }
 }
 
 
@@ -1201,6 +1418,215 @@ loadBanners();
     });
   });
 
+
+
+async function fetchNesPoints() {
+    const storedUsername = localStorage.getItem("username");
+
+    if (!storedUsername) {
+        document.getElementById("nes").textContent = "0";
+        return;
+    }
+
+    try {
+        const userDocRef = doc(db, "depositers", storedUsername);
+        const docSnap = await getDoc(userDocRef);
+
+        let nesPoints = docSnap.exists() ? docSnap.data().nes ?? 0 : 0;
+        document.getElementById("nes").textContent = nesPoints;
+
+        const intervalId = setInterval(async () => {
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const updatedSnap = await transaction.get(userDocRef);
+                    if (!updatedSnap.exists()) {
+                        clearInterval(intervalId);
+                        document.getElementById("nes").textContent = "0";
+                        return;
+                    }
+
+                    let currentNesPoints = updatedSnap.data().nes ?? 0;
+                    if (currentNesPoints > 0) {
+                        let newNesPoints = currentNesPoints - 1;
+                        transaction.update(userDocRef, { nes: newNesPoints });
+                        document.getElementById("nes").textContent = newNesPoints;
+                    } else {
+                        clearInterval(intervalId);
+                    }
+                });
+            } catch {}
+        }, 30000);
+    } catch {
+        document.getElementById("nes").textContent = "0";
+    }
+}
+
+fetchNesPoints();
+
+
+//aho guhamagana nes baguze birangirira
+
+
+
+async function updateNeS() {
+    let nesElement = document.getElementById("nes");
+    if (!nesElement) return;
+
+    let nesValue = parseInt(nesElement.innerText.split(" ")[0]);
+    if (isNaN(nesValue)) return;
+
+    let username = localStorage.getItem("username");
+    if (!username) return;
+
+    try {
+        const userDocRef = doc(db, "depositers", username);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) return;
+
+        await updateDoc(userDocRef, { nes: nesValue });
+    } catch {}
+}
+
+// Kora update buri nyuma y’iminota 4 (240,000 milliseconds)
+setInterval(updateNeS, 5000);
+
+
+
+//aho update ya nes birangirira
+
+
+
+document.getElementById('multi-step-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById("name").value;
+    const momo = document.getElementById("momo").value;
+    const phone = document.getElementById("mobile-money").value;
+    const paymentMethod = document.getElementById("payment-method").value;
+    const plan = document.getElementById("plan").value;
+
+    // Fata izina riri muri localStorage
+    const storedUsername = localStorage.getItem("username"); 
+    if (!storedUsername) {
+        alert("Error: Izina ntabwo riboneka muri localStorage.");
+        return;
+    }
+
+    try {
+        // Koresha izina riri muri localStorage nk'ID ya document
+        const depositerRef = doc(db, "depositers", storedUsername);
+        await setDoc(depositerRef, {
+            username: name,
+            momo_name: momo,
+            phone_number: phone,
+            payment_method: paymentMethod,
+            plan: plan,
+            nes: 0, // Field nshya y'ibanze
+            timestamp: new Date()
+        });
+
+        alert('Kugura nes point byoherejwe neza. Ohereza ubwishyu bwa amafaranga kuri 0780786300 kugira ngo uhabwe Nes points utangire usome.');
+        document.getElementById("multi-step-form").reset();
+        document.getElementById("step-5").style.display = "none";
+        document.getElementById("step-1").style.display = "block";
+    } catch (error) {
+        console.error('Error to subscribe: ', error);
+        alert('Error to subscribe: ' + error.message);
+    }
+});
+// aho kugura nes birangirira
+
+
+// 1. Fata username iri muri localStorage
+const username = localStorage.getItem("username");
+
+if (username && username.trim() !== "") {
+    // 2. Reba document muri Firestore authors collection
+    const authorDocRef = doc(db, "authors", username.trim());
+
+    // 3. Komeza gukurikira impinduka muri iyo document
+    onSnapshot(authorDocRef, (doc) => {
+        if (doc.exists()) {
+            const data = doc.data();
+            console.log("Amakuru avuye muri Firestore:", data);
+
+            // 4. Kwerekana ibirimo muri HTML ahari id ya nesWith
+            const nesWithElement = document.getElementById("nesWith");
+            if (nesWithElement) {
+                // Gukora array y'agaciro kose gusa
+                const values = Object.values(data);
+
+                // Gushyiramo unit ya NeS points nyuma ya buri value
+                const valuesWithUnits = values.map(value => `${value} NeS points`);
+
+                // Gukoresha join() kugira ngo uhuze value zose mu murongo umwe
+                nesWithElement.innerHTML = valuesWithUnits.join(", ");
+            } else {
+                console.error("Element ifite ID 'nesWith' ntiyabonetse.");
+            }
+        } else {
+            console.log("Iyo document ntiyabashije kuboneka.");
+        }
+    }, (error) => {
+        console.error("Ikosa ryo kubona document:", error);
+    });
+} else {
+    console.log("Nta username ryabonetse muri localStorage.");
+}
+     
+     
+     // aho Guhamagara nes zo kubikuza birangirira.
+     
+     
+     // Fungura formulaire
+  const form = document.getElementById("withdrawalForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Fata username iri muri localStorage
+    const username = localStorage.getItem("username");
+    if (!username) {
+      alert("Ntiwabashije kuboneka username yawe. Ongera winjire.");
+      return;
+    }
+
+    // Fata inputs
+    const ame = document.getElementById("ame").value;
+    const fone = document.getElementById("fone").value;
+    const amount = document.getElementById("amount").value;
+    const password = document.getElementById("password").value;
+
+    if (!ame || !fone || !amount || !password) {
+      alert("Nyamuneka zuza ibisabwa byose.");
+      return;
+    }
+
+    const userRef = doc(db, "withdrawers", username);
+
+    try {
+      const docSnap = await getDoc(userRef);
+      
+      if (docSnap.exists()) {
+        // Niba username ihari, update
+        await updateDoc(userRef, { ame, fone, amount, password });
+        alert(" Urakoze! ububsabe bwawe bwoherejwe neza. birafata iminota micye ngo hasuzumwe ko ufine nes point, mu mwanya urakira amafaranga yawe.");
+      } else {
+        // Niba username itaboneka, ikoreho document nshya
+        await setDoc(userRef, { ame, fone, amount, password });
+        alert("Urakoze! ububsabe bwawe bwoherejwe neza. birafata iminota micye ngo hasuzumwe ko ufine nes point, mu mwanya urakira amafaranga yawe.");
+      }
+
+      form.reset();
+    } catch (error) {
+      console.error("Ikosa ribaye:", error);
+      alert("Habaye ikosa, ongera ugerageze.");
+    }
+  });
+
+// aho kubikura birangirira.
+     
      
 </script>
 
