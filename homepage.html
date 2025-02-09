@@ -839,7 +839,7 @@ async function attachReadMoreListeners() {
 
       // Reba ko umubare wa 'nes' uri hejuru ya 0
       if (nesPoints <= 0) {
-        alert("Wamaze gukoza amasomo yawe! Ongera ugure points kugira ngo ubone izindi nkuru.");
+        alert("Musomyi!! nta NesPoints ufite zihagije ngo wemererwe gusoma inkuru. kanda kuri button y'ubururu ugure izindi nes point kungira ngo wemererwe gusoma.");
         return;
       }
 
@@ -887,7 +887,7 @@ async function handleAuthorAndNes(postId) {
     }
 
     if (nesPoints <= 0) {
-        alert("Wamaze gukoza amasomo yawe! Ongera ugure points kugira ngo ubone izindi nkuru.");
+        alert("Musomyi!! nta NesPoints ufite zihagije ngo wemererwe gusoma inkuru. kanda kuri button y'ubururu ugure izindi nes point kungira ngo wemererwe gusoma.");
         return;
     }
 
@@ -1558,7 +1558,7 @@ if (username && username.trim() !== "") {
                 const values = Object.values(data);
 
                 // Gushyiramo unit ya NeS points nyuma ya buri value
-                const valuesWithUnits = values.map(value => `${value} NeS points`);
+                const valuesWithUnits = values.map(value => `${value} NeSs`);
 
                 // Gukoresha join() kugira ngo uhuze value zose mu murongo umwe
                 nesWithElement.innerHTML = valuesWithUnits.join(", ");
