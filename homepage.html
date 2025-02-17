@@ -419,6 +419,8 @@
 
 <button id="dragBtn" class="floating-btn">💸</button>
 
+   <!-- Floating Translate Button -->
+   <button class="translate-btn" onclick="toggleTranslate()">Translate</button>
 
     <footer>
         <div class="footer-container">
@@ -1626,10 +1628,62 @@ if (username && username.trim() !== "") {
   });
 
 // aho kubikura birangirira.
-     
-     
+   
 </script>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  try {
+    if (typeof google !== "undefined" && google.translate && google.translate.TranslateElement) {
+      // Hamwe na "main-content" n'izindi classes
+      new google.translate.TranslateElement({
+        pageLanguage: 'rw',
+        includedLanguages: 'en,rw,sw,fr,lg', // Aha wongeramo Swahili (sw), Igifaransa (fr), n'Ikinyarwanda (rw) hamwe na Luganda (lg) ya Uganda.
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+      
+      // Hano dushyiraho uburyo buboneye bwo kwerekana Google Translate kuri ".main-content" gusa
+      var mainContent = document.querySelectorAll('.main-content');
+      mainContent.forEach(function(content) {
+        // Gushyira Google Translate muri class .main-content
+        content.addEventListener('mouseenter', function() {
+          toggleTranslate(true); // Fasha kwerekana translate
+        });
+        content.addEventListener('mouseleave', function() {
+          toggleTranslate(false); // Gufunga translate
+        });
+      });
 
+      // Hano tukajya tubishyira no kuri ".main-content.single"
+      var singleContent = document.querySelectorAll('.main-content.single');
+      singleContent.forEach(function(content) {
+        content.addEventListener('mouseenter', function() {
+          toggleTranslate(true); // Fasha kwerekana translate
+        });
+        content.addEventListener('mouseleave', function() {
+          toggleTranslate(false); // Gufunga translate
+        });
+      });
+    } else {
+      throw new Error("Google Translate widget ntabwo iboneka muri iyi browser.");
+    }
+  } catch (error) {
+    console.error("Ikosa ryabaye mu gihe cyo gutangiza Google Translate: ", error);
+    alert("Habayeho ikibazo mu gihe cyo gutangiza Google Translate. Nyamuneka reba impamvu zishobora kuba zateye iki kibazo.");
+  }
+}
+
+// Fungura cyangwa ufunge translate
+function toggleTranslate(shouldShow) {
+  var element = document.getElementById("google_translate_element");
+  if (shouldShow) {
+    element.style.display = "block";
+  } else {
+    element.style.display = "none";
+  }
+}
+    </script>
+
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
         integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -1639,7 +1693,6 @@ if (username && username.trim() !== "") {
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
-<script>
     
 </body>
                       </html>
