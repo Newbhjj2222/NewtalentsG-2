@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  
 }
 
 html,
@@ -984,67 +985,7 @@ footer {
   position: 0;
   
 }
-.editor-container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      display: none;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-     
-    }
-.form-container{
-  width: 83%;
-  height: 430px;
-  margin-left: 35px;
-  margin-bottom: 15px;
-  padding: 20px;
-  background: darkgray;
-  border-radius: 23px;
-  display: none;
-  box-shadow: 62px;
-  overflow: hidden;
-  position: fixed;
-  bottom: 85px;
-  z-index: 1000;
-}
-#stories{
-  margin-top: 10px;
-  width: 99%;
-  height: 90%;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid grey;
-}
-.form-group{
-  padding: 9px;
-}
-#head{
-  height: 32px;
- border-radius: 23px;
- padding: 12px;
- margin-top: 6px;
-  
-}
-#story{
-  margin-top: 6px;
-  border-radius: 23px;
-  padding: 8px;
-}
-#cover{
-  margin-top: 3px;
-  margin-bottom: 6px;
-  padding: 12px;
-  
-}
-#image{
-  margin-top: 6px;
-  width: 60%;
- 
-}
-#folderSelector{
-  margin-left: 10px;
-  border-radius: 12px;
-}
+
 #button{
   margin-top: 10px;
   margin-left: 45px;
@@ -1106,6 +1047,9 @@ footer {
 }
 #reader button{
   margin-left:  40px;
+}
+.form-container{
+  display: none;
 }
 .banner-container {
         width: 80%;
@@ -1174,6 +1118,23 @@ footer {
   font-size: 18px;
   font-weight: bold;
 }
+/* Floating Button */
+        .translate-btn {
+            position: fixed;
+            bottom: 60px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .translate-btn:hover {
+            background-color: #0056b3;
+        }
 .deposit {
   display: none;
   flex-direction: column;
