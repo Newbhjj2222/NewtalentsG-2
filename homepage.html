@@ -25,7 +25,7 @@
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0&appId=1569938053563259" nonce="S28Vqfk7"></script>
 <style>
     .theme {
-  top: 66px;
+  top: 90px;
   height: 64px;
   width: 100%;
   position: fixed;
@@ -39,7 +39,7 @@
 </style>
     <header>
         <div>
-            <div class="logo">
+            <div class="logo notranslate">
                 <h1 class="logo text">
                     <span>New</span><span>talents</span><span>G</span>
                 </h1>
@@ -55,7 +55,7 @@
                 <li>
                    <a href="#">
                 <i class="fa fa-user"></i>
-                <span id="usernameDisplay">User Name</span>
+                <span id="usernameDisplay" class="notranslate">User Name</span>
                 <i class="fa fa-chevron-down" style="font-size: 0.8em" onclick="toggleDropdown()"></i>
     
             </a>
@@ -114,6 +114,7 @@
        </div>
          
      </div>
+     
      <div class="screen">
          <div class="logo">
          <img src="pro11.png">
@@ -131,7 +132,8 @@
      </div>
      
      
-     
+           <!-- Google Translate Widget -->
+    <div id="google_translate_element"></div>
 
     <div class="page-wrapper">
         <div class="post-slider">
@@ -1630,60 +1632,45 @@ if (username && username.trim() !== "") {
 // aho kubikura birangirira.
    
 </script>
-<script type="text/javascript">
-function googleTranslateElementInit() {
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
   try {
     if (typeof google !== "undefined" && google.translate && google.translate.TranslateElement) {
-      // Hamwe na "main-content" n'izindi classes
+      // Initialize Google Translate
       new google.translate.TranslateElement({
         pageLanguage: 'rw',
-        includedLanguages: 'en,rw,sw,fr,lg', // Aha wongeramo Swahili (sw), Igifaransa (fr), n'Ikinyarwanda (rw) hamwe na Luganda (lg) ya Uganda.
+        includedLanguages: 'en,rw,sw,fr,lg', // Include languages
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
-      
-      // Hano dushyiraho uburyo buboneye bwo kwerekana Google Translate kuri ".main-content" gusa
-      var mainContent = document.querySelectorAll('.main-content');
-      mainContent.forEach(function(content) {
-        // Gushyira Google Translate muri class .main-content
-        content.addEventListener('mouseenter', function() {
-          toggleTranslate(true); // Fasha kwerekana translate
-        });
-        content.addEventListener('mouseleave', function() {
-          toggleTranslate(false); // Gufunga translate
-        });
-      });
 
-      // Hano tukajya tubishyira no kuri ".main-content.single"
-      var singleContent = document.querySelectorAll('.main-content.single');
-      singleContent.forEach(function(content) {
-        content.addEventListener('mouseenter', function() {
-          toggleTranslate(true); // Fasha kwerekana translate
-        });
-        content.addEventListener('mouseleave', function() {
-          toggleTranslate(false); // Gufunga translate
+      // Combine selectors for main content
+      const contentSelectors = ['.main-content', '.main-content.single'];
+      contentSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(content => {
+          content.addEventListener('mouseenter', () => toggleTranslate(true));
+          content.addEventListener('mouseleave', () => toggleTranslate(false));
         });
       });
     } else {
-      throw new Error("Google Translate widget ntabwo iboneka muri iyi browser.");
+      throw new Error("Google Translate widget is not available in this browser.");
     }
   } catch (error) {
-    console.error("Ikosa ryabaye mu gihe cyo gutangiza Google Translate: ", error);
-    alert("Habayeho ikibazo mu gihe cyo gutangiza Google Translate. Nyamuneka reba impamvu zishobora kuba zateye iki kibazo.");
+    console.error("Error initializing Google Translate: ", error);
+    alert("There was an issue initializing Google Translate. Please check for possible reasons.");
   }
 }
 
-// Fungura cyangwa ufunge translate
+// Toggle the visibility of the translate element
 function toggleTranslate(shouldShow) {
-  var element = document.getElementById("google_translate_element");
-  if (shouldShow) {
-    element.style.display = "block";
-  } else {
-    element.style.display = "none";
+  const element = document.getElementById("google_translate_element");
+  if (element) {
+    element.style.display = shouldShow ? "block" : "none";
   }
 }
     </script>
 
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
         integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
