@@ -289,3 +289,39 @@ document.addEventListener("click", function(event) {
         continerDiv.style.display = "none";
     }
 }); 
+
+function googleTranslateElementInit() {
+  try {
+    if (typeof google !== "undefined" && google.translate && google.translate.TranslateElement) {
+      // Initialize Google Translate
+      new google.translate.TranslateElement({
+        pageLanguage: 'rw',
+        includedLanguages: 'en,rw,sw,fr,lg', // Include languages
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+
+      // Combine selectors for main content
+      const contentSelectors = ['.main-content', '.main-content.single'];
+      contentSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(content => {
+          content.addEventListener('mouseenter', () => toggleTranslate(true));
+          content.addEventListener('mouseleave', () => toggleTranslate(false));
+        });
+      });
+    } else {
+      throw new Error("Google Translate widget is not available in this browser.");
+    }
+  } catch (error) {
+    console.error("Error initializing Google Translate: ", error);
+    alert("There was an issue initializing Google Translate. Please check for possible reasons.");
+  }
+}
+
+// Toggle the visibility of the translate element
+function toggleTranslate(shouldShow) {
+  const element = document.getElementById("google_translate_element");
+  if (element) {
+    element.style.display = shouldShow ? "block" : "none";
+  }
+}
