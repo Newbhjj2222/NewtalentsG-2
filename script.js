@@ -287,7 +287,7 @@ withdrawBtn.addEventListener("click", function(event) {
 document.addEventListener("click", function(event) {
     if (event.target !== withdrawBtn && !continerDiv.contains(event.target)) { // ✅ "contins" yahinduwe "contains"
         continerDiv.style.display = "none";
-    }
+    } 
 }); 
 
 function googleTranslateElementInit() {
@@ -325,3 +325,6 @@ function toggleTranslate(shouldShow) {
     element.style.display = shouldShow ? "block" : "none";
   }
 }
+window.onload = function() {
+    alert("Murakaza neza ku rubuga rwacu!\n\n  DORE UKO WAKORESHA URUBUGA \n\n Kugira ngo wemererwe gusoma inkuru zitandukanye, biragusaba kugura nes point. Igihe ugiye gusoma inkuru Kanda button ya read more(soma byose) inshuro imwe, utegereze Kugira ngo nés point zawe zidashirira ku nkuru imwe. Turabashimira kuba mwahisemo new talents stories group, ntimuzicwa n'irungu, turahabaye. \n\n HERE’S HOW TO USE THE WEBSITE: \n\n To be allowed to read different stories, you need to purchase  nes points. When you want to read a story, click the Read More button once and wait to ensure your points don’t run out on a single story. We thank you for choosing New Talents Stories Group—don’t feel left out, we’re here for you.");
+};
