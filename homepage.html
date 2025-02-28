@@ -912,12 +912,12 @@ async function transferNesPoints(reader, author) {
         await runTransaction(db, async (transaction) => {
             const readerDoc = await transaction.get(readerRef);
             if (!readerDoc.exists()) {
-                throw "Error: User ntabwo abaho";
+                throw new Error("Error: User ntabwo abaho");
             }
 
             const readerPoints = readerDoc.data().nes || 0;
             if (readerPoints <= 0) {
-                throw "Error: Nta Nes points zihagije";
+                throw new Error("Error: Nta Nes points zihagije");
             }
 
             transaction.update(readerRef, { nes: increment(-1) });
