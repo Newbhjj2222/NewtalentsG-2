@@ -502,24 +502,69 @@ import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.
 
     // Fungura inyandiko za 'folders'
     async function loadTopics() {
-        try {
-            const querySnapshot = await getDocs(foldersCollection);
-            const topicsList = document.getElementById('topics-list');
-            topicsList.innerHTML = '';  // Gusiba ibyari bihari mbere
+    try {
+        const querySnapshot = await getDocs(foldersCollection);
+        const topicsList = document.getElementById('topics-list');
+        topicsList.innerHTML = '';  // Gusiba ibyari bihari mbere
 
-            querySnapshot.forEach((doc) => {
-                const listItem = document.createElement('li');
-                const link = document.createElement('a');
-                link.href = '#';  // Ushobora kongeraho link niba ihari
-                link.textContent = doc.data().title;  // Ufata content iri muri field 'title'
+        querySnapshot.forEach((doc) => {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = '#';  
+            link.textContent = doc.data().title;  // Ufata content iri muri field 'title'
+            link.setAttribute('data-title', doc.data().title); // Kubika title ya folder muri attribute
 
-                listItem.appendChild(link);
-                topicsList.appendChild(listItem);
+            // Iyo ukoze click kuri folder, title ibikwa muri localStorage
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Kwirinda ko page isubirayo
+                localStorage.setItem('selectedFolderTitle', doc.data().title); 
+                console.log("Folder title yabitswe muri localStorage:", doc.data().title);
+                
+                // Kora searching muri main-content
+                searchInMainContent(doc.data().title);
             });
-        } catch (error) {
-            console.error("Ikosa ryabaye: ", error);
-        }
+
+            listItem.appendChild(link);
+            topicsList.appendChild(listItem);
+        });
+
+    } catch (error) {
+        console.error("Ikosa ryabaye: ", error);
     }
+}
+
+// Function yo gukora searching muri class ya main-content
+function searchInMainContent(folderTitle) {
+    const mainContent = document.querySelector('.main-content');
+    if (!mainContent) return;
+
+    const postTitles = mainContent.querySelectorAll('.post-title');  // Shaka elements za h1 class 'post-title'
+    postTitles.forEach((postTitle) => {
+        const postText = postTitle.textContent;  // Fata text y'icyo h1
+        if (postText && postText.toLowerCase().includes(folderTitle.toLowerCase())) {
+            postTitle.style.display = 'block';  // Erekana item (h1) niba title ihuye
+            // Optionally, you can display the whole post content:
+            const postContent = postTitle.closest('.post');  // assuming the .post class contains the whole post
+            postContent.style.display = 'block';
+            
+            // Kora scrolling ku h1 element
+            postTitle.scrollIntoView({
+                behavior: 'smooth', // Iri ni uburyo bwo gukora scrolling mu buryo bworoshye
+                block: 'center' // Icyo kigaragaza ko h1 izahita ijya hagati ya viewport (umwanya ureba)
+            });
+        } else {
+            postTitle.style.display = 'none';  // Funga item niba title itajyanye
+            const postContent = postTitle.closest('.post'); 
+            postContent.style.display = 'none';
+        }
+    });
+}
+
+// Guhamagara function ya loadTopics
+loadTopics();
+
+//aho ibijyanye na folder birangirira
+
 
     // Fungura collection ya 'posts'
     const postsCollection = collection(db, 'posts');
@@ -973,7 +1018,7 @@ function attachBackButtonListener() {
         // Gushyira event listeners zose kuri 'read more' na 'back' buttons
         attachReadMoreListeners();
         attachBackButtonListener();
-        observeFooter();
+        
     };
 
     if (backButton) {
@@ -987,12 +1032,12 @@ function attachBackButtonListener() {
 attachReadMoreListeners();
 // Kwita kuri 'Back' button bwa mbere
 attachBackButtonListener();
-// Kwita kuri footer bwa mbere
-observeFooter();
+// 
     } catch (error) {
         console.error("Error loading recent stories: ", error);
     }
 }
+
 
 // Iyi function ikora sanitize ya HTML, ikirinda injection mu izina ry'inkuru no muri post.
 function sanitizeHtml(unsafeHtml) {
