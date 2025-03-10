@@ -1,0 +1,340 @@
+body{
+  margin: 0;
+  padding: 0;
+  font-family: Arial,  sans-serif;
+}
+header{
+  width: 100%;
+  background: #008489;
+  height: 66px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+header * {
+  color: white;
+}
+ul li a{
+  text-decoration: none;
+}
+
+.logo {
+  float: left;
+  height: inherit;
+  margin-left: 1em;
+  gap: 10px;
+}
+.logo span:nth-child(1) {
+    color: red;
+}
+
+.logo span:nth-child(2) {
+    color: white;
+}
+
+.logo span:nth-child(3) {
+    color: yellow;
+}
+.logo span {
+  opacity: 0; /* Hide letters initially */
+  animation: fadeIn 5s forwards infinite; /* Make the animation loop */
+}
+
+/* Keyframes for the fade-in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Adding delay for each letter to appear one by one */
+.logo span:nth-child(1) {
+  animation-delay: 0.3s;
+}
+.logo span:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.logo span:nth-child(3) {
+  animation-delay: 0.8s;
+}
+
+header .logo h1 {
+  margin: 9px;
+  border: none;
+}
+
+header .logo h1 span {
+  color: blue;
+}
+
+header ul {
+  float: right;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+header ul li {
+  float: left;
+  position: relative;
+}
+
+header ul li ul {
+  position: absolute;
+  top: 66px;
+  right: 0;
+  display: none;
+  background: #008489; /* Added background for dropdown */
+}
+
+header ul li:hover ul {
+  display: block;
+}
+
+header ul li ul li {
+  width: 100%;
+}
+
+header ul li ul li a {
+  padding: 10px;
+  background: white;
+  color: #444;
+}
+
+header ul li ul li a:hover {
+  background: #006669;
+}
+
+header ul li a {
+  display: block;
+  padding: 21px;
+  font-size: 1.1em;
+}
+.bold-blue {
+            font-weight: bold;
+            color: darkblue;
+        }
+        .bold-italic {
+            font-weight: bold;
+            font-style: italic;
+        }
+
+header ul li a.logout {
+  color: red;
+}
+
+header ul li a:hover {
+  background: #006669;
+  transition: background 0.5s;
+}
+
+header .menu-toggle {
+  display: block;
+}
+.editor-contain{
+  margin-top: 68px;
+  max-width: 100%;
+  width: 95%;
+  height: auto;
+  margin-left: 10px;
+  padding: 5px;
+  background: deepskyblue;
+  border-radius: 12px;
+}
+.form-container{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: auto;
+  height: auto;
+}
+.form-container h2{
+  text-align: center;
+}
+.form-container form{
+  display: block;
+  padding: 10px;
+  background: lightgrey;
+  border-radius: 8px;
+}
+.form-group{
+  display: flex;
+  padding: 5px;
+  flex-direction: column;
+}
+.form-group label{
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+}
+#head{
+  height: 25px;
+  padding: 5px;
+  border: 1px solid grey;
+  margin: 5px;
+  border-radius: 6px;
+}
+#toolbar{
+  height: auto;
+  padding: 5px;
+  margin: 5px;
+  background: grey;
+  border-radius: 10px;
+}
+#toolbar button{
+  height: 25px;
+  width: 39px;
+  background: white;
+}
+#editor {
+  background: white;
+  height: auto;
+  max-height: 160px;
+  border: 1px solid grey;
+  border-radius: 12px;
+  overflow-y: scroll; /* cyangwa 'auto' niba ushaka ko scrolling iba gusa igihe bikeneye */
+  padding: 10px;
+ color: black;
+}
+#image{
+  border-radius: 4px;
+  margin: 10px;
+}
+#folderSelector{
+  border-radius: 5px;
+  margin: 10px;
+}
+#buton{
+  width: auto;
+  height: auto;
+  padding: 5px;
+  background: blue;
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+#buton:hover{
+  background: green;
+}
+
+.intro{
+  margin-top: 120px;
+  text-align: center;
+  padding: 10px;
+  background: skyblue;
+  max-width: 100%;
+  box-shadow: 10px 10px 20px 5px rgba(192, 42, 61, 1);
+  border-radius: 12px;
+  border: 1px solid yellow;
+}
+#menu-toggle{
+  display: none;
+}
+.intro span{
+  font-size: 23px;
+  font-weight: bold;
+}
+.main-content{
+  margin-top: 32px;
+  width: 95%;
+  max-width: 100%;
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+  margin-bottom: 65px;
+  background: wheat;
+  border: 1px solid darkgray;
+}
+.main-content h2{
+  text-align: center;
+  font-weight: bold;
+}
+.posts{
+  align-content: center;
+  padding: 20px;
+  font-weight: bold;
+  height: auto;
+  background: white;
+  border: 1px solid grey;
+  border-radius: 12px;
+  
+}
+footer{
+  position: fixed;
+  z-index: 1000;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: white;
+}
+footer li{
+  list-style: none;
+  font-size: 28px;
+}
+#profile{
+  float: left;
+  margin-left: 70px;
+  margin-top: 15px;
+  overflow: hidden;
+  color: darkblue;
+  align-items: center;
+}
+
+.single{
+  border: 1px solid gray;
+  padding: 10px;
+  margin: 10px;
+  background: white;
+  border-top-right-radius: 80px;
+  border-bottom-left-radius: 80px;
+}
+
+@media only screen and (max-width: 770px) {
+  header{
+    position: fixed;
+  }
+#menu-toggle{
+  display: block;
+}
+  header ul {
+    width: 100%;
+    background: #008489;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+  header ul li {
+    width: 100%;
+  }
+  header ul li ul{
+  position: static;
+  display: block;
+  width: 100%;
+}
+header ul li ul li a{
+  padding: 10px;
+  background:#008489;
+  color: white;
+  padding-left: 50px;
+}
+.showing{
+    max-height: 100em;
+}
+  header .menu-toggle {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 1.9em;
+  }
+  .main-content{
+    padding: 10px;
+    max-width: 100%;
+  }
+}
