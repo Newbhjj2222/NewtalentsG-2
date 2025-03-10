@@ -71,7 +71,7 @@
 <body>
 
     <div class="profile-container">
-        <img src="/blog/new/pro11.png" alt="Profile Picture" class="profile-pic" id="profile-pic" onclick="document.getElementById('file-input').click()">
+        <img src="pro11.png" alt="Profile Picture" class="profile-pic" id="profile-pic" onclick="document.getElementById('file-input').click()">
         <input type="file" id="file-input" accept="image/*">
         <h2 class="profile-name" id="username">Username</h2>
         <span id="role">role</span>
@@ -106,7 +106,7 @@
     document.getElementById("username").textContent = username;
     
     const profilePic = document.getElementById("profile-pic");
-    const defaultPicUrl = "/blog/new/pro11.png";
+    const defaultPicUrl = "pro11.png";
     const storedPicUrl = localStorage.getItem("profilePicUrl");
     
     if (storedPicUrl) {
