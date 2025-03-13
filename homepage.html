@@ -193,6 +193,9 @@
         <div class="content clearfix">
           
             <div class="maen-content">
+              <div class="single">
+                
+              </div>
                 <h7 class="recent-stories-title">Recent Stories</h7>
                <div class="section-search search">
   <h2 class="section-title">Search</h2>
@@ -869,7 +872,8 @@ let observer; // Kubika observer
 
 
 
-// Function yo kwemerera umusomyi gusoma inkuru niba afite Nes Points
+
+// Function yo kwemerera umusomyi gusoma inkuru niba afite Nes Points zihagije
 async function attachReadMoreListeners() {
     const readMoreButtons = document.querySelectorAll('.read-more');
 
@@ -884,17 +888,16 @@ async function attachReadMoreListeners() {
             // Fata izina rya user muri localStorage
             const username = localStorage.getItem('username');
             if (!username) {
-                alert("Habaye ikibazo: Ntabwo byashobotse kumenya izina ryawe. banza winjire cyangwa wiyandikishe. kubindi bisobanuro mwatwandikira kuri Whatsapp 0722319367");
+                alert("Habaye ikibazo: Ntabwo byashobotse kumenya izina ryawe. Banza winjire cyangwa wiyandikishe. Kubindi bisobanuro mwatwandikira kuri Whatsapp 0722319367.");
                 return;
             }
 
             try {
                 // Reba niba user afite Nes Points zihagije
                 const hasEnoughPoints = await checkUserNesPoints(username);
-              if (!hasEnoughPoints) {
-    alert("Musomyi!! Nta Nes Points ufite zihagije ngo wemererwe gusoma inkuru. Kanda kuri button y'ubururu, iri iburyo hasi irimo ikimenyetso gisa uku 💸 ugure izindi nes point.\n\nReader!! You don't have enough Nes Points to read the article. Click on the blue button at the bottom right with a 💸 sign to buy more Nes Points.");
-    return;
-
+                if (!hasEnoughPoints) {
+                    alert("Musomyi!! Nta Nes Points ufite zihagije ngo wemererwe gusoma inkuru. Kanda kuri button y'ubururu, iri iburyo hasi irimo ikimenyetso gisa uku 💸 ugure izindi Nes Points.\n\nReader!! You don't have enough Nes Points to read the article. Click on the blue button at the bottom right with a 💸 sign to buy more Nes Points.");
+                    return;
                 }
 
                 // Fata izina ry'umwanditsi w'inkuru
@@ -960,22 +963,34 @@ async function transferNesPoints(reader, author) {
                 throw new Error("Error: User ntabwo abaho");
             }
 
-            const readerPoints = readerDoc.data().nes || 0;
-            if (readerPoints <= 0) {
-                throw new Error("Error: Nta Nes points zihagije");
+            const authorDoc = await transaction.get(authorRef);
+            if (!authorDoc.exists()) {
+                throw new Error("Error: Umwanditsi ntabwo abaho");
             }
 
-            transaction.update(readerRef, { nes: increment(-1) });
-            transaction.update(authorRef, { nes: increment(1) });
+            // Shyira agaciro k'nes z'umukoresha
+            const readerPoints = readerDoc.data().nes || 0;
+            if (readerPoints < 1) { // Reba niba afite Nes Points zihagije
+                throw new Error("Error: Nta Nes Points zihagije");
+            }
+
+            // Kugira ngo ntihagire ikibazo cy'uko byakuramo points nabi, dukoresha agaciro gashya
+            const newReaderPoints = readerPoints - 1;
+
+            // Update nes z’umusomyi na nes z’umwanditsi
+            transaction.update(readerRef, { nes: newReaderPoints });  // Dukoresha agaciro gashya
+            transaction.update(authorRef, { nes: increment(1) });    // Umwanditsi yunguka 1
         });
+
         console.log("Nes Points zoherejwe neza!");
     } catch (error) {
         console.error("Transaction Failed:", error);
+        alert("Habaye ikibazo mu kohereza Nes Points. Mwongere mugerageze.");
     }
 }
 
 // Fungura inkuru yose
-const postContentElement = document.querySelector('.main-content.single');
+const postContentElement = document.querySelector('.single');
 const fullPostElement = document.querySelector('#full-post');
 
 // Reba niba post content itabonetse neza
