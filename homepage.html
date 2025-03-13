@@ -570,38 +570,64 @@ loadTopics();
 //aho ibijyanye na folder birangirira
 
 
-    // Fungura collection ya 'posts'
-    const postsCollection = collection(db, 'posts');
+  // Fungura collection ya 'posts'
+const postsCollection = collection(db, 'posts');
 
-    // Function ifata documents ziri muri collection ya 'posts'
-    
-        async function fetchPosts() {
+// Function ifata documents ziri muri collection ya 'posts'
+async function fetchPosts() {
     try {
-        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'), limit(5));
+        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'), limit(30));
         const querySnapshot = await getDocs(recentPostsQuery);
 
-        let postsHtml = '';
         let postContainer = document.querySelector('.post-wrapper');
         postContainer.innerHTML = ''; // Gukuraho content ya mbere
 
-        // Iterating over each document
+        if (querySnapshot.empty) {
+            postContainer.innerHTML = "<p style='text-align:center; color: red;'>Nta posts zibonetse.</p>";
+            return;
+        }
+
         querySnapshot.forEach((doc) => {
             const postData = doc.data();
-            const postElement = `
-                <div class="post" style="display: inline-block; width: 100%;" onclick="openPost('${doc.id}')">
-                    <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 100%; height: 200px; border-radius: 28px 8px 0 0;" class="slider-image"/>
-                    <div class="post-info">
-                        <h4><a href="#">${postData.head}</a></h4>
-                        <i class="far fa-user"></i>&nbsp;
-                        <span>${postData.author || "NewtalentsG"}</span>
-                        <i class="far fa-calendar">${postData.createdAt ? new Date(postData.createdAt).toLocaleDateString() : 'No date available'}</i>
-                    </div>
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+            postElement.style.display = 'inline-block';
+            postElement.style.width = '100%';
+
+            postElement.innerHTML = `
+                <img src="${postData.imageUrl}" alt="${postData.head}" 
+                    style="width: 100%; height: 200px; border-radius: 28px 8px 0 0;" 
+                    class="slider-image" data-search="${postData.head}"/>
+                <div class="post-info">
+                    <h4><a href="#" data-search="${postData.head}">${postData.head}</a></h4>
+                    <i class="far fa-user"></i>&nbsp;
+                    <span>${postData.author || "NewtalentsG"}</span>
+                    <i class="far fa-calendar">
+                        ${postData.createdAt ? new Date(postData.createdAt).toLocaleDateString() : 'No date available'}
+                    </i>
                 </div>
             `;
-                postContainer.innerHTML += postElement;
+
+            // Event Listener ku ifoto na head kugira ngo bikore search
+            postElement.querySelector('.slider-image').addEventListener('click', (e) => {
+                searchPosts(e.target.dataset.search);
             });
 
-            // Kwambara slick carousel
+            postElement.querySelector('h4 a').addEventListener('click', (e) => {
+                e.preventDefault();
+                searchPosts(e.target.dataset.search);
+            });
+
+            postContainer.appendChild(postElement);
+        });
+
+        // Kora reset kuri slick carousel mbere yo kongera kuyishyiraho
+        if ($('.post-wrapper').hasClass('slick-initialized')) {
+            $('.post-wrapper').slick('unslick');
+        }
+
+        // Subiramo slick nyuma yo kuzana posts
+        setTimeout(() => {
             $('.post-wrapper').slick({
                 slidesToShow: 3,
                 slidesToScroll: 1,
@@ -635,11 +661,41 @@ loadTopics();
                     }
                 ]
             });
-        } catch (error) {
-            console.error("Error fetching posts: ", error);
+        }, 500);
+
+    } catch (error) {
+        console.error("Error fetching posts: ", error.message);
+        alert("Habaye ikibazo: " + error.message);
+    }
+}
+// Function yo gushakisha ibyitiranwa muri '.main-content'
+function searchPosts(keyword) {
+    let mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        let posts = mainContent.querySelectorAll('.post');
+        let firstMatch = null; // Kubika iya mbere ihuye
+
+        posts.forEach(post => {
+            let matchFound = post.innerHTML.toLowerCase().includes(keyword.toLowerCase());
+
+            if (matchFound) {
+                post.style.display = 'block';
+                if (!firstMatch) {
+                    firstMatch = post; // Fata iya mbere ibonetse
+                }
+            } else {
+                post.style.display = 'none';
+            }
+        });
+
+        // Niba hari ihuye, ihite yikora scrolling
+        if (firstMatch) {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }
-
+}
+// Guhamagara function ya fetchPosts kugira ngo izane posts
+fetchPosts();
     // Fungura document ya post imwe
   // Function yo gufata post imwe
 // Function yo kubika comment muri Firestore
@@ -689,6 +745,8 @@ async function fetchSinglePost(postId) {
             <textarea id="comment-input" style="border-radius: 12px;  margin-top: 30px;" placeholder="Write your comment..."></textarea>
             <button id="submit-comment" style="background: blue; color: white; border-radius: 12px;">Submit Comment</button>
         </div>
+        
+        
     </div>
 `;
 
