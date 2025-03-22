@@ -1028,23 +1028,22 @@ async function transferNesPoints(reader, author) {
                 throw new Error("Error: User ntabwo abaho");
             }
 
-            const authorDoc = await transaction.get(authorRef);
-            if (!authorDoc.exists()) {
-                throw new Error("Error: Umwanditsi ntabwo abaho");
-            }
-
-            // Shyira agaciro k'nes z'umukoresha
             const readerPoints = readerDoc.data().nes || 0;
-            if (readerPoints < 1) { // Reba niba afite Nes Points zihagije
+            if (readerPoints < 1) {
                 throw new Error("Error: Nta Nes Points zihagije");
             }
 
-            // Kugira ngo ntihagire ikibazo cy'uko byakuramo points nabi, dukoresha agaciro gashya
             const newReaderPoints = readerPoints - 1;
 
-            // Update nes z’umusomyi na nes z’umwanditsi
-            transaction.update(readerRef, { nes: newReaderPoints });  // Dukoresha agaciro gashya
-            transaction.update(authorRef, { nes: increment(1) });    // Umwanditsi yunguka 1
+            // Reba niba umwanditsi abaho, niba atabaho urema document nshya
+            const authorDoc = await transaction.get(authorRef);
+            if (!authorDoc.exists()) {
+                transaction.set(authorRef, { nes: 1 }); // Iyo document itabaho, iraremwa ifite nes=1
+            } else {
+                transaction.update(authorRef, { nes: increment(1) }); // Niba ihari, points ziyongerwaho 1
+            }
+
+            transaction.update(readerRef, { nes: newReaderPoints });
         });
 
         console.log("Nes Points zoherejwe neza!");
