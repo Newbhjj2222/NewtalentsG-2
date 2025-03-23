@@ -18,14 +18,13 @@
     <button type="flow" id="follow">Follow</button>
     </header>
 <div class="tv">
- <video 
+<video 
     id="autoPlayVideo" 
-    src="db835438-e8f5-d49b-d6ef-c4d1ef33aa35.mp4" 
     playsinline 
-    autoplay
+    autoplay 
     controls>
-  
-  </video>
+  <!-- URL ya video izahindurwa nyuma yo kubikora -->
+</video>
  <div class="live-badge" id="liveBadge">
    <span>NeT</span>
  </div>
@@ -56,71 +55,76 @@
   const storage = getStorage(app);
 
 async function playAndDownloadVideosFromFirestore() {
-    try {
-      const showsRef = collection(db, "shows"); // Fata collection ya 'shows'
-
-      // Query ya kureba video zateguwe hakurikijwe igihe zashyizweho (createdAt)
-      const showsQuery = query(showsRef, orderBy("createdAt", "desc")); // 'asc' ni ugutondekanya mu buryo bwazamutse, 'desc' niba ushaka ubundi buryo
-
-      const snapshot = await getDocs(showsQuery); // Fata document zose hakurikijwe iyo query
-
-      // Tegura urutonde rwa videoUrls
-      const videoUrls = [];
-      snapshot.forEach((doc) => {
-        const videoUrl = doc.data().videoUrl;
-        if (videoUrl) {
-          videoUrls.push(videoUrl);
-        }
-      });
-    // Kora download ya video zose
-    const downloadedUrls = await Promise.all(
-      videoUrls.map(async (videoUrl) => {
-        const videoRef = ref(storage, videoUrl);
-        return await getDownloadURL(videoRef);
-      })
-    );
-
-    // Tangira gukina video zose nk'urwo rutonde
-    playPlaylist(downloadedUrls);
+  try {
+    const showsRef = collection(db, "shows");
+    const showsQuery = query(showsRef, orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(showsQuery);
+    
+    const videoUrls = [];
+    snapshot.forEach((doc) => {
+      const videoUrl = doc.data().videoUrl;
+      if (videoUrl) {
+        videoUrls.push(videoUrl);
+      }
+    });
+    
+    playPlaylist(videoUrls);
   } catch (error) {
     console.error("Ikosa ribaye: ", error);
   }
 }
 
 function playPlaylist(videoUrls) {
-  const videoElement = document.getElementById("autoPlayVideo");
-  if (!videoElement) {
+  const mainVideoElement = document.getElementById("autoPlayVideo");
+  const secondVideoElement = document.createElement("video"); // Gukora video ya kabiri
+  secondVideoElement.style.display = "none"; // Kwandika video ya kabiri
+  
+  if (!mainVideoElement) {
     console.error("Element ya 'autoPlayVideo' ntabwo ibonetse.");
     return;
   }
-
+  
   let currentIndex = 0;
-
-  // Function yo gukina video imwe
+  
   function playNextVideo() {
     if (currentIndex < videoUrls.length) {
-      videoElement.src = videoUrls[currentIndex];
-      currentIndex++;
-      videoElement.play();
+      const currentVideoUrl = videoUrls[currentIndex];
+      mainVideoElement.src = currentVideoUrl;
+      mainVideoElement.play();
+      
+      // Preload video ya kabiri
+      if (currentIndex + 1 < videoUrls.length) {
+        const nextVideoUrl = videoUrls[currentIndex + 1];
+        secondVideoElement.src = nextVideoUrl;
+        secondVideoElement.preload = "auto"; // Preload video ya kabiri
+      }
+      
+      // Start the next video 20 seconds before the current one ends
+      mainVideoElement.addEventListener('timeupdate', function onTimeUpdate() {
+        if (mainVideoElement.duration - mainVideoElement.currentTime <= 0 && currentIndex + 1 < videoUrls.length) {
+          currentIndex++;
+          playNextVideo();
+          mainVideoElement.removeEventListener('timeupdate', onTimeUpdate);
+        }
+      });
+      
+      // Update the current index when the current video ends
+      mainVideoElement.onended = function() {
+        currentIndex++;
+        playNextVideo();
+      };
     } else {
-      // Playlist irarangiye, tangira bundi bushya
-      console.log("Playlist irarangiye, iratangira bundi bushya!");
-      currentIndex = 0;
-      playNextVideo();
+      console.log("Playlist irarangiye.");
+      currentIndex = 0; // Gusubira ku ishusho ya mbere niba irangiye
+      playNextVideo(); // Tangira bundi bushya
     }
   }
-
-  // Tangiza igihe video irangiye
-  videoElement.onended = playNextVideo;
-
-  // Tangira gukina video ya mbere
+  
   playNextVideo();
 }
 
 // Fata video ziva muri Firestore hanyuma uhamagare iyi function
 playAndDownloadVideosFromFirestore();
-
-
 
 // Function yo gufata cyangwa gushyiraho username
 function getUsername() {
