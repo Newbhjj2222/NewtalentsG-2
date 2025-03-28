@@ -130,7 +130,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, query, where, orderBy, initializeFirestore, doc, getDoc, setDoc,addDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, where, orderBy, initializeFirestore, doc, getDoc, setDoc,addDoc, deleteDoc, updateDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
         const firebaseConfig = {
@@ -205,6 +205,9 @@ const querySnapshot = await getDocs(userPostsQuery);
                         <p><strong>Date:</strong> ${createdAt}</p>    
                     </div>    
                     <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>    
+                    <button class="delete" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Delete</button> 
+                    <button class="edite" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Edite story</button> 
+                    
                 </div>    
             `;    
         });    
@@ -489,7 +492,78 @@ function checkAndScroll() {
 // Gukora igenzura buri gihe
 checkAndScroll();
         
+        document.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("delete")) {
+        const postId = event.target.getAttribute("data-id");
         
+        if (confirm("Are you sure you want to delete this post?")) {
+            try {
+                await deleteDoc(doc(db, "posts", postId)); // Siba post muri Firestore
+                document.getElementById(postId).remove(); // Siba post kuri page
+                alert("Post deleted successfully!");
+            } catch (error) {
+                console.error("Error deleting post:", error);
+                alert("Failed to delete post.");
+            }
+        }
+    }
+});
+
+
+document.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("edite")) {
+    const postId = event.target.getAttribute("data-id");
+    
+    // Saka iyo post muri Firestore
+    const postRef = doc(db, "posts", postId);
+    const postSnap = await getDoc(postRef);
+    
+    if (postSnap.exists()) {
+      const postData = postSnap.data();
+      
+      // Kuzuza editor n'ibiri muri post
+      document.getElementById("head").value = postData.head || "";
+      document.getElementById("editor").innerHTML = postData.post || postData.story || "";
+      
+      // Kwerekana editor
+      const editorContainer = document.querySelector(".editor-contain");
+      editorContainer.style.display = "block";
+      
+      // **Scrolling up automatically**
+      editorContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+      
+      // Gufunga editor
+      document.getElementById("closeEditor").addEventListener("click", () => {
+        editorContainer.style.display = "none";
+      });
+      
+      // Kuvugurura post
+      document.getElementById("stories").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const updatedHead = document.getElementById("head").value;
+        const updatedStory = document.getElementById("editor").innerHTML;
+        
+        try {
+          await updateDoc(postRef, {
+            head: updatedHead,
+            post: updatedStory
+          });
+          
+          alert("Post updated successfully!");
+          
+          // Gufunga editor nyuma yo kuvugurura
+          editorContainer.style.display = "none";
+        } catch (error) {
+          console.error("Error updating post:", error);
+          alert("Failed to update post.");
+        }
+      });
+    } else {
+      alert("Post not found!");
+    }
+  }
+});
         
     </script>
 
