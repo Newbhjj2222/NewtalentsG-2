@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amategeko ya New Talents Stories Group</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .rule {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .penalty {
+            font-style: italic;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Amategeko ya New Talents Stories Group</h1>
+        <div id="rules"></div>
+    </div>
+    <script>
+        const rules = [
+            { rule: "Ntibyemewe gutangaza inkuru zibiba urwango cyangwa amacakubiri.", penalty: "Kwirukanwa burundu ku rubuga no gusiba ibihangano byose byawe." },
+            { rule: "kirazira gukoresha inkuru y'abandi cyangwa gukora inkuru ku muntu runaka ntabureganzira bwanyirayo.", penalty: "Kubuzwa gutanga inkuru mu byumweru bibiri. no guhagarika konti yawe kugeza ubwo ikibazo gikemutse." },
+            { rule: "kirazira kwandika cyangwa gushishikariza abasomyi ubusambanyi ukoresheje inkuru cyangwa comments.", penalty: "gusibwa kwiyo nkuru, no gucibwa mande ya nes 50." },
+            { rule: "Abasomyi bagomba kwishyura kugira ngo babashe gusoma inkuru.", penalty: "Kubuzwa kugera ku nkuru." },
+            { rule: "Ntibyemewe kwiba ibitekerezo by’undi mwanditsi.", penalty: "Gukurwaho inkuru no guhagarikwa ukwezi kumwe." },
+            { rule: "Kwibasira       abandi banyamuryango ntibyemewe.", penalty: "Guhagarikwa amezi abiri." },
+            { rule: "Kwica uburenganzira bw’umwanditsi ntibyemewe.", penalty: "Gukurwaho inkuru no kwihanangirizwa." },
+            { rule: "Abanditsi bagomba gukurikiza ibisabwa mu gushyiraho inkuru.", penalty: "Kubuzwa gutanga inkuru iminsi 10." },
+            { rule: "Gutanga amakuru y’ibihuha ntibyemewe.", penalty: "Kubuzwa gutanga inkuru ukwezi kumwe. no gukatwa nes 45" },
+            { rule: "Birabujijwe kwibasira cyangwa kuvuga nabi umusomyi witwaje ko nawe yakubwiye nabi.", penalty: "Guhagarikwa amezi atatu. no gucibwa mande ya nes 25 zihabwa umusomyi nkimoza marira" },
+            { rule: "Gukoresha imvugo itari nyayo ntibyemewe.", penalty: "Gukosorwa inkuru cyangwa guhagarikwa iminsi 15 no gutanga mande ya nes 10." },
+            { rule: "Gusaba abantu kwishyura mu buryo butemewe ntibyemewe ubizeza ko bari bubone nes point bakoresha basoma.", penalty: "Guhagarikwa amezi atandatu cyanga gutanga inkuru utabona inyungu zayo ukwezi kose." },
+            { rule: "Gutanga ibitekerezo by'ubugome cyangwa by'urwango ntibyemewe.", penalty: "Kwirukanwa burundu." },
+            { rule: "Inkuru zose zigomba kuba zifite umwimerere.", penalty: "Gukurwaho inkuru no kubuzwa kongera kwandika amezi 3." },
+            { rule: "Kugirira nabi abandi banyamuryango ntibyemewe.", penalty: "Guhagarikwa burundu." },
+            { rule: "Gutanga inkuru zifite amashusho mabi cyangwa amafoto mabi akwirakwiza ubusambanyi ntibyemewe.", penalty: "Guhagarikwa imyaka ibiri, cyangwa gutanga mande ya nes 170" },
+            { rule: "Gutanga inkuru zirimo amakuru y'ibihuha ntibyemewe.", penalty: "Guhagarikwa amezi 4." },
+            { rule: "Kwica uburenganzira bwa copyright ntibyemewe.", penalty: "Gukurwaho inkuru no kwihanangirizwa." },
+            { rule: "Gutanga inkuru zidasobanutse ntibyemewe.", penalty: "Gukosorwa ku inkuru cyangwa guhagarikwa iminsi 30 no gusibwa kwiyo nkuru." },
+            { rule: "Guhakana amategeko y’urubuga ntibyemewe no kutemera ibyo utegekwa n'urubuga.", penalty: "Kwirukanwa burundu." }
+        ];const rulesContainer = document.getElementById("rules");
+    
+    rules.forEach((item, index) => {
+        const ruleDiv = document.createElement("div");
+        ruleDiv.classList.add("rule");
+        ruleDiv.innerHTML = `<strong>${index + 1}. ${item.rule}</strong><br><span class="penalty">Igihano: ${item.penalty}</span>`;
+        rulesContainer.appendChild(ruleDiv);
+    });
+</script>
+
+</body>
+</html>
