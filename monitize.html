@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <title>Urutonde rw’abantu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      padding: 0px;
+    }
+
+    table {
+      width: 100%;
+      overflow: hidden;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .status {
+      font-weight: bold;
+    }
+
+    .allow {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+    }
+
+    .disallow {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .allow:hover {
+      background-color: #218838;
+    }
+
+    .disallow:hover {
+      background-color: #c82333;
+    }
+    h2{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>ABANDITSI BARI MONITIZE</h2>
+ <table>
+  <thead>
+    <tr>
+      <th>Authors</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="authors-body">
+    <!-- Authors bazahinjizwa hano na JavaScript -->
+  </tbody>
+</table>
+  
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      doc,
+      getDoc,
+      updateDoc,
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
+      authDomain: "newtalents-a7c29.firebaseapp.com",
+      projectId: "newtalents-a7c29",
+      storageBucket: "newtalents-a7c29.appspot.com",
+      messagingSenderId: "507408992610",
+      appId: "1:507408992610:web:05ce220a4cb4922de9843b",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+
+
+
+
+
+// Function ishinzwe kuzana authors muri table
+async function loadWithdrawers() {
+  const tbody = document.getElementById("authors-body");
+  tbody.innerHTML = "";
+  
+  try {
+    const querySnapshot = await getDocs(collection(db, "authors"));
+    
+    querySnapshot.forEach((docData) => {
+      const tr = document.createElement("tr");
+      const authorId = docData.id;
+      const status = docData.data().status || "Pending";
+      
+      tr.setAttribute("data-id", authorId); // Twifashisha mu guhindura row nyuma
+      tr.innerHTML = `
+        <td>${authorId}</td>
+        <td class="status">${status}</td>
+        <td>
+          <button class="allow">Allow</button>
+          <button class="disallow">Disallow</button>
+        </td>
+      `;
+      
+      tbody.appendChild(tr);
+      
+      // Event kuri Allow
+      tr.querySelector(".allow").addEventListener("click", () => {
+        updateAuthorStatus(authorId, "Monetized💲");
+      });
+      
+      // Event kuri Disallow
+      tr.querySelector(".disallow").addEventListener("click", () => {
+        updateAuthorStatus(authorId, "Non-Monetized");
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching authors:", error);
+  }
+}
+
+// Function yo guhindura status muri Firestore no muri table
+async function updateAuthorStatus(authorId, newStatus) {
+  const authorRef = doc(db, "authors", authorId);
+  
+  try {
+    await updateDoc(authorRef, {
+      status: newStatus
+    });
+    
+    // Hindura status mu table ako kanya
+    const row = document.querySelector(`tr[data-id="${authorId}"]`);
+    if (row) {
+      const statusCell = row.querySelector(".status");
+      statusCell.textContent = newStatus;
+    }
+    
+    console.log(`Status ya ${authorId} yahinduwe kuri ${newStatus}`);
+  } catch (error) {
+    console.error("Error updating status:", error);
+  }
+}
+
+// Tangira byose kuri page load
+window.onload = () => {
+  loadWithdrawers();
+};
+  </script>
+
+</body>
+</html>
