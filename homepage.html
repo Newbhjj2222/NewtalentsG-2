@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New talents stories group</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+
+    .banner {
+      position: relative;
+      width: 400px;
+      height: auto;
+      max-width: 100%;
+      background: #222;
+      border: 3px solid orange;
+      border-radius: 10px;
+      text-align: center;
+      padding: 20px;
+      color: white;
+      margin: 5px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 140, 0, 0.7);
+    }
+
+    .banner h2 {
+      z-index: 1;
+      position: relative;
+    }
+
+    .fire {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle at center, rgba(255, 100, 0, 0.7), transparent 90%);
+      animation: fire-blink 3.5s infinite;
+      z-index: 0;
+    }
+
+    @keyframes fire-blink {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    span{
+      font-family: monospace;
+      font-weight: bold;
+      
+    }
+  
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="fire"></div>
+    <h2>Ikaze kuri NewtalentsG!</h2>
+    <span>U Rwanda ruri mugihe cyo kwibuka Genocide yakorewe abatutsi mu 1994. new talents yifatanyije n'abanyarwanda kwibuka abacu bazize Genocide. kubera iyo mpamvu gahunda y'inkuru yahagaze zizakomeza mu minsi iri imbere. Dusabye abanyarwanda bose kugira umutima ukomeye muri ibi bihe u Rwanda rurimo no kwihangana.</span>
+  </div>
+</body>
+</html>
