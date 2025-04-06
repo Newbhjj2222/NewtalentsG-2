@@ -66,26 +66,34 @@
             font-weight: bold;
             color: deepskyblue;
         }
+        #badge{
+          color: #DD0A0AD4;
+          font-weight: bolder;
+          font-family: monospace;
+          width: auto;
+          font-size: 18px;
+        }
     </style>
 </head>
 <body>
 
     <div class="profile-container">
-        <img src="pro11.png" alt="Profile Picture" class="profile-pic" id="profile-pic" onclick="document.getElementById('file-input').click()">
+        <img src="/blog/new/pro11.png" alt="Profile Picture" class="profile-pic" id="profile-pic" onclick="document.getElementById('file-input').click()">
         <input type="file" id="file-input" accept="image/*">
         <h2 class="profile-name" id="username">Username</h2>
         <span id="role">role</span>
+        <p id="badge">Status</p>
         <p class="profile-info" id="email">Email: NewG@example.com</p>
         <p class="profile-info" id="whatsapp">Whatsapp: +250700xxxxx</p>
       <span id="mess">Guhindura ifoto birashoboka yikande ho birakunda uhite uhitamo indi. ariko guhindura andi makuru, mwatwandikira kuri Whatsapp 0722319367 tukabafasha.</span>
     </div>
 
- <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import { getStorage, ref, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
   
-  // Firebase Configuration
+  // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
     authDomain: "newtalents-a7c29.firebaseapp.com",
@@ -100,13 +108,14 @@
   const storage = getStorage(app);
   const db = getFirestore(app);
   
-  // Kwerekana ifoto y'umukoresha
+  // ------------------------ PROFILE PICTURE ------------------------
+  
   async function displayProfilePicture() {
     const username = localStorage.getItem("username") || "Username";
     document.getElementById("username").textContent = username;
     
     const profilePic = document.getElementById("profile-pic");
-    const defaultPicUrl = "pro11.png";
+    const defaultPicUrl = "/blog/new/pro11.png";
     const storedPicUrl = localStorage.getItem("profilePicUrl");
     
     if (storedPicUrl) {
@@ -123,7 +132,6 @@
     }
   }
   
-  // Kwohereza ifoto nshya y'umukoresha
   function uploadNewProfilePicture(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -148,101 +156,122 @@
   
   document.getElementById("file-input").addEventListener("change", uploadNewProfilePicture);
   
-  // Gufata amakuru ya Firestore
+  // ------------------------ USER DATA ------------------------
+  
   async function fetchUserData() {
     const username = localStorage.getItem("username");
-
     if (!username) {
-        console.error("Username ntabwo yabonetse muri localStorage.");
-        return;
+      console.error("Username ntabwo yabonetse muri localStorage.");
+      return;
     }
-
+    
     try {
-        const userRef = doc(db, "userdate", "data"); // Fata document "data" muri "userdate"
-        const docSnap = await getDoc(userRef);
-
-        if (docSnap.exists()) {
-            const allData = docSnap.data(); // Fata fields zose muri "data"
-
-            let userInfo = null;
-
-            // Dusuzuma fields zose ziri muri "data"
-            for (const key in allData) {
-                if (allData[key].fName === username) { // Niba fName ihuye na username
-                    userInfo = allData[key];
-                    break; // Twabonye user, duhagarike iteration
-                }
-            }
-
-            if (userInfo) {
-                document.getElementById("role").textContent = userInfo.role || "Unknown Role";
-                document.getElementById("email").textContent = "Email: " + (userInfo.email || "Unknown Email");
-                document.getElementById("whatsapp").textContent = "Whatsapp: " + (userInfo.whatsAppNumber || "Unknown Number");
-            } else {
-                console.log("Nta makuru yabonetse kuri uyu mukoresha muri Firestore.");
-            }
-        } else {
-            console.log("Document 'data' ntabwo ibonetse muri Firestore.");
+      const userRef = doc(db, "userdate", "data");
+      const docSnap = await getDoc(userRef);
+      
+      if (docSnap.exists()) {
+        const allData = docSnap.data();
+        let userInfo = null;
+        
+        for (const key in allData) {
+          if (allData[key].fName === username) {
+            userInfo = allData[key];
+            break;
+          }
         }
+        
+        if (userInfo) {
+          document.getElementById("role").textContent = userInfo.role || "Unknown Role";
+          document.getElementById("email").textContent = "Email: " + (userInfo.email || "Unknown Email");
+          document.getElementById("whatsapp").textContent = "Whatsapp: " + (userInfo.whatsAppNumber || "Unknown Number");
+        } else {
+          console.log("Nta makuru yabonetse kuri uyu mukoresha muri Firestore.");
+        }
+      } else {
+        console.log("Document 'data' ntabwo ibonetse muri Firestore.");
+      }
     } catch (error) {
-        console.error("Habayeho ikosa mu gukura amakuru muri Firestore:", error);
+      console.error("Habayeho ikosa mu gukura amakuru muri Firestore:", error);
     }
-}
-  // Gushyira amakuru muri HTML igihe urubuga rufunguwe
-  window.onload = () => {
-    displayProfilePicture();
-    fetchUserData();
-  };
-  
-  
+  }
   
   async function hinduraAmakuru() {
     const username = localStorage.getItem("username");
-
     if (!username) {
-        alert("Error: Username ntabwo yabonetse muri localStorage.");
-        return;
+      alert("Error: Username ntabwo yabonetse muri localStorage.");
+      return;
     }
-
+    
     try {
-        const userRef = doc(db, "userdate", "data");
-        const docSnap = await getDoc(userRef);
-
-        if (docSnap.exists()) {
-            const allData = docSnap.data();
-
-            let userInfo = null;
-            let userKey = null;
-
-            for (const key in allData) {
-                if (allData[key].fName === username) {
-                    userInfo = allData[key];
-                    userKey = key;
-                    break;
-                }
-            }
-
-            if (userInfo) {
-                // Kwerekana input fields ngo user ahindure amakuru
-                document.getElementById("role").innerHTML = `<input id="newRole" type="text" value="${userInfo.role || ''}">`;
-                document.getElementById("email").innerHTML = `Email: <input id="newEmail" type="email" value="${userInfo.email || ''}">`;
-                document.getElementById("whatsapp").innerHTML = `Whatsapp: <input id="newWhatsapp" type="text" value="${userInfo.whatsapp || ''}">`;
-
-                // Kwerekana "Save" button
-                document.getElementById("editButton").innerHTML = `<button onclick="bikaAmakuru('${userKey}')">Save</button>`;
-            } else {
-                alert("Nta makuru abonetse kuri uyu mukoresha.");
-            }
-        } else {
-            alert("Document 'data' ntabwo ibonetse muri Firestore.");
+      const userRef = doc(db, "userdate", "data");
+      const docSnap = await getDoc(userRef);
+      
+      if (docSnap.exists()) {
+        const allData = docSnap.data();
+        let userInfo = null;
+        let userKey = null;
+        
+        for (const key in allData) {
+          if (allData[key].fName === username) {
+            userInfo = allData[key];
+            userKey = key;
+            break;
+          }
         }
+        
+        if (userInfo) {
+          document.getElementById("role").innerHTML = `<input id="newRole" type="text" value="${userInfo.role || ''}">`;
+          document.getElementById("email").innerHTML = `Email: <input id="newEmail" type="email" value="${userInfo.email || ''}">`;
+          document.getElementById("whatsapp").innerHTML = `Whatsapp: <input id="newWhatsapp" type="text" value="${userInfo.whatsapp || ''}">`;
+          
+          document.getElementById("editButton").innerHTML = `<button onclick="bikaAmakuru('${userKey}')">Save</button>`;
+        } else {
+          alert("Nta makuru abonetse kuri uyu mukoresha.");
+        }
+      } else {
+        alert("Document 'data' ntabwo ibonetse muri Firestore.");
+      }
     } catch (error) {
-        console.error("Ikosa mu gufata amakuru:", error);
+      console.error("Ikosa mu gufata amakuru:", error);
     }
-}
-
-
+  }
   
+  // ------------------------ STATUS BADGE ------------------------
+  
+  async function displayStatusBadgeFromLocalStorage() {
+    const badge = document.getElementById("badge");
+    const username = localStorage.getItem("username");
+    
+    if (!username) {
+      badge.textContent = "Pending";
+      console.warn("Username not found in localStorage");
+      return;
+    }
+    
+    try {
+      const docRef = doc(db, "authors", username);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        const status = docSnap.data().status || "Pending";
+        badge.textContent = status;
+      } else {
+        badge.textContent = "Pending";
+        console.warn("Document not found for username:", username);
+      }
+    } catch (error) {
+      console.error("Error fetching status:", error);
+      badge.textContent = "Pending";
+    }
+  }
+  
+  // ------------------------ ON LOAD ------------------------
+  
+  window.onload = () => {
+    displayProfilePicture();
+    fetchUserData();
+    displayStatusBadgeFromLocalStorage();
+  };
 </script>
     
 
