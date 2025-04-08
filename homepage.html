@@ -51,19 +51,40 @@
       0%, 100% { opacity: 0.3; transform: scale(1); }
       50% { opacity: 1; transform: scale(1.05); }
     }
-    span{
+
+    span {
       font-family: monospace;
       font-weight: bold;
-      
     }
-  
+
+    .countdown {
+      margin-top: 15px;
+      font-size: 18px;
+      color: orange;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="banner">
     <div class="fire"></div>
     <h2>Ikaze kuri NewtalentsG!</h2>
-    <span>U Rwanda ruri mugihe cyo kwibuka Genocide yakorewe abatutsi mu 1994. new talents yifatanyije n'abanyarwanda kwibuka abacu bazize Genocide. kubera iyo mpamvu gahunda y'inkuru yahagaze zizakomeza mu minsi iri imbere. Dusabye abanyarwanda bose kugira umutima ukomeye muri ibi bihe u Rwanda rurimo no kwihangana.</span>
+    <span>U Rwanda ruri mugihe cyo kwibuka Genocide yakorewe abatutsi mu 1994. new talents yifatanyije n'abanyarwanda kwibuka abacu bazize Genocide.  Dusabye abanyarwanda bose kugira umutima ukomeye muri ibi bihe u Rwanda rurimo no kwihangana.</span>
+    <div class="countdown">Urahita woherezwa kuri page ikurikira mu masegonda: <span id="timer">10</span></div>
   </div>
+
+  <script>
+    let seconds = 10;
+    const timerElement = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+      seconds--;
+      timerElement.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(countdown);
+        window.location.href = "closer.html";
+      }
+    }, 1000);
+  </script>
 </body>
 </html>
