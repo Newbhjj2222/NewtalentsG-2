@@ -1,60 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="rw">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="tv.css">
-  <title>NewtalentsG Tv</title>
-   <meta name="description" content="Ihuriro ry'abanditsi bashya n'abasomyi bashaka gusangira inkuru, amafoto, no guhanahana ibitekerezo mu buryo bwo gusangira ibitekerezo.">
-  <meta name="keywords" content="inkuru, guhanga, ubanditsi, amafoto, gusangira, kwiyandikisha, guhanga inkuru, New Talentsg, NewtalentsG, inkuru ndende, inkuru ngufi, Natasha, imigani, imivugo, ndetse, inkuru z'urukundo. inkuru zo kurwana. NewtalentsG tv, navio kki dabble le, mu mboni.">
-  <meta name="author" content="New Talents Group, NewtalentsG, new talents stories group.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="tv.css">
+    <title>NewtalentsG Tv</title>
+    <meta name="description" content="Ihuriro ry'abanditsi bashya n'abasomyi bashaka gusangira inkuru, amafoto, no guhanahana ibitekerezo mu buryo bwo gusangira ibitekerezo.">
+    <meta name="keywords" content="inkuru, guhanga, ubanditsi, amafoto, gusangira, kwiyandikisha, guhanga inkuru, New Talentsg, NewtalentsG, inkuru ndende, inkuru ngufi, Natasha, imigani, imivugo, ndetse, inkuru z'urukundo, inkuru zo kurwana, NewtalentsG tv, navio kki dabble le, mu mboni.">
+    <meta name="author" content="New Talents Group, NewtalentsG, new talents stories group.">
 </head>
+
 <body>
-  <div class="ntv">
-    <header>
-    <img src="pro11.png" alt="">
-    <h2>NewtalentsG Tv</h2>
-    <button type="flow" id="follow">Follow</button>
-    </header>
-<div class="tv">
-<video 
-    id="autoPlayVideo" 
-    playsinline 
-    autoplay 
-    controls>
-  <!-- URL ya video izahindurwa nyuma yo kubikora -->
-</video>
- <div class="live-badge" id="liveBadge">
-   <span>NeT</span>
- </div>
-    
-</div>
-  <div class="flower">
-      <span id="flower">0 followers</span>
-      <span id="view"> 0 views</span>
+    <div class="ntv">
+        <header>
+            <img src="pro11.png" alt="Logo">
+            <h2>NewtalentsG Tv</h2>
+            <button type="button" id="follow">Follow</button>
+        </header>
+
+        <div class="tv">
+            <div id="autoPlayVideo" class="video-container"></div>
+        </div>
+
+        <div class="flower">
+            <span id="flower">0 followers</span>
+            <span id="view">0 views</span>
+        </div>
     </div>
-  </div>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs,addDoc,query, orderBy } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-  import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
-  const firebaseConfig = {
-      apiKey: "AIzaSy...",
-      authDomain: "newtalents-a7c29.firebaseapp.com",
-      projectId: "newtalents-a7c29",
-      storageBucket: "newtalents-a7c29.appspot.com",
-      messagingSenderId: "507408992610",
-      appId: "1:507408992610:web:05ce220a4cb4922de9843b"
-  };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, addDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+        import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
+        const firebaseConfig = {
+            apiKey: "AIzaSy...",
+            authDomain: "newtalents-a7c29.firebaseapp.com",
+            projectId: "newtalents-a7c29",
+            storageBucket: "newtalents-a7c29.appspot.com",
+            messagingSenderId: "507408992610",
+            appId: "1:507408992610:web:05ce220a4cb4922de9843b"
+        };
 
-async function playAndDownloadVideosFromFirestore() {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        async function playAndDownloadVideosFromFirestore() {
   try {
     const showsRef = collection(db, "shows");
     const showsQuery = query(showsRef, orderBy("createdAt", "desc"));
@@ -75,11 +69,8 @@ async function playAndDownloadVideosFromFirestore() {
 }
 
 function playPlaylist(videoUrls) {
-  const mainVideoElement = document.getElementById("autoPlayVideo");
-  const secondVideoElement = document.createElement("video"); // Gukora video ya kabiri
-  secondVideoElement.style.display = "none"; // Kwandika video ya kabiri
-  
-  if (!mainVideoElement) {
+  const container = document.getElementById("autoPlayVideo");
+  if (!container) {
     console.error("Element ya 'autoPlayVideo' ntabwo ibonetse.");
     return;
   }
@@ -87,214 +78,254 @@ function playPlaylist(videoUrls) {
   let currentIndex = 0;
   
   function playNextVideo() {
-    if (currentIndex < videoUrls.length) {
-      const currentVideoUrl = videoUrls[currentIndex];
-      mainVideoElement.src = currentVideoUrl;
-      mainVideoElement.play();
+    if (currentIndex >= videoUrls.length) {
+      console.log("Playlist irarangiye. Gusubira ku ntangiriro...");
+      currentIndex = 0;
+    }
+    
+    const currentVideoUrl = videoUrls[currentIndex];
+    container.innerHTML = '';
+    
+    if (currentVideoUrl.includes('youtube.com') || currentVideoUrl.includes('youtu.be')) {
+      const videoId = getYoutubeVideoID(currentVideoUrl);
+      const playlistId = getYoutubePlaylistID(currentVideoUrl);
       
-      // Preload video ya kabiri
-      if (currentIndex + 1 < videoUrls.length) {
-        const nextVideoUrl = videoUrls[currentIndex + 1];
-        secondVideoElement.src = nextVideoUrl;
-        secondVideoElement.preload = "auto"; // Preload video ya kabiri
-      }
-      
-      // Start the next video 20 seconds before the current one ends
-      mainVideoElement.addEventListener('timeupdate', function onTimeUpdate() {
-        if (mainVideoElement.duration - mainVideoElement.currentTime <= 0 && currentIndex + 1 < videoUrls.length) {
-          currentIndex++;
-          playNextVideo();
-          mainVideoElement.removeEventListener('timeupdate', onTimeUpdate);
-        }
-      });
-      
-      // Update the current index when the current video ends
-      mainVideoElement.onended = function() {
+      if (videoId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0${playlistId ? `&playlist=${playlistId}` : ''}`;
+        iframe.allow = "autoplay; encrypted-media";
+        iframe.allowFullscreen = true;
+        iframe.frameBorder = "0";
+        iframe.width = "100%";
+        iframe.height = "100%";
+        container.appendChild(iframe);
+        
+        // Wait for YouTube IFrame API to load
+        iframe.onload = () => {
+          if (typeof YT !== 'undefined' && YT.Player) {
+            const player = new YT.Player(iframe, {
+              events: {
+                'onStateChange': (event) => {
+                  if (event.data === YT.PlayerState.ENDED) {
+                    setTimeout(() => {
+                      currentIndex++;
+                      playNextVideo();
+                    }, 0);
+                  }
+                }
+              }
+            });
+          } else {
+            console.warn("YT API ntabwo iraboneka.");
+          }
+        };
+      } else {
+        console.warn("Video ID ya YouTube ntiyabonetse.");
         currentIndex++;
         playNextVideo();
-      };
+      }
+      
     } else {
-      console.log("Playlist irarangiye.");
-      currentIndex = 0; // Gusubira ku ishusho ya mbere niba irangiye
-      playNextVideo(); // Tangira bundi bushya
+      const videoElement = document.createElement("video");
+      videoElement.src = currentVideoUrl;
+      videoElement.controls = true;
+      videoElement.autoplay = true;
+      videoElement.style.width = "100%";
+      videoElement.style.height = "100%";
+      container.appendChild(videoElement);
+      
+      videoElement.addEventListener('ended', () => {
+        setTimeout(() => {
+          currentIndex++;
+          playNextVideo();
+        }, 0);
+      });
+      
+      videoElement.play().catch(error => {
+        console.error("Ikosa ryabaye mu gukina videwo: ", error);
+      });
     }
+  }
+  
+  function getYoutubeVideoID(url) {
+    const regex = /(?:v=|\/embed\/|youtu\.be\/)([^&?]+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  }
+  
+  function getYoutubePlaylistID(url) {
+    const regex = /[?&]list=([^&]+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
   }
   
   playNextVideo();
 }
 
-// Fata video ziva muri Firestore hanyuma uhamagare iyi function
-playAndDownloadVideosFromFirestore();
+        playAndDownloadVideosFromFirestore();
 
-// Function yo gufata cyangwa gushyiraho username
-function getUsername() {
-  let username = localStorage.getItem("username");
-  if (!username) {
-    // Shyiraho username nka guest niba itaraboneka
-    username = `guest${Math.floor(Math.random() * 10000)}`;
-    localStorage.setItem("username", username);
-  }
-  return username;
-}
+        function getUsername() {
+            let username = localStorage.getItem("username");
+            if (!username) {
+                username = `guest${Math.floor(Math.random() * 10000)}`;
+                localStorage.setItem("username", username);
+            }
+            return username;
+        }
 
-// Function yo kugenzura niba user yaramaze gufollowinze
-async function checkIfUserFollowed(username) {
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(db, "Newtalentsg"), where("username", "==", username))
-    );
-    return !querySnapshot.empty; // True niba username ibonetse muri database
-  } catch (error) {
-    console.error("Ikosa ribaye ubwo twagenzuraga Firestore: ", error);
-    return false; // Fata nk'aho atarafollowinze niba habaye ikibazo
-  }
-}
+        async function checkIfUserFollowed(username) {
+            try {
+                const querySnapshot = await getDocs(query(collection(db, "Newtalentsg"), where("username", "==", username)));
+                return !querySnapshot.empty;
+            } catch (error) {
+                console.error("Ikosa ribaye ubwo twagenzuraga Firestore: ", error);
+                return false;
+            }
+        }
 
-// Function yo kubika follow muri Firestore
-async function saveFollowToFirestore(username, followCount) {
-  try {
-    await addDoc(collection(db, "Newtalentsg"), {
-      username: username,
-      follow: followCount,
-      timestamp: new Date(),
-    });
-    console.log("Byakunze kubikwa muri Firestore!");
-    return { success: true };
-  } catch (error) {
-    console.error("Ikosa ribaye ubwo twabikaga muri Firestore: ", error);
-    return { success: false, message: error.message };
-  }
-}
+        async function saveFollowToFirestore(username, followCount) {
+            try {
+                await addDoc(collection(db, "Newtalentsg"), {
+                    username: username,
+                    follow: followCount,
+                    timestamp: new Date(),
+                });
+                console.log("Byakunze kubikwa muri Firestore!");
+                return { success: true };
+            } catch (error) {
+                console.error("Ikosa ribaye ubwo twabikaga muri Firestore: ", error);
+                return { success: false, message: error.message };
+            }
+        }
 
-// Function yo guhindura button ikajya yerekana "Following" cyangwa "Ikosa"
-function updateButtonText(result) {
-  const followButton = document.getElementById("follow");
+        function updateButtonText(result) {
+            const followButton = document.getElementById("follow");
 
-  if (result.success) {
-    followButton.textContent = "Following";
-    followButton.disabled = true; // Hindura button ntibishoboke kongera kuyikandaho
-  } else {
-    followButton.textContent = `Ikosa: ${result.message}`;
-    followButton.disabled = false; // Reba ko umukoresha yagerageza kongera
-    setTimeout(() => {
-      followButton.textContent = "Follow"; // Subiza button ku nyandiko isanzwe nyuma y'igihe runaka
-    }, 5000); // Igihe runaka (5s) button isubire ku "Follow"
-  }
-}
+            if (result.success) {
+                followButton.textContent = "Following";
+                followButton.disabled = true;
+            } else {
+                followButton.textContent = `Ikosa: ${result.message}`;
+                followButton.disabled = false;
+                setTimeout(() => {
+                    followButton.textContent = "Follow";
+                }, 5000);
+            }
+        }
 
-// Gushyira Event kuri Button
-document.getElementById("follow").addEventListener("click", async () => {
-  const username = getUsername(); // Fata username
+        document.getElementById("follow").addEventListener("click", async () => {
+            const username = getUsername();
+            const hasFollowed = await checkIfUserFollowed(username);
 
-  // Reba niba user yaramaze gufollowinze
-  const hasFollowed = await checkIfUserFollowed(username);
+            if (hasFollowed) {
+                updateButtonText({ success: true });
+                console.log(`${username} yaramaze gufollowinze.`);
+            } else {
+                let followCount = localStorage.getItem("followCount");
+                followCount = followCount ? parseInt(followCount) + 1 : 1;
+                localStorage.setItem("followCount", followCount);
 
-  if (hasFollowed) {
-    // Niba user yaramaze gufollowinze, hindura button gusa
-    updateButtonText({ success: true });
-    console.log(`${username} yaramaze gufollowinze.`);
-  } else {
-    // Niba user atarafollowinze, ongera followCount hanyuma ubike muri Firestore
-    let followCount = localStorage.getItem("followCount");
-    followCount = followCount ? parseInt(followCount) + 1 : 1;
-    localStorage.setItem("followCount", followCount);
+                const result = await saveFollowToFirestore(username, followCount);
+                updateButtonText(result);
 
-    // Bika muri Firestore
-    const result = await saveFollowToFirestore(username, followCount);
+                if (result.success) {
+                    console.log(`Username: ${username}, Follow: ${followCount}`);
+                } else {
+                    console.error("Kubika muri Firestore byanze:", result.message);
+                }
+            }
+        });
 
-    // Hindura button ushingiye ku musaruro
-    updateButtonText(result);
+        async function getFollowerCount() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "Newtalentsg"));
+                const followerCount = querySnapshot.size;
+                document.getElementById("flower").textContent = `${followerCount} followers`;
+                console.log(`Umubare wa followers: ${followerCount}`);
+            } catch (error) {
+                console.error("Ikosa ribaye igihe twageragezaga gufata umubare wa documents: ", error);
+                document.getElementById("flower").textContent = "Ikosa ryabaye!";
+            }
+        }
 
-    // Ohereza ubutumwa muri console
-    if (result.success) {
-      console.log(`Username: ${username}, Follow: ${followCount}`);
-    } else {
-      console.error("Kubika muri Firestore byanze:", result.message);
-    }
-  }
-});
+        getFollowerCount();
 
-// Function yo gufata umubare wa documents muri Firestore
-async function getFollowerCount() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "Newtalentsg"));
-    const followerCount = querySnapshot.size; // Umubare wa documents
-    document.getElementById("flower").textContent = `${followerCount} followers`; // Hindura HTML
-    console.log(`Umubare wa followers: ${followerCount}`);
-  } catch (error) {
-    console.error("Ikosa ribaye igihe twageragezaga gufata umubare wa documents: ", error);
-    document.getElementById("flower").textContent = "Ikosa ryabaye!";
-  }
-}
+        let seconds = 0;
+        let views = 0;
 
-// Hamagara function yo kugaragaza umubare wa followers
-getFollowerCount();
+        async function saveView() {
+            try {
+                const docRef = await addDoc(collection(db, "views"), {
+                    timestamp: new Date(),
+                    userID: "USER_ID_OR_ANONYMOUS", // Replace with user's ID if available
+                });
+                console.log("View saved with ID: ", docRef.id);
+            } catch (error) {
+                console.error("Error saving view: ", error);
+            }
+        }
 
-// Variables to track time and views
-let seconds = 0;
-let views = 0;
+        function startCounting() {
+            setInterval(() => {
+                seconds += 1;
 
-// Function to save a view in Firestore
-async function saveView() {
-  try {
-    const docRef = await addDoc(collection(db, "views"), {
-      timestamp: new Date(),
-      userID: "USER_ID_OR_ANONYMOUS", // Replace with user's ID if available
-    });
-    console.log("View saved with ID: ", docRef.id);
-  } catch (error) {
-    console.error("Error saving view: ", error);
-  }
-}
+                if (seconds % 100 === 0) {
+                    views += 1;
+                    saveView();
+                    console.log(`View ${views} recorded.`);
+                }
+            }, 1000);
+        }
 
-// Function to track time and views
-function startCounting() {
-  setInterval(() => {
-    seconds += 1;
+        window.onload = startCounting;
 
-    if (seconds % 100 === 0) {
-      views += 1;
-      saveView();
-      console.log(`View ${views} recorded.`);
-    }
-  }, 1000);
-}
+        function formatViewCount(count) {
+            if (count >= 1000000) {
+                return (count / 1000000).toFixed(1) + 'M';
+            } else if (count >= 1000) {
+                return (count / 1000).toFixed(1) + 'K';
+            } else {
+                return count.toString();
+            }
+        }
 
-// Start tracking when the user accesses the page
-window.onload = startCounting;
+        async function updateViewCount() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "views"));
+                const viewCount = querySnapshot.size;
+                const formattedCount = formatViewCount(viewCount);
+                document.getElementById("view").textContent = `${formattedCount} views`;
+            } catch (error) {
+                console.error("Error fetching views: ", error);
+            }
+        }
 
+        setInterval(updateViewCount, 35000);
+        updateViewCount();
 
-// Function to fetch and update the view count in human-readable format
-    function formatViewCount(count) {
-      if (count >= 1000000) {
-        return (count / 1000000).toFixed(1) + 'M'; // For millions
-      } else if (count >= 1000) {
-        return (count / 1000).toFixed(1) + 'K'; // For thousands
-      } else {
-        return count.toString(); // For smaller numbers
-      }
-    }
+        function loadVideo() {
+            const link = document.getElementById('videoLink').value;
+            const container = document.getElementById('autoPlayVideo');
+            container.innerHTML = '';
 
-    // Function to fetch and update the view count
-    async function updateViewCount() {
-      try {
-        const querySnapshot = await getDocs(collection(db, "views"));
-        const viewCount = querySnapshot.size; // Count of documents
-        const formattedCount = formatViewCount(viewCount); // Format the count
-        document.getElementById("view").textContent = `${formattedCount} views`;
-      } catch (error) {
-        console.error("Error fetching views: ", error);
-      }
-    }
-
-    // Update view count every 35 seconds
-    setInterval(updateViewCount, 35000);
-
-    // Initial call to update view count when the page loads
-    updateViewCount();
-
-
-</script>
-<script src="tv.js"></script>
+            if (link.includes('youtube.com') || link.includes('youtu.be')) {
+                const videoId = getYoutubeVideoID(link);
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                iframe.allow = "autoplay; encrypted-media";
+                container.appendChild(iframe);
+            } else {
+                const video = document.createElement('video');
+                video.src = link;
+                video.controls = true;
+                video.autoplay = true;
+                container.appendChild(video);
+            }
+        }
+        
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="tv.js"></script>
 </body>
+
 </html>
