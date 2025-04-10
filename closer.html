@@ -434,6 +434,32 @@
 
    <!-- Floating Translate Button -->
    <button class="translate-btn" onclick="toggleTranslate()">Translate</button>
+   
+   <div id="chatbot-icon">Chat us</div>
+  <div class="chatbot hidden" id="chatbot-container">  
+    <div class="chat-header">  
+    <span>Chat with us</span>
+    <button id="close-btn">&times;</button>
+    </div>  
+    <div class="chat-body" id="chat-body">  
+      <div class="bot-message">Uraho? ndi umufasha wa  NewtalentsG.nitwa NewtalentsG AI. ndagufasha niba ufite ikibazo. hitamo mu bibazo cyangwa umbaze icyo ushaka.</div>  
+   
+    </div>  
+    <select id="question-select">  
+      <option value="">-- Hitamo ikibazo --</option>  
+      <option value="folder">Ni gute nahimba folder?</option>  
+      <option value="kwiyandikisha">Ni gute na kwiyandikisha?</option>  
+      <option value="kwandika inkuru">ese ni gute wa kwandika inkuru ?</option>  
+      <option value="kugura nes">ese ni gute wa gura nes point ukoresha usoma inkuru? </option>
+      
+      <option value="Nes">Wagize ikibazo kuri balance yawe?</option>
+      
+      
+    </select>
+    <input type="text" id="custom-question" placeholder="Andika ikibazo cyawe hano..."/>  
+    <button id="send-btn">Ohereza</button>  
+  </div>  
+   
 
     <footer>
         <div class="footer-container">
@@ -488,7 +514,22 @@
  <script type="module">
     // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, addDoc, query, orderBy, limit, setDoc, increment, updateDoc, onSnapshot,runTransaction} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  addDoc,
+  query,
+  orderBy,
+  limit,
+  setDoc,
+  increment,
+  updateDoc,
+  onSnapshot,
+  runTransaction
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 import { getMessaging, onMessage, getToken } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging.js";
 import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
@@ -507,6 +548,69 @@ import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.
     const db = getFirestore(app);
     const messaging = getMessaging(app);
     const storage = getStorage(app);
+
+
+// Fungura Set yo kubika postIds ziriho
+const sentPostIds = new Set(); // Aha niho uratangiza sentPostIds
+
+// Function ishinzwe gutegereza post no kubika reader
+function waitForPostAndSaveReader() {
+  const observer = new MutationObserver(() => {
+    const postElements = document.querySelectorAll('.single .post');
+    
+    postElements.forEach(postElement => {
+      const postId = postElement.id;
+      
+      if (!postId) {
+        console.warn("Post ifunguye nta ID ifite.");
+        return;
+      }
+      
+      // Hano tugerageza kwemeza ko post itarabikwa mbere
+      if (sentPostIds.has(postId)) {
+        console.log("Post yamaze kubikwa mbere:", postId);
+        return;
+      }
+      
+      // Reba document muri 'readers' ifite ID = postId
+      const readerRef = doc(db, "readers", postId); // Aha, db irakoreshwa neza
+      
+      // Bika cyangwa wongereho 1 kuri field 'reader'
+      setDoc(readerRef, {
+          reader: increment(1)
+        }, { merge: true })
+        .then(() => {
+          console.log("Reader abitswe kuri postId:", postId);
+          sentPostIds.add(postId); // Hano, duhindura postId nk'uko byakabaye
+          
+          // Tumaranye akanya gato hanyuma dufunge observer
+          setTimeout(() => {
+            sentPostIds.delete(postId); // Tukuraho postId mu gihe cy'ubuzima bwa observer
+          }, 1000000); // 2 seconds nyuma yo kubika
+        })
+        .catch((error) => {
+          console.error("Ikosa ribayeho:", error.message);
+        });
+    });
+  });
+  
+  // Tangira kureba niba DOM ihinduye ibintu bishya
+  observer.observe(document.body, { childList: true, subtree: true });
+  
+  // Fungura function izongera kureba posts nyuma y'iminota 10
+  setInterval(() => {
+    console.log("Kongera kureba posts nyuma y'iminota 10.");
+    // Ushobora kongeramo code cyangwa ibikorwa ushaka nyuma y'iminota 10
+    observer.disconnect(); // Gufunga observer kugira ngo urebe niba hakenewe ibindi bikorwa
+    waitForPostAndSaveReader(); // Tegaruka ukoreshwe function mu buryo bushya
+  }, 10 * 60 * 1000); // 10 minutes
+}
+
+// Tangiza function iyo page imaze kwikora
+document.addEventListener("DOMContentLoaded", waitForPostAndSaveReader);
+// aho kubara views kuri post birangiye 
+
+
 
     // Fungura collection ya 'folders'
     const foldersCollection = collection(db, 'folders');
@@ -947,50 +1051,63 @@ let observer; // Kubika observer
 
 // Function yo kwemerera umusomyi gusoma inkuru niba afite Nes Points zihagije
 async function attachReadMoreListeners() {
-    const readMoreButtons = document.querySelectorAll('.read-more');
-
-    readMoreButtons.forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const postId = event.currentTarget.getAttribute('data-id');
-            if (!postId) {
-                console.error('Error: Data-id attribute not found');
+  const readMoreButtons = document.querySelectorAll('.read-more');
+  
+  readMoreButtons.forEach(button => {
+    button.addEventListener('click', async (event) => {
+      const postId = event.currentTarget.getAttribute('data-id');
+      if (!postId) {
+        console.error('Error: Data-id attribute not found');
+        return;
+      }
+      
+      const username = localStorage.getItem('username');
+      if (!username) {
+        alert("Habaye ikibazo: Ntabwo byashobotse kumenya izina ryawe. Banza winjire cyangwa wiyandikishe. Kubindi bisobanuro mwatwandikira kuri Whatsapp 0722319367.");
+        return;
+      }
+      
+      try {
+        const hasEnoughPoints = await checkUserNesPoints(username);
+        if (!hasEnoughPoints) {
+          alert("Musomyi!! Nta Nes Points ufite zihagije ngo wemererwe gusoma inkuru. Kanda kuri button y'ubururu, iri iburyo hasi irimo ikimenyetso gisa uku 💸 ugure izindi Nes Points.\n\nReader!! You don't have enough Nes Points to read the article. Click on the blue button at the bottom right with a 💸 sign to buy more Nes Points.");
+          return;
+        }
+        
+        // Mwereke alert imubwira gutegereza
+        let waitSeconds = 11; // shobora guhindurwa
+        let countdownMessage = ` Tegereza wamaze guhitamo inkuru usoma. bitewe na network ufite inkuru irafunguka mu ma segonda, ${waitSeconds} .`;
+        
+        const countdownInterval = setInterval(() => {
+          if (waitSeconds > 10) {
+            waitSeconds--;
+            alert(`${countdownMessage.replace(/\d+/, waitSeconds)}`);
+          } else {
+            clearInterval(countdownInterval);
+            
+            // Fata izina ry’umwanditsi
+            getPostAuthor(postId).then(async (authorName) => {
+              if (!authorName) {
+                console.error("Error: Umwanditsi w'inkuru ntabwo yabonetse.");
                 return;
-            }
-
-            // Fata izina rya user muri localStorage
-            const username = localStorage.getItem('username');
-            if (!username) {
-                alert("Habaye ikibazo: Ntabwo byashobotse kumenya izina ryawe. Banza winjire cyangwa wiyandikishe. Kubindi bisobanuro mwatwandikira kuri Whatsapp 0722319367.");
-                return;
-            }
-
-            try {
-                // Reba niba user afite Nes Points zihagije
-                const hasEnoughPoints = await checkUserNesPoints(username);
-                if (!hasEnoughPoints) {
-                    alert("Musomyi!! Nta Nes Points ufite zihagije ngo wemererwe gusoma inkuru. Kanda kuri button y'ubururu, iri iburyo hasi irimo ikimenyetso gisa uku 💸 ugure izindi Nes Points.\n\nReader!! You don't have enough Nes Points to read the article. Click on the blue button at the bottom right with a 💸 sign to buy more Nes Points.");
-                    return;
-                }
-
-                // Fata izina ry'umwanditsi w'inkuru
-                const authorName = await getPostAuthor(postId);
-                if (!authorName) {
-                    console.error("Error: Umwanditsi w'inkuru ntabwo yabonetse.");
-                    return;
-                }
-
-                // Kugabanya Nes Points z'umusomyi no kuzongerera umwanditsi
-                await transferNesPoints(username, authorName);
-
-                // Fungura inkuru
-                await fetchSinglePost(postId);
-                attachBackButtonListener();
-                observeFooter();
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
+              }
+              
+              // Gabanya nahe Nes Points z’user, wongerere umwanditsi
+              await transferNesPoints(username, authorName);
+              
+              // Fungura inkuru
+              await fetchSinglePost(postId);
+              attachBackButtonListener();
+              observeFooter();
+            });
+          }
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Error:', error);
+      }
     });
+  });
 }
 
 // Function yo kugenzura niba umusomyi afite Nes Points zihagije
@@ -1022,41 +1139,51 @@ async function getPostAuthor(postId) {
     return postSnapshot.data().author || null;
 }
 
+
+
 // Function yo kugabanya Nes Points z'umusomyi no kongerera umwanditsi
+ 
+
+
+
 async function transferNesPoints(reader, author) {
     const db = getFirestore();
     const readerRef = doc(db, 'depositers', reader);
     const authorRef = doc(db, 'authors', author);
 
+    if (reader === author) {
+        console.error("Error: Reader na Author ni umwe");
+        return;
+    }
+
     try {
         await runTransaction(db, async (transaction) => {
             const readerDoc = await transaction.get(readerRef);
+            const authorDoc = await transaction.get(authorRef);
+
             if (!readerDoc.exists()) {
-                throw new Error("Error: User ntabwo abaho");
+                throw new Error("Error: Umusomyi ntabwo abaho");
             }
 
-            const readerPoints = readerDoc.data().nes || 0;
+            const readerPoints = Number(readerDoc.data().nes) || 0;
             if (readerPoints < 1) {
                 throw new Error("Error: Nta Nes Points zihagije");
             }
 
-            const newReaderPoints = readerPoints - 1;
+            // Gabanya inota 1 kuri reader
+            transaction.update(readerRef, { nes: readerPoints - 1 });
 
-            // Reba niba umwanditsi abaho, niba atabaho urema document nshya
-            const authorDoc = await transaction.get(authorRef);
-            if (!authorDoc.exists()) {
-                transaction.set(authorRef, { nes: 1 }); // Iyo document itabaho, iraremwa ifite nes=1
-            } else {
-                transaction.update(authorRef, { nes: increment(1) }); // Niba ihari, points ziyongerwaho 1
-            }
+            const currentAuthorPoints = authorDoc.exists() ? Number(authorDoc.data().nes) || 0 : 0;
 
-            transaction.update(readerRef, { nes: newReaderPoints });
+            // Ongera 1 kuri author
+            transaction.set(authorRef, {
+                nes: currentAuthorPoints + 1
+            }, { merge: true });
         });
 
         console.log("Nes Points zoherejwe neza!");
     } catch (error) {
-        console.error("Transaction Failed:", error);
-        alert("Habaye ikibazo mu kohereza Nes Points. Mwongere mugerageze.");
+        console.error("Transaction Failed:", error.message);
     }
 }
 
@@ -1290,7 +1417,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 });
 
-// Tangira gukurikirana footer
 observer.observe(footer);
 
 
@@ -1634,40 +1760,41 @@ document.getElementById('multi-step-form').addEventListener('submit', async func
 
 
 // 1. Fata username iri muri localStorage
+// Fata username muri localStorage
 const username = localStorage.getItem("username");
 
 if (username && username.trim() !== "") {
-    // 2. Reba document muri Firestore authors collection
-    const authorDocRef = doc(db, "authors", username.trim());
-
-    // 3. Komeza gukurikira impinduka muri iyo document
-    onSnapshot(authorDocRef, (doc) => {
-        if (doc.exists()) {
-            const data = doc.data();
-            console.log("Amakuru avuye muri Firestore:", data);
-
-            // 4. Kwerekana ibirimo muri HTML ahari id ya nesWith
-            const nesWithElement = document.getElementById("nesWith");
-            if (nesWithElement) {
-                // Gukora array y'agaciro kose gusa
-                const values = Object.values(data);
-
-                // Gushyiramo unit ya NeS points nyuma ya buri value
-                const valuesWithUnits = values.map(value => `${value} NeSs`);
-
-                // Gukoresha join() kugira ngo uhuze value zose mu murongo umwe
-                nesWithElement.innerHTML = valuesWithUnits.join(", ");
-            } else {
-                console.error("Element ifite ID 'nesWith' ntiyabonetse.");
-            }
+  // Reba document muri Firestore authors collection
+  const authorDocRef = doc(db, "authors", username.trim());
+  
+  // Komeza gukurikirana impinduka muri iyo document
+  onSnapshot(authorDocRef, (doc) => {
+    if (doc.exists()) {
+      const data = doc.data();
+      console.log("Amakuru avuye muri Firestore:", data);
+      
+      // Fata agaciro ka field 'nes' gusa
+      const nesValue = data.nes;
+      
+      // Erekana muri HTML ahari id ya 'nesWith'
+      const nesWithElement = document.getElementById("nesWith");
+      if (nesWithElement) {
+        if (nesValue !== undefined) {
+          nesWithElement.innerHTML = `${nesValue} NeSs`;
         } else {
-            console.log("Iyo document ntiyabashije kuboneka.");
+          nesWithElement.innerHTML = "Nta nes ibonetse";
         }
-    }, (error) => {
-        console.error("Ikosa ryo kubona document:", error);
-    });
+      } else {
+        console.error("Element ifite ID 'nesWith' ntiyabonetse.");
+      }
+    } else {
+      console.log("Iyo document ntiyabashije kuboneka.");
+    }
+  }, (error) => {
+    console.error("Ikosa ryo kubona document:", error);
+  });
 } else {
-    console.log("Nta username ryabonetse muri localStorage.");
+  console.log("Nta username ryabonetse muri localStorage.");
 }
      
      
@@ -1759,6 +1886,10 @@ function toggleTranslate(shouldShow) {
     element.style.display = shouldShow ? "block" : "none";
   }
 }
+// Irinde duplication
+// Set yo kwirinda kubika ID imwe inshuro zirenze rimwe
+// Function ishinzwe gutegereza post no kubika reader
+
 
 
 
@@ -1771,6 +1902,7 @@ function toggleTranslate(shouldShow) {
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="script.js"></script>
+    <script src="chat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
