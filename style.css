@@ -181,7 +181,122 @@ header ul li a:hover {
 header .menu-toggle {
   display: none;
 }
+  .chatbot {  
+      
+      width: 310px;  
+      position: fixed;  
+      bottom: 160px;
+      right: 10px;
+      border: 1px solid #3f51b5;  
+      border-radius: 15px;  
+      background: white;  
+      box-shadow: 10px 10px 10px 10px rgba(37, 65, 142, 1); overflow: hidden;
+      font-family: sans-serif;  
+      z-index: 9999;  
+    }  
+    .hidden{
+      display: none!important;
+    }
+    .chat-header{ 
+      background: #3f51b5;
+      color: white;
+      font-weight: bold;
+      width: 100%;
+      height: auto;
+      padding: 10px;
+    }  
+    .chat-header span{
+      left: 0;
+    }
+    .chat-header button{
+      right: 0px;
+      margin-left: 180px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 3px;
+     
+    }
 
+    .chat-body {  
+      max-height: 300px;  
+      overflow-y: auto;  
+      padding: 10px;  
+      font-size: 14px;  
+    }  
+
+   .bot-message {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  max-width: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-message{
+  background-color: royalblue;
+  color: white;
+  margin-left: 70px;
+  padding: 8px;
+  text-align: left;
+  border-radius: 8px;
+}
+
+.bot-message {
+  background-color: rgba(99, 103, 115, 1);
+  color: white;
+  margin-top: 10px;
+  margin-right: 40px;
+  align-self: flex-start;
+}
+
+    #question-select, #custom-question {  
+      width: 95%;  
+      padding: 10px;  
+      border: 1px solid lightgray;
+      margin: 5px;
+      border-radius: 6px;  
+      font-size: 14px;  
+      box-sizing: border-box;  
+    }  
+
+    #custom-question {  
+      border-bottom-left-radius: 10px;  
+      border-bottom-right-radius: 10px;  
+    }  
+
+    #send-btn {  
+      width: 100%;
+      padding: 10px; 
+      margin-top: 9px;
+      border-radius: 8px;
+      background: #3f51b5;  
+      color: white;  
+      border: none;  
+      font-weight: bold;  
+      cursor: pointer;  
+    }  
+
+    #send-btn:hover {  
+      background: #2c3a93;  
+    }
+    #chatbot-icon{
+      position: fixed;
+      bottom: 60px;
+      text-align: center;
+      padding: 10px;
+      right: 50px;
+      width: 46px;
+      height: 46px;
+      cursor: pointer;
+      font-weight: bolder;
+      background: royalblue;
+      color: white;
+      border-radius: 50%;
+      z-index: 1000;
+      
+    }
 /* Global Theme container */
 /* Global Theme container */
 .theme {
