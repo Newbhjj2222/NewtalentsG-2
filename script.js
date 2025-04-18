@@ -189,15 +189,7 @@ document.addEventListener("click", function() {
   if (notificationBox) notificationBox.style.display = "none";
 });
 
-// Search function
-function searchPosts() {
-  let searchTerm = document.querySelector('input[name="search-term"]').value.toLowerCase();
-  let posts = document.querySelectorAll('.main-content .post');
 
-  posts.forEach(post => {
-    post.style.display = post.textContent.toLowerCase().includes(searchTerm) ? "" : "none";
-  });
-}
 
 document.addEventListener("DOMContentLoaded", function() {
   const video = document.getElementById("myVideo");
@@ -328,3 +320,50 @@ function toggleTranslate(shouldShow) {
 window.onload = function() {
     alert("Murakaza neza ku rubuga rwacu!\n\n  DORE UKO WAKORESHA URUBUGA \n\n Kugira ngo wemererwe gusoma inkuru zitandukanye, biragusaba kugura nes point. Igihe ugiye gusoma inkuru Kanda button ya read more(soma byose) inshuro imwe, utegereze Kugira ngo nés point zawe zidashirira ku nkuru imwe. Turabashimira kuba mwahisemo new talents stories group, ntimuzicwa n'irungu, turahabaye. \n\n HERE’S HOW TO USE THE WEBSITE: \n\n To be allowed to read different stories, you need to purchase  nes points. When you want to read a story, click the Read More button once and wait to ensure your points don’t run out on a single story. We thank you for choosing New Talents Stories Group—don’t feel left out, we’re here for you.");
 };
+
+function searchPosts() {
+  let searchTerm = document.querySelector('input[name="search-term"]').value.toLowerCase();
+  let sections = document.querySelectorAll('.section-topic');
+  
+  sections.forEach(section => {
+    let topicsList = section.querySelector('#topics-list');
+    
+    if (topicsList) {
+      // Siba highlight zose zabanje
+      topicsList.querySelectorAll('mark').forEach(mark => {
+        const parent = mark.parentNode;
+        parent.replaceChild(document.createTextNode(mark.textContent), mark);
+        parent.normalize();
+      });
+      
+      // Irebe niba hari aho searchTerm ihura na textContent cyangwa data-title
+      let matches = false;
+      let foundLink = null;
+      
+      topicsList.querySelectorAll('a').forEach(link => {
+        const linkText = link.textContent.toLowerCase();
+        const dataTitle = link.getAttribute('data-title')?.toLowerCase() || "";
+        
+        if (linkText.includes(searchTerm) || dataTitle.includes(searchTerm)) {
+          matches = true;
+          
+          // Highlight iryo jambo mu link
+          link.innerHTML = link.innerHTML.replace(
+            new RegExp(`(${searchTerm})`, 'gi'),
+            '<mark style="background-color: yellow;">$1</mark>'
+          );
+          
+          if (!foundLink) foundLink = link;
+        }
+      });
+      
+      // Show or hide section based on whether there's a match
+      section.style.display = matches ? "" : "none";
+      
+      // Scroll kuya match ya mbere
+      if (foundLink) {
+        foundLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  });
+}
