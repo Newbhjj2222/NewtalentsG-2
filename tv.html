@@ -84,74 +84,95 @@ function playPlaylist(videoUrls) {
     }
     
     const currentVideoUrl = videoUrls[currentIndex];
-    container.innerHTML = '';
-    
-    if (currentVideoUrl.includes('youtube.com') || currentVideoUrl.includes('youtu.be')) {
-      const videoId = getYoutubeVideoID(currentVideoUrl);
-      const playlistId = getYoutubePlaylistID(currentVideoUrl);
-      
-      if (videoId) {
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0${playlistId ? `&playlist=${playlistId}` : ''}`;
-        iframe.allow = "autoplay; encrypted-media";
-        iframe.allowFullscreen = true;
-        iframe.frameBorder = "0";
-        iframe.width = "100%";
-        iframe.height = "100%";
-        container.appendChild(iframe);
-        
-        // Wait for YouTube IFrame API to load
-        iframe.onload = () => {
-          if (typeof YT !== 'undefined' && YT.Player) {
-            const player = new YT.Player(iframe, {
-              events: {
-                'onStateChange': (event) => {
-                  if (event.data === YT.PlayerState.ENDED) {
-                    setTimeout(() => {
-                      currentIndex++;
-                      playNextVideo();
-                    }, 0);
-                  }
-                }
-              }
-            });
-          } else {
-            console.warn("YT API ntabwo iraboneka.");
-          }
-        };
-      } else {
-        console.warn("Video ID ya YouTube ntiyabonetse.");
-        currentIndex++;
-        playNextVideo();
-      }
-      
-    } else {
-      const videoElement = document.createElement("video");
-      videoElement.src = currentVideoUrl;
-      videoElement.controls = true;
-      videoElement.autoplay = true;
-      videoElement.style.width = "100%";
-      videoElement.style.height = "100%";
-      container.appendChild(videoElement);
-      
-      videoElement.addEventListener('ended', () => {
-        setTimeout(() => {
-          currentIndex++;
-          playNextVideo();
-        }, 0);
-      });
-      
-      videoElement.play().catch(error => {
-        console.error("Ikosa ryabaye mu gukina videwo: ", error);
-      });
-    }
+container.innerHTML = '';
+
+if (currentVideoUrl.includes('youtube.com') || currentVideoUrl.includes('youtu.be')) {
+  const videoId = getYoutubeVideoID(currentVideoUrl);
+  const playlistId = getYoutubePlaylistID(currentVideoUrl);
+  
+  const iframe = document.createElement('iframe');
+  
+  if (videoId) {
+    // Video ID with optional playlist
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0${playlistId ? `&list=${playlistId}` : ''}`;
+  } else if (playlistId) {
+    // Playlist only — will play the mix or the first item
+    iframe.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}&autoplay=1&rel=0`;
+  } else {
+    console.warn("Nta video cyangwa playlist ID byabonetse.");
+    currentIndex++;
+    playNextVideo();
+    return;
   }
   
+  iframe.allow = "autoplay; encrypted-media";
+  iframe.allowFullscreen = true;
+  iframe.frameBorder = "0";
+  iframe.width = "100%";
+  iframe.height = "100%";
+  container.appendChild(iframe);
+  
+  iframe.onload = () => {
+    if (typeof YT !== 'undefined' && YT.Player) {
+      const player = new YT.Player(iframe, {
+        events: {
+          'onStateChange': (event) => {
+            if (event.data === YT.PlayerState.ENDED) {
+              setTimeout(() => {
+                currentIndex++;
+                playNextVideo();
+              }, 0);
+            }
+          }
+        }
+      });
+    } else {
+      console.warn("YT API ntabwo iraboneka.");
+    }
+  };
+} else {
+  const videoElement = document.createElement("video");
+  videoElement.src = currentVideoUrl;
+  videoElement.controls = true;
+  videoElement.autoplay = true;
+  videoElement.style.width = "100%";
+  videoElement.style.height = "100%";
+  container.appendChild(videoElement);
+  
+  videoElement.addEventListener('ended', () => {
+    setTimeout(() => {
+      currentIndex++;
+      playNextVideo();
+    }, 0);
+  });
+  
+  videoElement.play().catch(error => {
+    console.error("Ikosa ryabaye mu gukina videwo: ", error);
+  });
+}
+}
   function getYoutubeVideoID(url) {
-    const regex = /(?:v=|\/embed\/|youtu\.be\/)([^&?]+)/;
+  try {
+    const parsedUrl = new URL(url);
+    const videoID = parsedUrl.searchParams.get("v");
+
+    // If there is no "v" param but "list" param is there, it's likely a playlist
+    if (!videoID && parsedUrl.searchParams.get("list")) {
+      return "URL is a playlist, no video ID found";
+    }
+
+    if (videoID) {
+      return videoID;
+    }
+
+    // Try other formats (e.g., youtu.be/VIDEO_ID or /embed/VIDEO_ID)
+    const regex = /(?:youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
+  } catch (e) {
+    return null;
   }
+}
   
   function getYoutubePlaylistID(url) {
     const regex = /[?&]list=([^&]+)/;
