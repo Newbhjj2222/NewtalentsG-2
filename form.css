@@ -58,10 +58,16 @@ form input{
  
 }
 #story{
-  height: 58px;
-  margin-left: 80px;
-  border-radius: 19px;
-  padding-left: 15px;
+  padding: 10px;
+  max-height: 120px;
+  overflow: hidden;
+  width: 280px;
+  background: #fff;
+  margin-top: 10px;
+  margin-left: 5%;
+  color: #000;
+  border-radius: 12px;
+  border: 1px solid darkgray;
 }
 #name{
   margin-left: 5px;
