@@ -151,11 +151,9 @@
    const storage = getStorage(app);
    // Baza Storage na Firestore
    
-// Function to handle form submission
 document.querySelector("button[type='submit']").addEventListener("click", async (e) => {
   e.preventDefault();
   
-  // Collect form data
   const form = document.getElementById("form");
   const authorName = form.querySelector("input[placeholder='Author name...']").value;
   const whatsappNumber = form.querySelector("input[placeholder='Whatsapp number...']").value;
@@ -165,18 +163,23 @@ document.querySelector("button[type='submit']").addEventListener("click", async 
   const storyName = form.querySelector("input[placeholder='name of your story...']").value;
   const numberOfEpisodes = form.querySelector("input[placeholder='number of episodes...']").value;
   
-  // Collect episodes
+  // Fata episodes zuzuye zifite nibura inyuguti 400
   const episodes = [];
   const storyDivs = document.querySelectorAll(".story");
   
   storyDivs.forEach(div => {
-    const episodeText = div.innerHTML.trim();
-    if (episodeText) {
-      episodes.push(episodeText);
+    const text = div.innerText.trim();
+    if (text.length >= 400) {
+      episodes.push(text);
     }
   });
   
-  // Create story data object
+  // Twoherereza gusa niba nibura hari episode imwe yujuje ibisabwa
+  if (episodes.length === 0) {
+    alert("Ongeraho nibura episode imwe ifite inyuguti 400 cyangwa zirenze.");
+    return;
+  }
+  
   const storyData = {
     authorName,
     whatsappNumber,
@@ -189,7 +192,6 @@ document.querySelector("button[type='submit']").addEventListener("click", async 
     dateSubmitted: new Date()
   };
   
-  // Save to Firestore
   try {
     const docRef = doc(db, "stories", `${storyName}-${new Date().getTime()}`);
     await setDoc(docRef, storyData);
@@ -199,7 +201,6 @@ document.querySelector("button[type='submit']").addEventListener("click", async 
     alert("Habaye ikibazo, ongera ugerageze.");
   }
 });
-   
    
    
    </script>
