@@ -10,7 +10,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Candal&family=Lora:ital,wght@0,400;1,400;1,700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="single.css">
+    <link rel="stylesheet" href="author.css">
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
     <title>Author Dashboard</title>
@@ -39,7 +39,12 @@
             </li>
         </ul>
     </header>
-    
+     
+    <main>
+     <div class="dashboard">
+       
+     
+        
     <div class="intro">
         <span>WELCOME TO DASHBOARD</span>
         <p>urabasha kwandika, ku managinga account yawe, inkuru zawe, ndetse no gusoma ibitekerezo nibindi bitandukanye.</p>
@@ -111,16 +116,51 @@
         <div class="single">
           
         </div>
-        <div class="posts"></div>
-    </div>
+        
+        <!-- searching ---->
 
+
+           <input type="text" name="" id="search" placeholder="searching your story..."/>
+           
+           
+        <div class="posts">IHANGANE GATO TUZANE INKURU ZAWE..</div>
+    </div>
+     </div>
+   
+    
+        <div class="course" id="courseContent">
+        <span>Aha niho dutangira amahugurwa yo kwiga uko wakubaka website ukoresheje code. ntamahugurwa araboneka naboneka tuzabamenyesha.</span>
+   </div>
+      
+      
+      
+    </main>
+     <div class="ad-content ad" id="reader">
+      <h2 class="page-title">Create Folders</h2>
+        <div class="content">
+         <form id="postForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title" class="nb">Forder name: </label>
+                <input type="text" id="title" name="title" required placeholder="write title of folder....."></input>
+            </div>
+            <div class="form-group">
+                <label for="content" class="nb">forder description:</label>
+                <textarea id="content" name="content" required placeholder=" write description of folder...."></textarea>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+        </div>
+    </div>
+ 
     <footer>
       
       
       <li><a href="profile.html" class="footer-link">
   <i class="fas fa-user" id="profile"></i></a></li>
       
+     <li class="folder"><a href="#"><i class="fas fa-file"></i><span></span></a>
       
+    </li>
       
       
       
@@ -166,82 +206,100 @@
  const postsCollection = collection(db, 'posts');
 
 async function loadUserStories(username) {
-try {
-const userPostsQuery = query(
-postsCollection,
-where("author", "==", username),
-orderBy("createdAt", "desc")
-);
+  try {
+    const userPostsQuery = query(
+      postsCollection,
+      where("author", "==", username),
+      orderBy("createdAt", "desc")
+    );
+    
+    const querySnapshot = await getDocs(userPostsQuery);
+    let postsHtml = '';
+    
+    querySnapshot.forEach((docSnapshot) => {
+      const postData = docSnapshot.data();
+      const postId = docSnapshot.id;
+      
+      let createdAt = 'Unknown date';
+      if (postData.createdAt?.toDate) {
+        createdAt = postData.createdAt.toDate().toLocaleString();
+      } else if (postData.createdAt) {
+        createdAt = postData.createdAt;
+      }
+      
+      const sanitizedHead = sanitizeHtml(postData.head || '');
+      const sanitizedPost = (postData.post || postData.story || '').replace(/<[^>]*>/g, '');
+      const imageUrl = postData.imageUrl || 'default-image.png';
+      
+      postsHtml += `
+        <div class="post" id="${postId}">
+          <h1 class="post-title">${sanitizedHead}</h1>
+          <div class="post-content">
+            <p>${sanitizedPost.substring(0, 200)}...</p>
+          </div>
+          <div class="post-img">
+            <img src="${imageUrl}" alt="${sanitizedHead}" style="width: 89%; height: auto; border-radius: 14px;" />
+          </div>
+          <div class="post-info">
+            <p><strong>Written by:</strong> ${username}</p>
+            <p><strong>Date:</strong> ${createdAt}</p>
+            <ul>
+              <li><i class="fas fa-eye"></i> </li>
+              <span class="views" data-id="${postId}"></span>
+            </ul>
+          </div>
+          <button class="read-more" style="background: blue; border-radius: 12px; color: white;" data-id="${postId}">Read More</button>
+          <button class="delete" style="background: blue; border-radius: 12px; color: white;" data-id="${postId}">Delete</button>
+          <button class="edite" style="background: blue; border-radius: 12px; color: white;" data-id="${postId}">Edit Story</button>
+        </div>
+      `;
+    });
+    
+    document.querySelector(".posts").innerHTML = postsHtml || "<p>Nta nkuru wabashije kwandika. Andika inkuru uyitangaze.</p>";
+    updateViewsDisplay(); // Guhamagara nyuma yo kongera HTML
+  } catch (error) {
+    console.error("Error loading posts:", error.stack);
+    document.querySelector(".main-content").innerHTML = `
+      <p style="color: red;">Habaye ikosa mu kugaragaza inkuru: ${error.message}</p>
+    `;
+  }
+}
 
-const querySnapshot = await getDocs(userPostsQuery);    
-        let postsHtml = '';    
+function sanitizeHtml(unsafeHtml) {
+  const tempDiv = document.createElement('div');
+  tempDiv.textContent = unsafeHtml;
+  return tempDiv.innerHTML;
+}
 
-        querySnapshot.forEach((docSnapshot) => {    
-            const postData = docSnapshot.data();    
-            const postId = docSnapshot.id;    
-
-            let createdAt = 'Unknown date';    
-            if (postData.createdAt.toDate) {    
-                createdAt = postData.createdAt.toDate();    
-            } else {    
-                createdAt = postData.createdAt;    
-            }    
-
-            const sanitizedHead = sanitizeHtml(postData.head || '');    
-            const sanitizedPost = (postData.post || postData.story || '').replace(/<[^>]*>/g, '');    
-            const imageUrl = postData.imageUrl || 'default-image.png';    
-
-            postsHtml += `    
-                <div class="post" id="${postId}">    
-                    <h1 class="post-title">${sanitizedHead}</h1>    
-                    <div class="post-content">    
-                        <p>${sanitizedPost.substring(0, 200)}...</p>    
-                    </div>    
-                    <div class="post-img">    
-                        <img src="${imageUrl}" alt="${sanitizedHead}" style="width: 89%; height: auto; border-radius: 14px;"/>    
-                    </div>    
-                    <div class="post-info">    
-                        <p><strong>Written by:</strong> ${username}</p>    
-                        <p><strong>Date:</strong> ${createdAt}</p>    
-                    </div>    
-                    <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>    
-                    <button class="delete" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Delete</button> 
-                    <button class="edite" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Edite story</button> 
-                    
-                </div>    
-            `;    
-        });    
-
-        document.querySelector(".posts").innerHTML = postsHtml || "<p>Nta nkuru wabashije kwandika. andika inkuru uyitangaze</p>";    
-
-    } catch (error) {    
-        console.error("Error loading posts:", error.stack);    
-        document.querySelector(".main-content").innerHTML = `    
-            <p style="color: red;">Habaye ikosa mu kugaragaza inkuru: ${error.message}</p>    
-        `;    
-    }    
-}    
-
-function sanitizeHtml(unsafeHtml) {    
-    const tempDiv = document.createElement('div');    
-    tempDiv.textContent = unsafeHtml;    
-    return tempDiv.innerHTML;    
-}    
-
-document.addEventListener("DOMContentLoaded", function () {  
-document.querySelector(".posts").addEventListener("click", function (event) {  
-    if (event.target.classList.contains("read-more")) {  
-        const postId = event.target.getAttribute("data-id");  
-        openFullPost(postId);  
-    }  
-
-    if (event.target.classList.contains("read-less")) {  
-        const postId = event.target.getAttribute("data-id");  
-        closeFullPost(postId);  
-    }  
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector(".posts").addEventListener("click", function(event) {
+    const postId = event.target.getAttribute("data-id");
+    
+    if (event.target.classList.contains("read-more")) {
+      openFullPost(postId);
+    }
+    
+    if (event.target.classList.contains("read-less")) {
+      closeFullPost(postId);
+    }
+  });
 });
 
-});
+async function updateViewsDisplay() {
+  document.querySelectorAll(".views").forEach(async (viewEl) => {
+    const postId = viewEl.getAttribute("data-id");
+    const docRef = doc(db, "readers", postId);
+    
+    try {
+      const docSnap = await getDoc(docRef);
+      const readerCount = docSnap.exists() ? docSnap.data().reader || 0 : 0;
+      viewEl.innerHTML = `${readerCount} views`;
+    } catch (error) {
+      console.error("Error loading views:", error);
+      viewEl.innerHTML = "Error";
+    }
+  });
+}
 
 async function openFullPost(postId) {    
     try {    
@@ -564,14 +622,50 @@ document.addEventListener("click", async (event) => {
     }
   }
 });
-        
+
+
+document.getElementById('postForm').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  
+  // Fata username iri muri localStorage
+  const username = localStorage.getItem('username');
+  
+  if (!username) {
+    alert("Nta username yabonetse muri localStorage.");
+    return;
+  }
+  
+  try {
+    const newFolderRef = doc(collection(db, "folders"));
+    await setDoc(newFolderRef, {
+      title: title,
+      content: content,
+      author: username, // Hano niho username ibikwa
+      createdAt: new Date().toISOString()
+    });
+    
+    alert('Folder saved successfully!');
+    document.getElementById('postForm').reset();
+    
+    // Hindura display cyangwa urubuga rurefresh
+    location.reload();
+    
+  } catch (error) {
+    console.error('Error saving folder: ', error);
+    alert('Error saving folder: ' + error.message);
+  }
+});
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
         integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="script.js"></script>
+    <script src="author.js"></script>
     <script src="adm.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </body>
