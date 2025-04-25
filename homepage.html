@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Candal&family=Lora:ital,wght@0,400;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
+    <title>NewtalentsG</title>
+     <meta name="description" content="Ihuriro ry'abanditsi bashya n'abasomyi bashaka gusangira inkuru, amafoto, no guhanahana ibitekerezo mu buryo bwo gusangira ibitekerezo.">
+  <meta name="keywords" content="inkuru, guhanga, ubanditsi, amafoto, gusangira, kwiyandikisha, guhanga inkuru, New Talentsg, NewtalentsG, inkuru ndende, inkuru ngufi, Natasha, imigani, imivugo, ndetse, inkuru z'urukundo. inkuru zo kurwana. NewtalentsG tv, navio kki dabble le, mu mboni.">
+  <meta name="author" content="New Talents Group, NewtalentsG, new talents stories group.">
+    <meta name="google-site-verification" content="oW5z8D-SaLhzaNUPA6LsC-hCsqwg26DI2EXGUpXp1ZI">
+</head>
+
+<body>
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0&appId=1569938053563259" nonce="S28Vqfk7"></script>
+<style>
+    .theme {
+  top: 60px;
+  height: 64px;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  margin-bottom: 43px;
+  z-index: 1000;
+  align-items: center;
+  cursor: pointer;
+  background: #008489;
+    }
+    #step-5 p{
+      font-weight: bold;
+      color: red;
+      background: white;
+      font-size: 13px;
+        }
+    .post:nth-child(n+11) {
+    display: none;
+} 
+</style>
+    <header>
+        <div>
+            <div class="logo notranslate">
+                <h1 class="logo text">
+                    <span>New</span><span>talents</span><span>G</span>
+                </h1>
+            </div>
+            <i class="fa fa-bars menu-toggle"></i>
+            <ul class="nav">
+                <li><a href="#" id="homepage.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="https://newtalents-g-2.vercel.app/form.html">Sell story</a></li>
+                <li><a href="tv.html">NewtalentsG TV</a></li>
+                <li><a href="contact.html">Contact us</a></li>
+              <li><a href="#" id="loginLink">Login</a></li>
+                <li>
+                   <a href="profile.html">
+                <i class="fa fa-user"></i>
+                <span id="usernameDisplay" class="notranslate">User Name</span>
+                <i class="fa fa-chevron-down" style="font-size: 0.8em" onclick="toggleDropdown()"></i>
+    
+            </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+          <div class="theme">
+       <i class="fas fa-moon">theme</i>
+       <div class="customize-theme">
+            <div class="card">
+              <h1>Customer your view</h1>
+              <h3>Manage your font size, color and background </h3>
+<div class="font-size">
+    <h4>Font Size</h4>
+    <div class="size">
+   <h6>Aa</h6>
+    <div class="choose-size">
+      <span class="font-size-1"></span>
+      <span class="font-size-2"></span>
+      <span class="font-size-3"></span>
+      <span class="font-size-4"></span>
+      <span class="font-size-5"></span>
+    </div>
+     <h2>Aa</h2>
+ </div>
+  </div>
+  <div class="color">
+    <h4>Color</h4>
+    <div class="choose-color">
+      <span class="color-1"></span>
+      <span class="color-2"></span>
+      <span class="color-3"></span>
+      <span class="color-4"></span>
+      <span class="color-5"></span>
+    </div>
+  </div>
+       <div class="background">
+         <h4>Background</h4>
+         <div class="choose-bg">
+           <div class="bg-1">
+             <span></span>
+             <h1>draft</h1>
+           </div>
+           <div class="bg-2">
+             <span></span>
+             <h1>Dark</h1>
+           </div>
+           <div class="bg-3">
+             <span></span>
+             <h1>night</h1>
+           </div>
+         </div>
+       </div>
+            </div>
+       </div>
+         
+     </div>
+     
+     <div class="screen">
+         <div class="logo">
+         <img src="pro11.png">
+       </div>
+      <div class="tv">
+            <p id="content">
+            
+            urakaze neza mu nkuru zuzuye ubutumwa bwagufasha kuba muri ubu buzima
+             📚</p>
+           
+            
+  
+</div>
+     
+     </div>
+     
+     
+           <!-- Google Translate Widget -->
+    <div id="google_translate_element"></div>
+
+    <div class="page-wrapper">
+        <div class="post-slider">
+            <h1 class="slider-title">Trending Stories</h1>
+            <i class="fas fa-chevron-left prev"></i>
+            <i class="fas fa-chevron-right next"></i>
+            <div class="post-wrapper" >
+                <div class="post">
+                    <img src=""  class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post">
+                    <img src=""  class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post">
+                    <img src="" class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post">
+                    <img src="" class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user"></i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="post clearfix">
+                    <img src="" class="slider-image">
+                    <div class="post-info">
+                        <h4><a href=""></a></h4>
+                        <i class="far fa-user">N</i>&nbsp;
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="slider">
+                <div class="slider-text">
+                    <span></span>
+                    
+                </div>
+            </div>
+        </div> <!-- Closing post-slider -->
+
+        <div class="content clearfix">
+          
+            <div class="maen-content">
+            
+                <h7 class="recent-stories-title">Recent Stories</h7>
+  
+               <div class="section-search search">
+  <h2 class="section-title">Search</h2>
+  <form action="homepage.html" method="post" id="search-form" onsubmit="return false;">
+    <input type="text" name="search-term" class="text-input" placeholder="Search stories..." oninput="searchPosts()">
+  </form>
+</div>
+<div class="single" style=" padding: 10px; border: 1px solid darkblue; margin-bottom: 12px; margin: 12px; border-top-right-radius: 60px; border-bottom-left-radius: 40px;">
+                
+              </div>
+<div class="banner-container">
+        <div class="banner">
+         
+            
+        
+        </div>
+    </div>
+
+
+
+                <!-- Main content -->
+            <div class="main-content">
+                <h1 class="post-title">Mwihangane gato tuzane inkuru zose....</h1>
+                <div class="post-content">
+                  <!---- ahazajya post --->
+              <div class="post-img">
+              <!--- ahazagaragara ifoto--->
+              </div>
+                   
+                </div>
+            </div>
+            <!--// Main content -->
+                
+                
+            
+            </div> <!-- Closing main-content -->
+
+            <div class="sidebar">
+             <div class="fb-page" 
+     data-href="https://m.facebook.com/profile.php?id=100063727930149" 
+     data-tabs="" 
+     data-width="500" 
+     data-height="" 
+     data-small-header="false" 
+     data-adapt-container-width="true" 
+     data-hide-cover="false" 
+     data-show-facepile="true">
+  <blockquote cite="https://m.facebook.com/profile.php?id=100063727930149" 
+             class="fb-xfbml-parse-ignore">
+    <a href="https://m.facebook.com/profile.php?id=100063727930149">Navio nv</a>
+  </blockquote>
+</div>
+
+                <div class="section-topic">
+                    <h2>STORIES</h2>
+                    <ul id="topics-list">
+                     <li><a href=""></a></li>
+                       
+                    </ul>
+                </div>
+            </div> <!-- Closing sidebar -->
+        </div> <!-- Closing content -->
+    </div> <!-- Closing page-wrapper -->
+<div class="notification-box" id="notificationBox">
+    <ul>
+        <li><h2>NewtalentsG</h2>notifications</li>
+    </ul>
+</div>
+
+
+  <div class="form-container" id="form-container">
+        <h2>WRITE YOUR STORY</h2>
+       <form id="stories" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="head" name="name" required placeholder="Title of your story...">
+    </div>
+
+    <div class="form-group">
+        <label for="post_content">Description:</label>
+      <div id="story" contenteditable="true" placeholder="Write your story here..." style=" border: 1px solid grey; background: white; height: 70px; overflow: hidden;"></div>
+    </div>
+
+    <div class="form-group" id="cover">
+        <label for="post_image">Cover picture:</label>
+        <input type="file" id="image" name="post_image" accept="image/*" required>
+    </div>
+
+    <select id="folderSelector" required>
+      <button type="submit">creens</button>
+        <option value="">-- Choose a folder --</option>
+    </select>
+
+    <div class="form-group">
+        <button type="submit" id="button">Publishing Post</button>
+    </div>
+</form>
+    </div>
+        </div>
+
+<div class="ad-content ad" id="reader">
+      <h2 class="page-title">Create Folders</h2>
+        <div class="content">
+         <form id="postForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title" class="nb">Forder name: </label>
+                <input type="text" id="title" name="title" required placeholder="write title of folder....."></input>
+            </div>
+            <div class="form-group">
+                <label for="content" class="nb">forder description:</label>
+                <textarea id="content" name="content" required placeholder=" write description of folder...."></textarea>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+        </div>
+    </div>
+
+<div class="quick">
+  <ul>
+    <li><a href="homepage.html">
+                    <i class="fas fa-home home"></i>
+                </a></li>
+                <li><a href="single.html" id="create-post">
+   <i class="fas fa-plus"
+   onclick="togglePostForm(event)" id="writer"></i></a></li>
+  <li id="notificationItem">
+  <a href="#" id="notificationLink">
+    <i class="far fa-bell message" onclick="toggleNotifications(event)" id="noty"></i>
+    <span class="badge" id="notificationCount" style="position: absolute; background: crimson; color: white; padding: 2px 5px; border-radius: 50%; font-size: 12px; cursor: pointer;
+    display: none;">3+</span>
+  </a>
+</li>
+<li><a href="tv.html"><i class="fas fa-tv" style="font-size: 22px; margin-left: 20px;"></i></a></li>
+<li><a href="#" class="back-button"><i class="fab fa-dyalog back" style="margin-left: 45px; margin-top: 0px;"></i></a></li>
+  </ul>
+</div>
+
+<div class="balance" style="display: none;">
+  <h2>Balance account</h2>
+  <div class="deposit">
+     <h3>Account</h3>
+     <span>your balance:</span><span>0 rwf</span><span>Nes points:</span><span>0 NeS</span>
+     <button> Deposit</button>
+     <button>Withdraw</button>
+  </div>
+</div>
+
+
+<div class="deposit" id="depositBox">
+    <h3>Account</h3>
+    <span>Your balance: </span><span id="nesWith">0</span>
+    <span>Nes points: </span><span id="nes">0</span>
+    <button id="depositBtn">Gura NeS</button>
+    <button id="withdrawBtn">Bikuza NeS</button>
+</div>
+
+<div class="fm-container">
+    <h1>Gura Nes points kugirango wemererwe gusoma.</h1>
+  <form id="multi-step-form">
+            
+            <!-- Step 1 -->
+            <div class="form-step" id="step-1">
+                <label for="name">Izina ryawe ukoresha kuri uru rubuga:</label>
+                <input type="text" id="name" name="name" required>
+                <button type="button" onclick="nextStep(1)">Next</button>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="form-step" id="step-2" style="display:none;">
+                <label for="momo">Izina ribaruye kuri nimero ukoresha wishyura:</label>
+                <input type="text" id="momo" name="user" required>
+                <button type="button" onclick="nextStep(2)">Next</button>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="form-step" id="step-3" style="display:none;">
+                <label for="phone number">Nimero ukoresha wishyura</label>
+                <input type="number" id="mobile-money" name="phone" required>
+                <button type="button" onclick="nextStep(3)">Next</button>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="form-step" id="step-4" style="display:none;">
+                <label for="payment-method">Uburyo bwo Kwishyura:</label>
+                <select id="payment-method" name="payment-method" required>
+                    <option value="mobile-money">Mobile Money</option>
+                </select>
+                <button type="button" onclick="nextStep(4)">Next</button>
+            </div>
+            
+            <!-- Step 5 -->
+            <div class="form-step" id="step-5" style="display:none;">
+                <label for="plan">Hitamo Plan:</label>
+                <select id="plan" name="plan" required>
+                    <option value="onestory">1 Episode (20 RWF)</option>
+                    <option value="fivestory">5 Episodes (100 RWF)</option>
+                    <option value="tenth">10 Episodes (200 RWF)</option>
+                 
+                    <option value="weakly">Icyumweru (300 RWF)</option>
+                    <option value="monthly">Ukwezi (1000 RWF)</option>
+                </select>
+                <p>nyuma yo gukanda submit, kanda *182*1*1*0780786300*amafaranga# bundi uhamagare wohereze ubwishyu.</p>
+                <button type="submit">submit</button>
+            </div>
+        </form>
+</div>
+
+<div class="continer">
+    <h2>Form yo Gusaba Kubikurizwa</h2>
+    <form id="withdrawalForm">
+        <input type="text" id="ame" placeholder="Amazina ukoresha ku rubuga">
+        <input type="text" id="fone" placeholder="Numero yakira amafaranga">
+        <input type="number" id="amount" placeholder="Nes point ubikuza">
+        <input type="password" id="password" placeholder="Ijambo ry'ibanga">
+        <button type="submit">Ohereza</button>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+<button id="dragBtn" class="floating-btn">💸</button>
+
+   <!-- Floating Translate Button -->
+   <button class="translate-btn" onclick="toggleTranslate()">Translate</button>
+   
+   <div id="chatbot-icon">Chat us</div>
+  <div class="chatbot hidden" id="chatbot-container">  
+    <div class="chat-header">  
+    <span>Chat with us</span>
+    <button id="close-btn">&times;</button>
+    </div>  
+    <div class="chat-body" id="chat-body">  
+      <div class="bot-message">Uraho? ndi umufasha wa  NewtalentsG.nitwa NewtalentsG AI. ndagufasha niba ufite ikibazo. hitamo mu bibazo cyangwa umbaze icyo ushaka.</div>  
+   
+    </div>  
+    <select id="question-select">  
+      <option value="">-- Hitamo ikibazo --</option>  
+      <option value="folder">Ni gute nahimba folder?</option>  
+      <option value="kwiyandikisha">Ni gute na kwiyandikisha?</option>  
+      <option value="kwandika inkuru">ese ni gute wa kwandika inkuru ?</option>  
+      <option value="kugura nes">ese ni gute wa gura nes point ukoresha usoma inkuru? </option>
+      
+      <option value="Nes">Wagize ikibazo kuri balance yawe?</option>
+      
+      
+    </select>
+    <input type="text" id="custom-question" placeholder="Andika ikibazo cyawe hano..."/>  
+    <button id="send-btn">Ohereza</button>  
+  </div>  
+   
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section a">
+                <a href="homepage.html" class="footer-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="profile.html" class="footer-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="" class="footer-link">
+                    <i class="fas fa-wallet"></i> Check Balance
+                </a>
+            </div>
+
+            <div class="footer-section b">
+              <form action="#" class="subscribe-form" id="subscribeForm">
+  <input type="email" id="emailInput" placeholder="Enter your email" required>
+  <button type="submit">Subscribe</button>
+</form>
+            </div>
+
+            <div class="footer-section c">
+                <a href="https://chat.whatsapp.com/HTV7wUW2HTwD10A3R3BYhd" class="footer-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://x.com/talents_ne47935?t=jDGMu0CL_w9Myx_jc9P3Vw&s=09" class="footer-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100063727930149&mibextid=ZbWKwL" class="footer-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/new_takents_stories_group?igsh=bmdrMmVxMDYwcnZz" class="footer-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+        
+        
+        <div class="help">
+          <li><a href="policy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms and conditions</a></li>
+          <li><a href="instructions.html">Instructions</a></li>
+        </div>
+        
+        
+        <div class="footer-bottom">
+            &copy; 2025 New Talents | All Rights Reserved.
+        </div>
+    </footer>
+
+ <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  addDoc,
+  query,
+  orderBy,
+  limit,
+  setDoc,
+  increment,
+  updateDoc,
+  onSnapshot,
+  runTransaction
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+import { getMessaging, onMessage, getToken } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging.js";
+import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+    // Konfigura Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
+        authDomain: "newtalents-a7c29.firebaseapp.com",
+        projectId: "newtalents-a7c29",
+        storageBucket: "newtalents-a7c29.appspot.com",
+        messagingSenderId: "507408992610",
+        appId: "1:507408992610:web:05ce220a4cb4922de9843b"
+    };
+
+    // Tangira Firebase App
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const messaging = getMessaging(app);
+    const storage = getStorage(app);
+
+
+const sentPostIds = new Map(); // Map aho tuzabika time ya buri postId
+
+// Function ifasha kumenya niba hashize amasaha 3
+function shouldCountView(postId) {
+  const lastViewTime = sentPostIds.get(postId);
+  const now = Date.now();
+  
+  if (!lastViewTime || (now - lastViewTime) > 3 * 60 * 60 * 1000) { // 3 hours
+    sentPostIds.set(postId, now);
+    return true;
+  }
+  return false;
+}
+
+function waitForPostAndSaveReader() {
+  const observer = new MutationObserver(() => {
+    const postElements = document.querySelectorAll('.single .post');
+    
+    postElements.forEach(postElement => {
+      const postId = postElement.id;
+      
+      if (!postId) {
+        console.warn("Post ifunguye nta ID ifite.");
+        return;
+      }
+      
+      if (!shouldCountView(postId)) {
+        console.log("Post yasomwe vuba:", postId);
+        return;
+      }
+      
+      const readerRef = doc(db, "readers", postId);
+      
+      setDoc(readerRef, {
+          reader: increment(1)
+        }, { merge: true })
+        .then(() => {
+          console.log("Reader abitswe kuri postId:", postId);
+        })
+        .catch((error) => {
+          console.error("Ikosa ribayeho:", error.message);
+        });
+    });
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
+  
+  setInterval(() => {
+    console.log("Kongera kureba posts nyuma y'iminota 16.");
+    observer.disconnect();
+    waitForPostAndSaveReader();
+  }, 16 * 60 * 1000); // 16 minutes
+}
+
+document.addEventListener("DOMContentLoaded", waitForPostAndSaveReader);
+// aho kubara views kuri post birangiye 
+
+
+
+    // Fungura collection ya 'folders'
+    const foldersCollection = collection(db, 'folders');
+
+    // Fungura inyandiko za 'folders'
+    async function loadTopics() {
+    try {
+        const querySnapshot = await getDocs(foldersCollection);
+        const topicsList = document.getElementById('topics-list');
+        topicsList.innerHTML = '';  // Gusiba ibyari bihari mbere
+
+        querySnapshot.forEach((doc) => {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = '#';  
+            link.textContent = doc.data().title;  // Ufata content iri muri field 'title'
+            link.setAttribute('data-title', doc.data().title); // Kubika title ya folder muri attribute
+
+            // Iyo ukoze click kuri folder, title ibikwa muri localStorage
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Kwirinda ko page isubirayo
+                localStorage.setItem('selectedFolderTitle', doc.data().title); 
+                console.log("Folder title yabitswe muri localStorage:", doc.data().title);
+                
+                // Kora searching muri main-content
+                searchInMainContent(doc.data().title);
+            });
+
+            listItem.appendChild(link);
+            topicsList.appendChild(listItem);
+        });
+
+    } catch (error) {
+        console.error("Ikosa ryabaye: ", error);
+    }
+}
+
+// Function yo gukora searching muri class ya main-content
+function searchInMainContent(folderTitle) {
+    const mainContent = document.querySelector('.main-content');
+    if (!mainContent) return;
+
+    const postTitles = mainContent.querySelectorAll('.post-title');  // Shaka elements za h1 class 'post-title'
+    postTitles.forEach((postTitle) => {
+        const postText = postTitle.textContent;  // Fata text y'icyo h1
+        if (postText && postText.toLowerCase().includes(folderTitle.toLowerCase())) {
+            postTitle.style.display = 'block';  // Erekana item (h1) niba title ihuye
+            // Optionally, you can display the whole post content:
+            const postContent = postTitle.closest('.post');  // assuming the .post class contains the whole post
+            postContent.style.display = 'block';
+            
+            // Kora scrolling ku h1 element
+            postTitle.scrollIntoView({
+                behavior: 'smooth', // Iri ni uburyo bwo gukora scrolling mu buryo bworoshye
+                block: 'center' // Icyo kigaragaza ko h1 izahita ijya hagati ya viewport (umwanya ureba)
+            });
+        } else {
+            postTitle.style.display = 'none';  // Funga item niba title itajyanye
+            const postContent = postTitle.closest('.post'); 
+            postContent.style.display = 'none';
+        }
+    });
+}
+
+// Guhamagara function ya loadTopics
+loadTopics();
+
+//aho ibijyanye na folder birangirira
+
+
+  // Fungura collection ya 'posts'
+const postsCollection = collection(db, 'posts');
+
+// Function ifata documents ziri muri collection ya 'posts'
+async function fetchPosts() {
+    try {
+        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'), limit(30));
+        const querySnapshot = await getDocs(recentPostsQuery);
+
+        let postContainer = document.querySelector('.post-wrapper');
+        postContainer.innerHTML = ''; // Gukuraho content ya mbere
+
+        if (querySnapshot.empty) {
+            postContainer.innerHTML = "<p style='text-align:center; color: red;'>Nta posts zibonetse.</p>";
+            return;
+        }
+
+        querySnapshot.forEach((doc) => {
+            const postData = doc.data();
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+            postElement.style.display = 'inline-block';
+            postElement.style.width = '100%';
+
+            postElement.innerHTML = `
+                <img src="${postData.imageUrl}" alt="${postData.head}" 
+                    style="width: 100%; height: 200px; border-radius: 28px 8px 0 0;" 
+                    class="slider-image" data-search="${postData.head}"/>
+                <div class="post-info">
+                    <h4><a href="#" data-search="${postData.head}">${postData.head}</a></h4>
+                    <i class="far fa-user"></i>&nbsp;
+                    <span>${postData.author || "NewtalentsG"}</span>
+                    <i class="far fa-calendar">
+                        ${postData.createdAt ? new Date(postData.createdAt).toLocaleDateString() : 'No date available'}
+                    </i>
+                </div>
+            `;
+
+            // Event Listener ku ifoto na head kugira ngo bikore search
+            postElement.querySelector('.slider-image').addEventListener('click', (e) => {
+                searchPosts(e.target.dataset.search);
+            });
+
+            postElement.querySelector('h4 a').addEventListener('click', (e) => {
+                e.preventDefault();
+                searchPosts(e.target.dataset.search);
+            });
+
+            postContainer.appendChild(postElement);
+        });
+
+        // Kora reset kuri slick carousel mbere yo kongera kuyishyiraho
+        if ($('.post-wrapper').hasClass('slick-initialized')) {
+            $('.post-wrapper').slick('unslick');
+        }
+
+        // Subiramo slick nyuma yo kuzana posts
+        setTimeout(() => {
+            $('.post-wrapper').slick({
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                nextArrow: $('.next'),
+                prevArrow: $('.prev'),
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        }, 500);
+
+    } catch (error) {
+        console.error("Error fetching posts: ", error.message);
+        alert("Habaye ikibazo: " + error.message);
+    }
+}
+// Function yo gushakisha ibyitiranwa muri '.main-content'
+function searchPosts(keyword) {
+    let mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        let posts = mainContent.querySelectorAll('.post');
+        let firstMatch = null; // Kubika iya mbere ihuye
+
+        posts.forEach(post => {
+            let matchFound = post.innerHTML.toLowerCase().includes(keyword.toLowerCase());
+
+            if (matchFound) {
+                post.style.display = 'block';
+                if (!firstMatch) {
+                    firstMatch = post; // Fata iya mbere ibonetse
+                }
+            } else {
+                post.style.display = 'none';
+            }
+        });
+
+        // Niba hari ihuye, ihite yikora scrolling
+        if (firstMatch) {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+}
+// Guhamagara function ya fetchPosts kugira ngo izane posts
+fetchPosts();
+    // Fungura document ya post imwe
+  // Function yo gufata post imwe
+// Function yo kubika comment muri Firestore
+async function addComment(postId, username, comment) {
+    try {
+        if (!postId || !comment || !username) {
+            console.error("Post ID, username and comment text cannot be empty.");
+            return;
+        }
+
+        const commentsRef = collection(db, "posts", postId, "comments");
+
+        await addDoc(commentsRef, {
+            username: username,
+            text: comment, // Hano hakoreshwa comment, ntabwo commentData.text
+            createdAt: new Date() // Shyiramo isaha
+        });
+        
+        console.log("Comment added successfully.");
+    } catch (error) {
+        console.error("Error adding comment: ", error);
+        alert("Icyo gikorwa kiranze: " + error.message);
+    }
+}
+// Function yo gufata post imwe
+async function fetchSinglePost(postId) {
+    try {
+        const postRef = doc(db, "posts", postId);
+        const postSnapshot = await getDoc(postRef);
+
+        if (postSnapshot.exists()) {
+            const postData = postSnapshot.data();
+
+            // Shyiramo igice cyo kwandika comments
+            document.querySelector(".single").innerHTML = `
+    <div class="post" id="${postId}">
+        <h1 class="post-title">${postData.head || 'Untitled Post'}</h1>
+        <div class="post-content" style="line-height: 1.6; margin-bottom: 16px; gap: 12px;">
+           <p>${postData.post || postData.story || 'No content available.'}</p>
+        </div>
+        <div class="post-img">
+            <img src="${postData.imageUrl}" alt="${postData.head}" style="width: 90%; height: auto; border-radius: 14px;" />
+        </div>
+        <div class="comments-section" style="display: flex; flex-direction: column; gap: 10px;">
+            <h3>Comments:</h3>
+            <div class="comments-list" id="comments-list"></div>
+            <textarea id="comment-input" style="border-radius: 12px;  margin-top: 30px;" placeholder="Write your comment..."></textarea>
+            <button id="submit-comment" style="background: blue; color: white; border-radius: 12px;">Submit Comment</button>
+        </div>
+        
+        
+    </div>
+`;
+
+// Scroll to the .single class after the content is updated
+document.querySelector(".single").scrollIntoView({
+    behavior: 'instant', // This ensures immediate scrolling without any delay
+    block: 'start' // Scrolls to the top of the element
+});
+            
+            // Kora kuri button yo gushyira comment
+            document.getElementById("submit-comment").addEventListener("click", async () => {
+                const commentInput = document.getElementById("comment-input");
+                const commentText = commentInput.value;
+
+                const username = document.getElementById("usernameDisplay").textContent; // Fata izina ry'umukoresha
+
+                // Andika comment
+                await addComment(postId, username, commentText); // Ohereza izina ry'umukoresha hamwe na comment
+                commentInput.value = ''; // Hagarika comment input
+                loadComments(postId); // Tangira kugaragaza comments nyuma yo kongeramo
+            });
+
+            loadComments(postId); // Kora kuri comments nyuma yo kwerekana inyandiko
+        } else {
+            console.log("No such document!");
+            document.querySelector(".main-content").innerHTML = `<p>No post found with the specified ID.</p>`;
+        }
+    } catch (error) {
+        console.error("Error fetching post:", error);
+    }
+}
+
+// Function yo gufata comments
+async function loadComments(postId) {
+    try {
+        const commentsRef = collection(db, "posts", postId, "comments");
+        const querySnapshot = await getDocs(commentsRef);
+        const commentsList = document.getElementById("comments-list");
+        commentsList.innerHTML = ''; // Fata ibiri mu comments list
+
+        querySnapshot.forEach((doc) => {
+            const commentData = doc.data();
+            commentsList.innerHTML += `
+                <div class="comment">
+                    <p><strong>${commentData.username}</strong>: ${commentData.text}</p>
+                    <small>${commentData.createdAt.toDate().toLocaleString()}</small>
+                </div>
+            `;
+        });
+     } catch (error) {
+        console.log("Error loading comments: ", error);
+        alert("Hari ikibazo mu gihe cyo kubona comments: " + error.message); // Tangaza impamvu itabitswe
+    }
+}
+
+
+
+
+// Function yo gufata posts zose hamwe na "Read More"
+async function loadRecentStories() {
+    try {
+        // Gushyiraho query ishingiye ku miterere ya createdAt kugera kuz'ejyanye na post nshya
+        const recentPostsQuery = query(postsCollection, orderBy('createdAt', 'desc'));
+        const querySnapshot = await getDocs(recentPostsQuery);
+        
+        let postsHtml = '';
+
+        for (const doc of querySnapshot.docs) { // Nta foreach irimo
+            const postData = doc.data();
+            const postId = doc.id;
+
+            // Reba niba createdAt iriho kandi ari Timestamp, niba itariho igaragaze igihe kitazwi
+            let createdAt = 'Unknown date';
+            if (postData.createdAt) {
+                createdAt = postData.createdAt;
+            }
+
+            // Reba niba izina ry'umwanditsi ririho, niba ntaryo, rigaragaze ko atazwi
+            const author = postData.author || 'NewtalentsG';
+
+            // Irinde ibishobora gutera HTML injection, ugire data yawe neza
+            const sanitizedHead = sanitizeHtml(postData.head, { allowedTags: [] });
+// Hindura tags zigire aho zigaragara nk'inyuguti zisanzwe
+const sanitizedPost = (postData.post || postData.story || '').replace(/<[^>]*>/g, '');
+
+            postsHtml += `
+                <div class="post" id="${postId}">
+                    <h1 class="post-title">${sanitizedHead}</h1>
+                    <div class="post-content">
+                        <p>${sanitizedPost.substring(0, 200)}...</p>
+                    </div>
+                    <div class="post-img">
+                        <img src="${postData.imageUrl}" alt="${sanitizedHead}" style="width: 89%; height: auto; border-radius: 14px;"/>
+                    </div>
+                    <div class="post-info">
+                        <p><strong>Written by:</strong> ${author}</p>
+                        <p><strong>Date:</strong> ${createdAt}</p>
+                    </div>
+                    <button class="read-more" style='background: blue; border-radius: 12px; color: white;' data-id="${postId}">Read More</button>
+                    <button class="share" style='background: green; border-radius: 12px; color: white;' data-id="${postId}">Share</button>
+                </div>
+            `;
+        }
+
+  
+
+// Event listener ku button ya share ifite class ya "share"
+document.addEventListener("click", function(event) {
+    if (event.target.classList.contains("share")) {
+        const postId = event.target.getAttribute("data-id");
+        sharePost(postId);
+    }
+});
+
+async function sharePost(postId) {
+    try {
+        const postElement = document.getElementById(postId);
+        if (!postElement) throw new Error(`Post ifite ID '${postId}' ntibashije kuboneka kuri page.`);
+
+        const head = postElement.querySelector(".post-title")?.innerText || "Post idafite umutwe";
+        const postContent = postElement.querySelector(".post-content p")?.innerText || "Nta content ibonetse kuri iyi post.";
+
+        const postUrl = `https://www.newtalentsg.co.rw`;  // Default link
+
+        // **Gusangiza post**
+        if (navigator.share) {
+            await navigator.share({
+                title: head,
+                text: `${postContent}\n\n${postUrl}`,
+                url: postUrl
+            });
+            console.log("Post yasangijwe neza!");
+        } else {
+            await copyToClipboard(`${head}\n\n${postContent}\n\nLink: ${postUrl}`);
+            openFacebookShare(postUrl, head, postContent);
+        }
+    } catch (error) {
+        console.error("Ikosa rusange ryabaye:", error);
+        alert(`Ikosa ryabaye: ${error.message}`);
+    }
+}
+
+// **Function ifasha gukopera link kuri clipboard**
+async function copyToClipboard(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        alert("Ibyo gusangiza byakozweho copy kuri clipboard!");
+    } catch (error) {
+        console.error("Ikosa ryabaye mu gukora copy kuri clipboard:", error);
+        alert(`Ikosa ryabaye mu gukora copy: ${error.message}`);
+    }
+}
+
+// **Function ifungura Facebook share page**
+function openFacebookShare(postUrl, title, content) {
+    try {
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}&quote=${encodeURIComponent(title + "\n" + content)}`;
+        window.open(facebookShareUrl, '_blank');
+    } catch (error) {
+        console.error("Ikosa ryabaye mu gufungura link ya Facebook:", error);
+        alert(`Ikosa ryabaye mu gufungura link ya Facebook: ${error.message}`);
+    }
+}
+
+        // Shyira posts mu gice cyagenwe
+        document.querySelector('.main-content').innerHTML = postsHtml;
+
+        // Ongera ushyireho event listener ku batoni
+        // Select and handle 'Read More' buttons
+// Gufata original content mbere yo gukanda kuri 'read more'
+// Gufata original content mbere yo gukanda kuri 'read more'
+// Kubika kopi ya original content ya document body
+// Kubika original content
+// Kubika content ya mbere nk'initial state
+// Kubika content ya mbere nk'initial state
+let initialContent = document.body.innerHTML;
+let currentContent = initialContent;
+let backButtonListener; // Kubika listener
+let observer; // Kubika observer
+
+
+
+
+//aho bitangirira ibya nes point 
+
+
+
+
+
+
+
+// Function yo kwemerera umusomyi gusoma inkuru niba afite Nes Points zihagije
+async function attachReadMoreListeners() {
+const readMoreButtons = document.querySelectorAll('.read-more');
+
+readMoreButtons.forEach(button => {
+button.addEventListener('click', async (event) => {
+const postId = event.currentTarget.getAttribute('data-id');
+if (!postId) {
+console.error('Error: Data-id attribute not found');
+return;
+}
+
+const username = localStorage.getItem('username');
+if (!username) {
+alert("Habaye ikibazo: Ntabwo byashobotse kumenya izina ryawe. Banza winjire cyangwa wiyandikishe. Kubindi bisobanuro mwatwandikira kuri Whatsapp 0722319367.");
+return;
+}
+
+try {
+// Fungura inkuru
+await fetchSinglePost(postId);
+attachBackButtonListener();
+observeFooter();
+} catch (error) {
+console.error('Error:', error);
+}
+});
+});
+}
+//aho bigarukira ibya nes point 
+
+
+
+
+function attachBackButtonListener() {
+    const backButton = document.querySelector('.back-button');
+
+    // Kureka listener irimo
+    if (backButtonListener) {
+        backButton.removeEventListener('click', backButtonListener);
+    }
+
+    backButtonListener = (event) => {
+        event.preventDefault();
+
+        // Kubika agaciro kari muri id="nes" mbere yo gusubiza content ya DOM
+        let nesElement = document.getElementById("nes");
+        let nesValue = nesElement ? nesElement.textContent || nesElement.value : null;
+
+        // Gusubiza content yari ihari mbere
+        document.body.innerHTML = currentContent;
+
+        // Gusubiza agaciro kari muri nes nyuma yo gusubiza content
+        if (nesValue !== null) {
+            let newNesElement = document.getElementById("nes");
+            if (newNesElement) {
+                newNesElement.textContent = nesValue;
+            }
+        }
+
+        // Gushyira event listeners zose kuri 'read more' na 'back' buttons
+        attachReadMoreListeners();
+        attachBackButtonListener();
+        
+    };
+
+    if (backButton) {
+        backButton.addEventListener('click', backButtonListener);
+    }
+}
+
+
+
+// Kwita kuri 'read-more' buttons bwa mbere
+attachReadMoreListeners();
+// Kwita kuri 'Back' button bwa mbere
+attachBackButtonListener();
+// 
+    } catch (error) {
+        console.error("Error loading recent stories: ", error);
+    }
+}
+
+
+// Iyi function ikora sanitize ya HTML, ikirinda injection mu izina ry'inkuru no muri post.
+function sanitizeHtml(unsafeHtml) {
+    const tempDiv = document.createElement('div');
+    tempDiv.textContent = unsafeHtml;
+    return tempDiv.innerHTML;
+}
+
+// Banza uhamagare iyi function kugirango ushireho posts mu ntangiriro
+loadRecentStories();
+
+    // Fungura function ya ads
+    async function displayAdsInSlider() {
+        const adRef = collection(db, "ads");
+        const adsSnapshot = await getDocs(adRef);
+        const sliderTextDiv = document.querySelector(".slider-text");
+        const adSpan = sliderTextDiv.querySelector("span");
+        
+        adSpan.innerHTML = ''; 
+
+        adsSnapshot.forEach(doc => {
+            const ad = doc.data();
+            adSpan.innerHTML += `${ad.ad} `;
+        });
+    }
+
+    // Hamagara functions
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTopics();
+        fetchPosts();
+        loadRecentStories();
+        displayAdsInSlider();
+    });
+    document.getElementById('loginLink').addEventListener('click', function(event) {
+        event.preventDefault();  // Banza wirinde ko link ifungura uko isanzwe
+        window.location.href = 'index.html';  // Fungura login.html
+    });
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Get the username from localStorage
+    const username = localStorage.getItem('username');
+    
+    // Ahari 'Login' link hazahita hiyongeramo 'Logout' igihe username ibonetse
+    if (username) {
+        document.getElementById("usernameDisplay").textContent = username;
+        
+        // Hindura 'Login' button ikaba 'Logout'
+        const loginLink = document.getElementById("loginLink");
+        loginLink.textContent = "Logout";
+        loginLink.href = "#";
+        loginLink.addEventListener("click", () => {
+            // Gusiba username muri localStorage no gukora logout
+            localStorage.removeItem('username');
+            window.location.reload(); // Reload page to reset the state
+        });
+    } else {
+        document.getElementById("usernameDisplay").textContent = "Guest";
+    }
+});
+
+
+// Fungura connection na database (urugero)
+// Fungura connection na database (urugero)
+
+document.getElementById('subscribeForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const emailInput = document.getElementById('emailInput').value;
+
+    try {
+        const subscriberRef = doc(collection(db, "subscriber"));
+        await setDoc(subscriberRef, {
+            email: emailInput, // Hano dukoresheje emailInput
+            createdAt: new Date().toISOString()
+        });
+        alert('Email subscribe successfully!');
+        document.getElementById('emailInput').value = ''; // Guhindura umwanya w'input
+        displayEmail();
+    } catch (error) {
+        console.error('Error to subscribe: ', error);
+        alert('Error to subscribe: ' + error.message);
+    }
+});
+
+// Function to load and display notifications in the notification box
+// Function to load and display notifications in the notification box
+async function displayNotificationsInBox() {
+  try {
+    // Reba collection ya "Notifications"
+    const notifyRef = collection(db, "Notifications");
+    const notifySnapshot = await getDocs(notifyRef);
+
+    // Fata notification box na notification count badge muri HTML
+    const notificationBox = document.querySelector("#notificationBox ul");
+    const notificationCount = document.querySelector("#notificationCount");
+    notificationBox.innerHTML = ''; // Gusiba notifications zishaje
+
+    // Umubare wa notifications
+    const notificationCountValue = notifySnapshot.docs.length;
+
+    // Reba niba hari notifications zishya kandi zitarasomwa
+    if (notificationCountValue > 0 && !localStorage.getItem("notificationsRead")) {
+      // Set notification count value
+      notificationCount.innerText = notificationCountValue;
+      notificationCount.style.display = "inline"; // Yerekana badge ya count
+    } else {
+      notificationCount.style.display = "none"; // Niba nta notifications cyangwa zarasomwe, yihishe
+    }
+
+    // Gushyira notifications nshya muri notification box
+    notifySnapshot.docs.forEach(doc => {
+      const notification = doc.data();
+      const createdAtFormatted = notification.createdAt ? new Date(notification.createdAt).toLocaleString() : "";
+      
+      const listItem = document.createElement("li");
+      listItem.innerHTML = `
+        <h2>${notification.name}</h2>
+        <p>${notification.info}</p>
+        <small>${createdAtFormatted}</small>
+      `;
+      notificationBox.appendChild(listItem);
+    });
+
+  } catch (error) {
+    console.error("Error fetching notifications: ", error);
+    alert("Error fetching notifications: " + error.message);
+  }
+}
+
+// Function to toggle visibility of notifications box and mark as read
+function toggleNotifications(event) {
+  event.preventDefault();
+  const notificationBox = document.querySelector("#notificationBox");
+
+  // Toggle notification box visibility
+  notificationBox.style.display = notificationBox.style.display === "none" || notificationBox.style.display === "" ? "block" : "none";
+
+  // Mark notifications as read and hide badge if notifications are shown
+  if (notificationBox.style.display === "block") {
+    localStorage.setItem("notificationsRead", "true"); // Bika ko zasomwe muri localStorage
+    document.querySelector("#notificationCount").style.display = "none"; // Hide badge
+  }
+}
+
+// Call the function to display notifications and set count
+displayNotificationsInBox();
+
+
+// Fata ibintu byose biri muri class ya 'quick'
+const quickElements = document.querySelectorAll('.quick');
+
+// Fungura footer
+const footer = document.querySelector('footer');
+
+// Fungura observer ikurikirana igihe footer igeze cyangwa ivuye mu ishusho
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Igihe footer igeze mu ishusho, hisha ibintu bya 'quick'
+            quickElements.forEach(element => element.style.display = 'none');
+        } else {
+            // Igihe footer ivuye mu ishusho, garura ibintu bya 'quick'
+            quickElements.forEach(element => element.style.display = '');
+        }
+    });
+});
+
+observer.observe(footer);
+
+
+async function fetchScreensData() {
+    const tvElement = document.getElementById("content");
+
+    if (!tvElement) {
+        console.error("Element with id 'content' not found in the document.");
+        return; // Stop function if element does not exist
+    }
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "screens")); // Await inside async function
+        const contents = []; // Array to hold each piece of content
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data(); // Get document data
+            
+            // Extract content, excluding date and ID
+            const contentField = data.content || "No content found";
+            contents.push(`<p>${contentField}</p>`); // Wrap content in a <p> tag for animation
+        });
+
+        if (contents.length === 0) {
+            tvElement.innerHTML = "<p> shaka network ubundi eongere ugerageze. New talents stories group, amamaza aha. twandikire kuri whatsapp 0722319367</p>";
+        } else {
+            // Function to display one content at a time
+            let currentIndex = 0;
+
+            function displayContent() {
+                tvElement.innerHTML = contents[currentIndex]; // Display the current content
+                currentIndex = (currentIndex + 1) % contents.length; // Move to the next, loop back if at end
+            }
+
+            // Start the slideshow
+            displayContent(); // Display the first content immediately
+            setInterval(displayContent, 18000); // Change content every 10 seconds (same as CSS animation)
+        }
+    } catch (error) {
+        tvElement.innerHTML = "Error fetching data: " + error.message;
+    }
+}
+
+// Call the function to load data
+fetchScreensData();
+
+
+// Function yo gufata amafolders
+async function fetchFolders() {
+    const folderSelector = document.getElementById("folderSelector");
+
+    try {
+        // Gukuraho amahitamo yose muri selector kugirango utangire bundi bushya
+        folderSelector.innerHTML = ""; 
+
+        // Fata username muri localStorage
+        const username = localStorage.getItem("username");
+        if (!username) {
+            throw new Error("Username not found in localStorage.");
+        }
+
+        // Fata amafolders yose muri Firestore
+        const querySnapshot = await getDocs(collection(db, "folders"));
+        let foldersFound = false;
+
+        querySnapshot.forEach((doc) => {
+            const folderData = doc.data();
+
+            // Reba niba folder ifitanye isano n'umwanditsi (username)
+            if (folderData.author === username) {
+                const option = document.createElement("option");
+                option.value = doc.id;
+                option.textContent = folderData.title;
+                folderSelector.appendChild(option);
+                foldersFound = true;
+            }
+        });
+
+        // Ongeraho amahitamo yo kurema folder nshya
+        setupFolderCreation(folderSelector, username, db);
+    } catch (error) {
+        console.error("Error fetching folders: ", error);
+    }
+}
+
+// Function yo kurema folder
+async function createNewFolder(newFolderName, username, db) {
+    try {
+        await addDoc(collection(db, "folders"), {
+            title: newFolderName,
+            author: username,
+            createdAt: new Date().toISOString()
+        });
+        alert("Folder created successfully!");
+        return true;
+    } catch (createError) {
+        console.error("Error creating new folder: ", createError);
+        alert("Failed to create folder. Please try again.");
+        return false;
+    }
+}
+
+// Function yo gushyiraho uburyo bwo kurema folder
+function setupFolderCreation(folderSelector, username, db) {
+    const createNewOption = document.createElement("option");
+    createNewOption.value = "create-new";
+    createNewOption.textContent = "Create New Folder";
+
+    // Ongera amahitamo yo kurema folder nshya niba atarimo
+    if (!Array.from(folderSelector.options).some((opt) => opt.value === "create-new")) {
+        folderSelector.appendChild(createNewOption);
+    }
+
+    folderSelector.addEventListener("change", async (event) => {
+        if (event.target.value === "create-new") {
+            const newFolderName = prompt("Enter the name of your  story for the new folder:");
+            if (newFolderName) {
+                const created = await createNewFolder(newFolderName, username, db);
+                if (created) {
+                    fetchFolders(); // Re-fetch folders kugirango zigaragare neza
+                }
+            }
+        }
+    });
+}
+
+// Guhamagara fetchFolders
+fetchFolders();
+
+   //* post //
+   
+async function handlePostSubmit(event) {
+  event.preventDefault();
+  const title = document.getElementById('head').value;
+  const content = document.getElementById('story').value;
+  const file = document.getElementById('image').files[0];
+  const selectedFolder = document.getElementById('folderSelector').value; // Folder watoranyije
+
+  // Fata izina rya author muri localStorage
+  const author = localStorage.getItem("username"); // Izina rya author ryabitse muri localStorage
+  // Genzura niba ifoto yatowe
+  if (!file) {
+    alert('Please select an image file.');
+    return;
+  }
+
+  // Genzura niba umutwe n'ibisobanuro byuzuye
+
+  try {
+    // Bika ifoto muri Firebase Storage
+    const storageRef = ref(storage, `amafoto/${file.name}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    console.log('Amafoto abitswe neza!');
+
+    // Fata URL y'aho amafoto abitswe
+    const url = await getDownloadURL(storageRef);
+
+    // Bika URL muri Firestore
+    const newPostsRef = doc(collection(db, "posts"));
+    await setDoc(newPostsRef, {
+      head: title,
+      story: content,
+      imageUrl: url, // Bika URL y'ifoto muri database
+      folderId: selectedFolder, // Fata folder watoranyije
+      author: author, // Bika izina rya author
+      createdAt: new Date().toISOString()
+    });
+
+    alert('Posts saved successfully!');
+    document.getElementById('stories').reset(); // Reba niba "posts" ari izina ry'ikibuga
+    displayPosts(); // Fungura uburyo bwo kugaragaza izo posts
+  } catch (error) {
+    console.error('Error saving post: ', error);
+    alert('Error saving post: ' + error.message);
+  }
+}
+document.getElementById("stories").addEventListener("submit", handlePostSubmit);
+
+const banner = document.querySelector('.banner');
+        const slides = document.querySelectorAll('.slid');
+        const totalSlides = slides.length;
+        let currentIndex = 0;
+
+        function slide() {
+            currentIndex++;
+            if (currentIndex >= totalSlides) {
+                currentIndex = 0; // Garuka ku ya mbere
+            }
+            banner.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        // Hita utangira auto-slide buri segonda 3 (3000ms)
+        setInterval(slide, 6000);
+        
+        
+        
+async function loadBanners() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "banners"));
+    const bannerContainer = document.querySelector(".banner");
+    let slidesData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      slidesData.push({
+        title: data.title,
+        description: data.description,
+        timestamp: data.timestamp // Igihe cyatanzwe
+      });
+    });
+
+    // Tumenye uko tuzashyira banners hashingiwe ku gihe
+    slidesData.sort((a, b) => a.timestamp - b.timestamp); // Turebe ko ibyo bishyirwaho bikurikirana
+
+    slidesData.forEach((slideData) => {
+      const slide = document.createElement("div");
+      slide.classList.add("slid");
+      slide.innerHTML = `
+        <h1>${slideData.title}</h1>
+        <p>${slideData.description}</p>
+      `;
+      bannerContainer.appendChild(slide);
+    });
+
+    // Tangiza slider
+    startSlider();
+  } catch (error) {
+    console.error("Ikibazo kibaye:", error);
+  }
+}
+
+function startSlider() {
+  const banner = document.querySelector(".banner");
+  const slides = document.querySelectorAll(".slid");
+  let index = 0;
+
+  // Fungura slider hashingiye ku gihe
+  setInterval(() => {
+    index = (index + 1) % slides.length;
+    banner.style.transform = `translateX(-${index * 100}%)`;
+  }, 5000); // Hindura buri masegonda 5
+}
+
+// Tangiza function ya load
+loadBanners();
+
+     document.addEventListener("DOMContentLoaded", function() {
+    document.body.addEventListener("selectstart", function(e) {
+        e.preventDefault();
+    });
+});
+
+     window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "e0ef3bbd-9bec-4d6c-a50a-7a330d1bc902",
+      safari_web_id: "web.onesignal.auto.57017041-c410-4b69-86f6-455278402f0c",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+
+
+
+async function fetchNesPoints() {
+    const db = getFirestore();
+    const storedUsername = localStorage.getItem("username");
+
+    if (!storedUsername) {
+        document.getElementById("nes").textContent = "0";
+        return;
+    }
+
+    async function updateNesPoints() {
+        try {
+            const userDocRef = doc(db, "depositers", storedUsername);
+            const docSnap = await getDoc(userDocRef);
+
+            let nesPoints = docSnap.exists() ? docSnap.data().nes ?? 0 : 0;
+            document.getElementById("nes").textContent = nesPoints;
+        } catch (error) {
+            console.error("Error fetching Nes points:", error);
+            document.getElementById("nes").textContent = "0";
+        }
+    }
+
+    // Koresha setInterval buri nyuma ya 2s kugirango ivugurure nes
+    await updateNesPoints(); // Hitamo kuyihamagara ubwa mbere
+    setInterval(updateNesPoints, 1000);
+}
+
+fetchNesPoints();
+
+//aho guhamagana nes baguze birangirira
+
+
+
+
+
+
+document.getElementById('multi-step-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById("name").value;
+    const momo = document.getElementById("momo").value;
+    const phone = document.getElementById("mobile-money").value;
+    const paymentMethod = document.getElementById("payment-method").value;
+    const plan = document.getElementById("plan").value;
+
+    // Fata izina riri muri localStorage
+    const storedUsername = localStorage.getItem("username"); 
+    if (!storedUsername) {
+        alert("Error: Izina ntabwo riboneka muri localStorage.");
+        return;
+    }
+
+    try {
+        // Koresha izina riri muri localStorage nk'ID ya document
+        const depositerRef = doc(db, "depositers", storedUsername);
+        await setDoc(depositerRef, {
+            username: name,
+            momo_name: momo,
+            phone_number: phone,
+            payment_method: paymentMethod,
+            plan: plan,
+            nes: 0, // Field nshya y'ibanze
+            timestamp: new Date()
+        });
+
+        alert('Kugura nes point byoherejwe neza. Ohereza ubwishyu bwa amafaranga kuri 0780786300 kugira ngo uhabwe Nes points utangire usome.');
+        document.getElementById("multi-step-form").reset();
+        document.getElementById("step-5").style.display = "none";
+        document.getElementById("step-1").style.display = "block";
+    } catch (error) {
+        console.error('Error to subscribe: ', error);
+        alert('Error to subscribe: ' + error.message);
+    }
+});
+// aho kugura nes birangirira
+
+
+// 1. Fata username iri muri localStorage
+// Fata username muri localStorage
+const username = localStorage.getItem("username");
+
+if (username && username.trim() !== "") {
+  // Reba document muri Firestore authors collection
+  const authorDocRef = doc(db, "authors", username.trim());
+  
+  // Komeza gukurikirana impinduka muri iyo document
+  onSnapshot(authorDocRef, (doc) => {
+    if (doc.exists()) {
+      const data = doc.data();
+      console.log("Amakuru avuye muri Firestore:", data);
+      
+      // Fata agaciro ka field 'nes' gusa
+      const nesValue = data.nes;
+      
+      // Erekana muri HTML ahari id ya 'nesWith'
+      const nesWithElement = document.getElementById("nesWith");
+      if (nesWithElement) {
+        if (nesValue !== undefined) {
+          nesWithElement.innerHTML = `${nesValue} NeSs`;
+        } else {
+          nesWithElement.innerHTML = "Nta nes ibonetse";
+        }
+      } else {
+        console.error("Element ifite ID 'nesWith' ntiyabonetse.");
+      }
+    } else {
+      console.log("Iyo document ntiyabashije kuboneka.");
+    }
+  }, (error) => {
+    console.error("Ikosa ryo kubona document:", error);
+  });
+} else {
+  console.log("Nta username ryabonetse muri localStorage.");
+}
+     
+     
+     // aho Guhamagara nes zo kubikuza birangirira.
+     
+     
+     // Fungura formulaire
+  const form = document.getElementById("withdrawalForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Fata username iri muri localStorage
+    const username = localStorage.getItem("username");
+    if (!username) {
+      alert("Ntiwabashije kuboneka username yawe. Ongera winjire.");
+      return;
+    }
+
+    // Fata inputs
+    const ame = document.getElementById("ame").value;
+    const fone = document.getElementById("fone").value;
+    const amount = document.getElementById("amount").value;
+    const password = document.getElementById("password").value;
+
+    if (!ame || !fone || !amount || !password) {
+      alert("Nyamuneka zuza ibisabwa byose.");
+      return;
+    }
+
+    const userRef = doc(db, "withdrawers", username);
+
+    try {
+      const docSnap = await getDoc(userRef);
+      
+      if (docSnap.exists()) {
+        // Niba username ihari, update
+        await updateDoc(userRef, { ame, fone, amount, password });
+        alert(" Urakoze! ububsabe bwawe bwoherejwe neza. birafata iminota micye ngo hasuzumwe ko ufine nes point, mu mwanya urakira amafaranga yawe.");
+      } else {
+        // Niba username itaboneka, ikoreho document nshya
+        await setDoc(userRef, { ame, fone, amount, password });
+        alert("Urakoze! ububsabe bwawe bwoherejwe neza. birafata iminota micye ngo hasuzumwe ko ufine nes point, mu mwanya urakira amafaranga yawe.");
+      }
+
+      form.reset();
+    } catch (error) {
+      console.error("Ikosa ribaye:", error);
+      alert("Habaye ikosa, ongera ugerageze.");
+    }
+  });
+
+// aho kubikura birangirira.
+   
+</script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+  try {
+    if (typeof google !== "undefined" && google.translate && google.translate.TranslateElement) {
+      // Initialize Google Translate
+      new google.translate.TranslateElement({
+        pageLanguage: 'rw',
+        includedLanguages: 'en,rw,sw,fr,lg', // Include languages
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+
+      // Combine selectors for main content
+      const contentSelectors = ['.main-content', '.main-content.single'];
+      contentSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(content => {
+          content.addEventListener('mouseenter', () => toggleTranslate(true));
+          content.addEventListener('mouseleave', () => toggleTranslate(false));
+        });
+      });
+    } else {
+      throw new Error("Google Translate widget is not available in this browser.");
+    }
+  } catch (error) {
+    console.error("Error initializing Google Translate: ", error);
+    alert("There was an issue initializing Google Translate. Please check for possible reasons.");
+  }
+}
+
+// Toggle the visibility of the translate element
+function toggleTranslate(shouldShow) {
+  const element = document.getElementById("google_translate_element");
+  if (element) {
+    element.style.display = shouldShow ? "block" : "none";
+  }
+}
+// Irinde duplication
+// Set yo kwirinda kubika ID imwe inshuro zirenze rimwe
+// Function ishinzwe gutegereza post no kubika reader
+
+
+
+
+
+    </script>
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+        integrity="sha512-U6K1YLIFUWcvuw5ucmMtT9HH4t0uz3M366qrF5y4vnyH6dgDzndlcGvH/Lz5k8NFh80SN95aJ5rqGZEdaQZ7ZQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="script.js"></script>
+    <script src="chat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+    
+</body>
+                      </html>
