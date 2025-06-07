@@ -349,26 +349,40 @@ async function openFullPost(postId) {
     }    
 }    
 
-async function loadComments(postId) {    
-    try {    
-        const commentsRef = collection(db, "posts", postId, "comments");    
-        const querySnapshot = await getDocs(commentsRef);    
-        const commentsList = document.getElementById("comments-list");    
-        commentsList.innerHTML = '';    
-
-        querySnapshot.forEach((doc) => {    
-            const commentData = doc.data();    
-            commentsList.innerHTML += `    
+async function loadComments(postId) {
+  try {
+    if (!postId) {
+      console.warn("postId is missing!");
+      return;
+    }
+    
+    const commentsRef = collection(db, "posts", postId, "comments");
+    const querySnapshot = await getDocs(commentsRef);
+    
+    console.log("Number of comments found: ", querySnapshot.size);
+    
+    const commentsList = document.getElementById("comments-list");
+    if (!commentsList) {
+      console.error("Element with ID 'comments-list' not found.");
+      return;
+    }
+    
+    commentsList.innerHTML = '';
+    
+    querySnapshot.forEach((doc) => {
+      const commentData = doc.data();
+      const createdAt = commentData.createdAt?.toDate?.().toLocaleString?.() || "Itariki itazwi";
+      commentsList.innerHTML += `    
                 <div class="comment">    
-                    <p><strong>${commentData.username}</strong>: ${commentData.text}</p>    
-                    <small>${commentData.createdAt.toDate().toLocaleString()}</small>    
+                    <p><strong>${commentData.author}</strong>: ${commentData.text}</p>    
+                    <small>${commentData.createdAt}</small>    
                 </div>    
-            `;    
-        });    
-    } catch (error) {    
-        console.log("Error loading comments: ", error);    
-        alert("Hari ikibazo mu gihe cyo kubona comments: " + error.message);    
-    }    
+            `;
+    });
+  } catch (error) {
+    console.log("Error loading comments: ", error);
+    alert("Hari ikibazo mu gihe cyo kubona comments: " + error.message);
+  }
 }
 
 
