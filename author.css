@@ -413,9 +413,15 @@ footer li{
   margin-left: 6px;
   font-weight: bold;
   color: red;
+  display: none;
   font-size: 14px;
 }
-
+.comment{
+  border: 1px solid darkgray;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  padding: 5px;
+}
 
 .menu li {
   position: relative;
