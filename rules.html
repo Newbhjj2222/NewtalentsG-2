@@ -15,6 +15,7 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
+            border-left: 2px solid skyblue;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: auto;
         }
@@ -49,19 +50,42 @@
             { rule: "Ntibyemewe kwiba ibitekerezo by’undi mwanditsi.", penalty: "Gukurwaho inkuru no guhagarikwa ukwezi kumwe." },
             { rule: "Kwibasira       abandi banyamuryango ntibyemewe.", penalty: "Guhagarikwa amezi abiri." },
             { rule: "Kwica uburenganzira bw’umwanditsi ntibyemewe.", penalty: "Gukurwaho inkuru no kwihanangirizwa." },
-            { rule: "Abanditsi bagomba gukurikiza ibisabwa mu gushyiraho inkuru.", penalty: "Kubuzwa gutanga inkuru iminsi 10." },
+            { rule: "Abanditsi bagomba gukurikiza ibisabwa mu gushyiraho inkuru.", penalty: "Kubuzwa gutanga inkuru iminsi 10 igihe atabyubahirije, no gukutanga mande ya NeS 5." },
             { rule: "Gutanga amakuru y’ibihuha ntibyemewe.", penalty: "Kubuzwa gutanga inkuru ukwezi kumwe. no gukatwa nes 45" },
             { rule: "Birabujijwe kwibasira cyangwa kuvuga nabi umusomyi witwaje ko nawe yakubwiye nabi.", penalty: "Guhagarikwa amezi atatu. no gucibwa mande ya nes 25 zihabwa umusomyi nkimoza marira" },
-            { rule: "Gukoresha imvugo itari nyayo ntibyemewe.", penalty: "Gukosorwa inkuru cyangwa guhagarikwa iminsi 15 no gutanga mande ya nes 10." },
+            { rule: "Gukoresha imvugo itari nyayo ntibyemewe. iri tegeko uryumve neza.", penalty: "Gukosorwa inkuru cyangwa guhagarikwa iminsi 15 no gutanga mande ya nes 10." },
             { rule: "Gusaba abantu kwishyura mu buryo butemewe ntibyemewe ubizeza ko bari bubone nes point bakoresha basoma.", penalty: "Guhagarikwa amezi atandatu cyanga gutanga inkuru utabona inyungu zayo ukwezi kose." },
             { rule: "Gutanga ibitekerezo by'ubugome cyangwa by'urwango ntibyemewe.", penalty: "Kwirukanwa burundu." },
-            { rule: "Inkuru zose zigomba kuba zifite umwimerere.", penalty: "Gukurwaho inkuru no kubuzwa kongera kwandika amezi 3." },
+            { rule: "Inkuru zose zigomba kuba zifite umwimerere. zuzuye, zifite ifoto umutwe wanditse neza, ndetse n'amagambo asobanutse.", penalty: "Gukusibwa kwiyo nkuru no kubuzwa kongera kwandika ukwezi." },
             { rule: "Kugirira nabi abandi banyamuryango ntibyemewe.", penalty: "Guhagarikwa burundu." },
             { rule: "Gutanga inkuru zifite amashusho mabi cyangwa amafoto mabi akwirakwiza ubusambanyi ntibyemewe.", penalty: "Guhagarikwa imyaka ibiri, cyangwa gutanga mande ya nes 170" },
-            { rule: "Gutanga inkuru zirimo amakuru y'ibihuha ntibyemewe.", penalty: "Guhagarikwa amezi 4." },
+            { rule: "Gutanga inkuru zirimo amakuru y'ibihuha ntibyemewe ubyemeza ko ari nkitangazo ntibyemewe. amatangazo yose atangwa na Admin gusa cyangwa umuntu wahawe uburenganzira bwo gukoresha inkuru ze yamamaza, cyangwa atanga amatangazo.", penalty: "Guhagarikwa amezi 4, na amande ya NeS 300." },
             { rule: "Kwica uburenganzira bwa copyright ntibyemewe.", penalty: "Gukurwaho inkuru no kwihanangirizwa." },
-            { rule: "Gutanga inkuru zidasobanutse ntibyemewe.", penalty: "Gukosorwa ku inkuru cyangwa guhagarikwa iminsi 30 no gusibwa kwiyo nkuru." },
-            { rule: "Guhakana amategeko y’urubuga ntibyemewe no kutemera ibyo utegekwa n'urubuga.", penalty: "Kwirukanwa burundu." }
+            { rule: "Gutanga inkuru zidasobanutse, mbega zitumvikana, zidafite icyerecyezo ntibyemewe. ", penalty: "Gukosorwa ku inkuru cyangwa guhagarikwa iminsi 30 no gusibwa kwiyo nkuru." },
+            { rule: "Guhakana amategeko y’urubuga ntibyemewe no kutemera ibyo utegekwa n'urubuga.", penalty: "Kwirukanwa burundu." },
+            { rule: "Birabujijwe, gutanga inkuru irimo cyangwa ishishikariza abasomyi kugira urubuga cyangwa application yindi itari iya Newtalentsg bajya gushakiraho inkuru noneho ukongeraho ko ari ubuntu.",
+              penalty: " gusibwa kwiyo nkuru udasabwe uburenganzira no gucibwa mande ya Nes 100."
+            },
+            { rule: "Mugihe usabwe gukosora inkuru yawe, utegetswe kubyubahiriza bitarenze amasaha 24.",
+              penalty: "gusibwa kwiyo nkuru no gutanga Amande ya NeS 30."
+            },
+            { rule: "Birabujijwe gushyira link iyobora abasomyi ahandi, kuzindi mbuga utabisabiye uburenganzira. bifatwa nko kwamamaza.",
+            penalty: "kwishyura NeS 200 nkigiciro cyo kwamamaza ku mwanditsi."
+            },
+            { rule: "ntamwanditsi ubujijwe kwamamaza mu bihangano bye, ariko ategetswe kubikora yabanje kwaka uburenganzira no kwishyura NeS 200.",
+            penalty: "igihe utabyubahirije, iyo nkuru irasibwa."
+            },
+            { rule: "buri mwanditsi yemerewe gusa gutangaza ibice 2 cyangwa 1 by'inkuru ku munsi.",
+            penalty: "gucibwa mande ya NeS 15 kuri buri nkuru yarengeje ho."
+              
+            },
+            { rule: "gutinda gutanga inkuru bikabije ntibyeme.",
+              penalty: "gusibwa kwa folder yiyo nkuru kurutonde rw'inkuru ziboneka kandi dufite kurubuga kugeza igihe urangirije kuyandika yose. no gutanga mande ya NeS 10."
+            },
+            { rule: "aya mategeko agomba kubahirizwa kuva taliki 1,09,2025.",
+            penalty: "ibihano bizatangira kubahirizwa. ariko inkuru zatanzwe mbere yiyo taliki zo ntizirebwa naya mategeko."
+              
+            }
         ];const rulesContainer = document.getElementById("rules");
     
     rules.forEach((item, index) => {
