@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="rw">
 
 <head>
@@ -122,10 +122,41 @@
           <div class="episode" contenteditable="true" data-name="description[]"></div>
         </div>
       </div>
+       <label>Hitamo ifoto y’inkuru:</label>
       
-     <input type="file" name="image" />
+     <input type="file" name="image" required/>
       
-       <select id="folderSelector">
+      <label>Hitamo amoko y’inkuru:</label>
+  <select name="categories[]" class="categories" multiple required>
+  <option value="Action">Ibikorwa (Action)</option>
+  <option value="Urwenya">Urwenya(Comedy)</option>
+  <option value="Drama">Drama</option>
+  <option value="Urukundo">Urukundo (Romance)</option>
+  <option value="Ubwoba">Ubwoba (Horror)</option>
+  <option value="Ubumenyi bw'ikoranabuhanga">Ubumenyi bw'ikoranabuhanga (Science Fiction)</option>
+  <option value="Ibyiyumviro">Ibyiyumviro / Fantasy</option>
+  <option value="Ubwoba bukomeye">Ubwoba bukomeye (Thriller)</option>
+  <option value="Ibitangaza">Ibitangaza / Mystery</option>
+  <option value="Dokumentari">Dokumentari (Documentary)</option>
+  <option value="Abana">Abana (Children / Kids)</option>
+  <option value="Inyongera y'ingendo">Inyongera y'ingendo (Adventure)</option>
+  <option value="Amateka">Amateka (Historical)</option>
+  <option value="Ubumenyi">Ubumenyi / Educational</option>
+  <option value="Amateka y'umuntu">Amateka y'umuntu (Biographical)</option>
+  <option value="Ibyaha">Ibyaha (Crime)</option>
+  <option value="Politiki">Politiki (Political)</option>
+  <option value="Abanyamerika b'uburengerazuba">Abanyamerika b'uburengerazuba / Western</option>
+  <option value="Iby'umwuka">Iby'umwuka / Supernatural</option>
+  <option value="Imikino">Imikino / Sports</option>
+  <option value="Umuziki">Umuziki / Musical</option>
+  <option value="Urukundo rw'umubiri">Urukundo rw'umubiri / Erotic</option>
+  <option value="Gusesengura / Icyiyumviro">Gusesengura / Satire</option>
+  <option value="Imitekerereze">Imitekerereze / Psychological</option>
+  <option value="Igendo">Ingendo / Travel</option>
+</select>
+  <div class="tags-preview"></div>
+      <label>Hitamo  folder:</label>
+       <select id="folderSelector" required>
         <option value="">-- Choose a folder --</option>
         <!-- Options could be added dynamically if needed -->
       </select>
@@ -260,21 +291,20 @@ const db = initializeFirestore(app, {
   event.preventDefault();
   
   const author = localStorage.getItem("username") || "unknown author";
-  const folderId = document.getElementById("folderSelector").value;
-  const fileInput = document.querySelector('input[name="image"]');
-  const file = fileInput?.files?.[0];
-  
+  const folderId = document.getElementById("folderSelector")?.value;
   if (!folderId) {
     alert("Hitamo folder mbere yo kohereza.");
     return;
   }
   
-  let uploadedImageUrl = ""; // Ifoto izakoreshwa kuri inkuru zose
+  const fileInput = document.querySelector('input[name="image"]');
+  const file = fileInput?.files?.[0];
   
-  // Ohereza ifoto kuri ImgBB niba ihari
+  let uploadedImageUrl = "";
+  
   if (file) {
     try {
-      const API_KEY = "d3b627c6d75013b8aaf2aac6de73dcb5"; // Shyiramo API key yawe nyayo
+      const API_KEY = "d3b627c6d75013b8aaf2aac6de73dcb5";
       const formData = new FormData();
       formData.append("image", file);
       
@@ -284,20 +314,18 @@ const db = initializeFirestore(app, {
       });
       
       const data = await response.json();
-      console.log("IMGBB response:", data); // Ibi ni debugging gusa
-      
-      if (!data.success) {
-        throw new Error(data.error.message || "Image upload failed");
-      }
-      
-      uploadedImageUrl = data.data.url; // Ifoto imaze kugera kuri ImgBB
+      if (!data.success) throw new Error(data.error?.message || "Image upload failed");
+      uploadedImageUrl = data.data.url;
     } catch (error) {
-      alert("Ntibyagenze neza kohereza ifoto: " + error.message);
+      alert("Ntibyagenze neza kohereza ifoto: " + (error.message || error));
       return;
     }
   }
   
-  // Fungura inkuru zose
+  // Fata categories zo muri select imwe (uri guhitamo)
+  const categoriesSelect = document.querySelector("select.categories");
+  const sharedCategories = Array.from(categoriesSelect.selectedOptions).map(opt => opt.value);
+  
   const stories = document.querySelectorAll("#stories-container .story");
   const promises = [];
   
@@ -309,16 +337,16 @@ const db = initializeFirestore(app, {
     const content = episodeDiv?.innerHTML?.trim();
     
     if (title && content) {
-      const postRef = doc(collection(db, "posts")); // Firebase Firestore
+      const postRef = doc(collection(db, "posts"));
       const storyData = {
         head: title,
         story: content,
-        imageUrl: uploadedImageUrl || "", // Ifoto imwe ikoreshwa kuri buri nkuru
+        categories: sharedCategories, // categories zimwe kuri buri nkuru
+        imageUrl: uploadedImageUrl || "",
         folderId: folderId,
         author: author,
         createdAt: new Date().toISOString()
       };
-      
       promises.push(setDoc(postRef, storyData));
     }
   });
@@ -328,12 +356,24 @@ const db = initializeFirestore(app, {
     alert("Inkuru zose zoherejwe neza!");
     window.location.reload();
   } catch (error) {
-    alert("Hari ikibazo cyo kubika inkuru: " + error.message);
+    alert("Hari ikibazo cyo kubika inkuru: " + (error.message || error));
     console.error(error);
   }
 });
         
-        
+// Tags preview kuri buri story
+document.querySelectorAll('.categories').forEach(select => {
+  const previewDiv = select.nextElementSibling;
+  select.addEventListener('change', () => {
+    previewDiv.innerHTML = "";
+    Array.from(select.selectedOptions).forEach(opt => {
+      const span = document.createElement('span');
+      span.classList.add('tag');
+      span.textContent = opt.value;
+      previewDiv.appendChild(span);
+    });
+  });
+});
         
         </script>
   
