@@ -288,19 +288,23 @@ document.addEventListener("DOMContentLoaded", function() {
 async function updateViewsDisplay() {
   document.querySelectorAll(".views").forEach(async (viewEl) => {
     const postId = viewEl.getAttribute("data-id");
-    const docRef = doc(db, "readers", postId);
-    
+    const docRef = doc(db, "posts", postId); // 👉 Hano yahindutse: 'readers' → 'posts'
+
     try {
       const docSnap = await getDoc(docRef);
-      const readerCount = docSnap.exists() ? docSnap.data().reader || 0 : 0;
-      viewEl.innerHTML = `${readerCount} views`;
+      if (docSnap.exists()) {
+        const postData = docSnap.data();
+        const views = postData.views || 0; // 👉 ifata views muri post document
+        viewEl.innerHTML = `${views} views`;
+      } else {
+        viewEl.innerHTML = "0 views";
+      }
     } catch (error) {
       console.error("Error loading views:", error);
       viewEl.innerHTML = "Error";
     }
   });
 }
-
 async function openFullPost(postId) {    
     try {    
         const postRef = doc(db, "posts", postId);    
