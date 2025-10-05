@@ -296,7 +296,7 @@ footer li{
   border-radius: 6px;
 }
 #reader{
-  display: none;
+  display: block;
   right: 10px;
   bottom: 80px;
   background: lightgray;
@@ -413,7 +413,7 @@ footer li{
   margin-left: 6px;
   font-weight: bold;
   color: red;
-  display: none;
+  display: block;
   font-size: 14px;
 }
 .comment{
